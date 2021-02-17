@@ -61,7 +61,7 @@ test('should throw captured announcements', async () => {
     await tick();
     statusContainer.textContent = 'Second';
 
-    return expect(async () =>
+    return expect(() =>
         expect('HELLO WORLD').toBeAnnounced()
     ).rejects.toThrowErrorMatchingInlineSnapshot(
         `"HELLO WORLD was not announced. Captured announcements: [First, Second]"`

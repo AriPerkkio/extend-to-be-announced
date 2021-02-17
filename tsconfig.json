@@ -8,8 +8,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
-        "declaration": true,
         "baseUrl": "."
     },
-    "include": ["src", "test", "./index.d.ts"]
+    "include": ["src", "test", "index.d.ts"]
 }
