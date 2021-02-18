@@ -1,63 +1,67 @@
 const announcements = new Map<string, boolean>();
-const statusContainers = new Map<Node, { previousText: string | null }>();
+const statusContainers = new Map<Node, string | null>();
 
-const onStatusContainerTextChange: MutationCallback = mutations => {
-    for (const mutation of mutations) {
-        const container = statusContainers.get(mutation.target);
+function onTextContentChange(this: Node, textContent: string | null) {
+    const previousText = statusContainers.get(this);
+    const newText = textContent || '';
 
-        const previousText = container?.previousText || '';
-        const currentText = mutation.target.textContent || '';
-
-        if (previousText !== currentText && currentText !== '') {
-            announcements.set(currentText, true);
-        }
+    if (previousText !== newText) {
+        announcements.set(newText, true);
     }
-};
+}
 
-const textContentObserver = new MutationObserver(onStatusContainerTextChange);
-
-const onStatusContainerAdded: MutationCallback = () => {
+function updateStatusContainers() {
     const containers = document.querySelectorAll('[role="status"]');
 
     for (const container of containers) {
-        if (statusContainers.has(container)) {
-            continue;
-        }
+        if (statusContainers.has(container)) continue;
 
-        textContentObserver.observe(container, {
-            subtree: true,
-            childList: true,
-        });
-        statusContainers.set(container, {
-            previousText: container.textContent,
-        });
+        statusContainers.set(container, container.textContent);
+
+        jest.spyOn(container, 'textContent', 'set').mockImplementation(
+            onTextContentChange
+        );
     }
+}
+
+function isElement(node: Node): node is Element {
+    return 'closest' in node;
+}
+
+function isAdjacentOfStatusContainer(node: Node) {
+    if (isElement(node)) {
+        return Boolean(node.closest('[role="status"]'));
+    }
+}
+
+const appendChild = Node.prototype.appendChild;
+Node.prototype.appendChild = function patchedAppendChild<T extends Node>(
+    newChild: T
+): T {
+    const output = appendChild.call(this, newChild);
+
+    updateStatusContainers();
+
+    if (isAdjacentOfStatusContainer(newChild)) {
+        // TODO text content of status container or newChild ?
+        const textContent = newChild.textContent;
+
+        if (textContent && announcements.has(textContent)) {
+            announcements.set(textContent, true);
+        }
+    }
+
+    return output as T;
 };
 
-const nodeAddedObserver = new MutationObserver(onStatusContainerAdded);
-
 export function register(): void {
-    beforeEach(() => {
-        nodeAddedObserver.observe(document.body, {
-            subtree: true,
-            childList: true,
-        });
-    });
-
     afterEach(() => {
-        nodeAddedObserver.disconnect();
-        textContentObserver.disconnect();
         statusContainers.clear();
         announcements.clear();
     });
 }
 
-export async function toBeAnnounced(
-    text: string
-): Promise<jest.CustomMatcherResult> {
-    // Tick, runs queued MutationObserver callbacks
-    await Promise.resolve();
-
+export function toBeAnnounced(text: string): jest.CustomMatcherResult {
     const textMissing = text == null || text === '';
 
     return {
