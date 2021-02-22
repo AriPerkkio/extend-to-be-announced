@@ -1,8 +1,14 @@
+import {
+    getParentLiveRegion,
+    LIVE_REGION_QUERY,
+    resolvePolitenessSetting,
+} from './utils';
+
 const announcements = new Map<string, boolean>();
-const statusContainers = new Map<Node, string | null>();
+const liveRegions = new Map<Node, string | null>();
 
 function onTextContentChange(this: Node, textContent: string | null) {
-    const previousText = statusContainers.get(this);
+    const previousText = liveRegions.get(this);
     const newText = textContent || '';
 
     if (previousText !== newText) {
@@ -10,27 +16,22 @@ function onTextContentChange(this: Node, textContent: string | null) {
     }
 }
 
-function updateStatusContainers() {
-    const containers = document.querySelectorAll('[role="status"]');
+function updateLiveRegions() {
+    for (const liveRegion of document.querySelectorAll(LIVE_REGION_QUERY)) {
+        if (liveRegions.has(liveRegion)) continue;
 
-    for (const container of containers) {
-        if (statusContainers.has(container)) continue;
+        const politenessSetting = resolvePolitenessSetting(liveRegion);
+        if (politenessSetting === 'off') continue;
 
-        statusContainers.set(container, container.textContent);
-
-        jest.spyOn(container, 'textContent', 'set').mockImplementation(
+        liveRegions.set(liveRegion, liveRegion.textContent);
+        jest.spyOn(liveRegion, 'textContent', 'set').mockImplementation(
             onTextContentChange
         );
-    }
-}
 
-function isElement(node: Node): node is Element {
-    return 'closest' in node;
-}
-
-function isAdjacentOfStatusContainer(node: Node) {
-    if (isElement(node)) {
-        return Boolean(node.closest('[role="status"]'));
+        // Content of assertive live regions is announced on initial mount
+        if (politenessSetting === 'assertive' && liveRegion.textContent) {
+            announcements.set(liveRegion.textContent, true);
+        }
     }
 }
 
@@ -40,15 +41,20 @@ Node.prototype.appendChild = function patchedAppendChild<T extends Node>(
 ): T {
     const output = appendChild.call(this, newChild);
 
-    updateStatusContainers();
+    updateLiveRegions();
 
-    if (isAdjacentOfStatusContainer(newChild)) {
-        // TODO text content of status container or newChild ?
-        const textContent = newChild.textContent;
+    // Content updates inside live region
+    const parentLiveRegion = getParentLiveRegion(newChild);
+    if (parentLiveRegion) {
+        const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
 
-        if (textContent && announcements.has(textContent)) {
-            announcements.set(textContent, true);
-        }
+        // TODO run only if parent was mounted on previous microtask
+        //if (politenessSetting !== 'off') {
+        //    onTextContentChange.call(
+        //        parentLiveRegion,
+        //        parentLiveRegion.textContent
+        //    );
+        //}
     }
 
     return output as T;
@@ -56,7 +62,7 @@ Node.prototype.appendChild = function patchedAppendChild<T extends Node>(
 
 export function register(): void {
     afterEach(() => {
-        statusContainers.clear();
+        liveRegions.clear();
         announcements.clear();
     });
 }
