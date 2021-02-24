@@ -25,6 +25,8 @@ module.exports = {
     ],
     rules: {
         'prettier/prettier': 'error',
+        '@typescript-eslint/ban-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
     },
     overrides: [
         {

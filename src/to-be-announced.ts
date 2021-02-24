@@ -1,5 +1,8 @@
 import {
     getParentLiveRegion,
+    interceptMethod,
+    interceptSetter,
+    isInDOM,
     LIVE_REGION_QUERY,
     resolvePolitenessSetting,
 } from './utils';
@@ -7,9 +10,9 @@ import {
 const announcements = new Map<string, boolean>();
 const liveRegions = new Map<Node, string | null>();
 
-function onTextContentChange(this: Node, textContent: string | null) {
-    const previousText = liveRegions.get(this);
-    const newText = textContent || '';
+function onTextContentChange(node: Node) {
+    const previousText = liveRegions.get(node);
+    const newText = node.textContent || '';
 
     if (previousText !== newText) {
         announcements.set(newText, true);
@@ -24,9 +27,6 @@ function updateLiveRegions() {
         if (politenessSetting === 'off') continue;
 
         liveRegions.set(liveRegion, liveRegion.textContent);
-        jest.spyOn(liveRegion, 'textContent', 'set').mockImplementation(
-            onTextContentChange
-        );
 
         // Content of assertive live regions is announced on initial mount
         if (politenessSetting === 'assertive' && liveRegion.textContent) {
@@ -35,12 +35,19 @@ function updateLiveRegions() {
     }
 }
 
-const appendChild = Node.prototype.appendChild;
-Node.prototype.appendChild = function patchedAppendChild<T extends Node>(
-    newChild: T
-): T {
-    const output = appendChild.call(this, newChild);
+function interceptSetTextContent(this: Node) {
+    const parentLiveRegion = getParentLiveRegion(this);
 
+    if (parentLiveRegion) {
+        const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
+
+        if (politenessSetting !== 'off' && isInDOM(parentLiveRegion)) {
+            onTextContentChange(parentLiveRegion);
+        }
+    }
+}
+
+function interceptAppendChild(newChild: Node) {
     updateLiveRegions();
 
     // Content updates inside live region
@@ -48,17 +55,14 @@ Node.prototype.appendChild = function patchedAppendChild<T extends Node>(
     if (parentLiveRegion) {
         const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
 
-        // TODO run only if parent was mounted on previous microtask
-        //if (politenessSetting !== 'off') {
-        //    onTextContentChange.call(
-        //        parentLiveRegion,
-        //        parentLiveRegion.textContent
-        //    );
-        //}
+        if (politenessSetting !== 'off' && isInDOM(parentLiveRegion)) {
+            onTextContentChange(parentLiveRegion);
+        }
     }
+}
 
-    return output as T;
-};
+interceptSetter(Node.prototype, 'textContent', interceptSetTextContent);
+interceptMethod(Node.prototype, 'appendChild', interceptAppendChild);
 
 export function register(): void {
     afterEach(() => {

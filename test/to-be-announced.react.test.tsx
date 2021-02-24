@@ -1,7 +1,8 @@
-import '../src/index';
 import React, { useReducer } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import '../src/index';
 
 const MountToggle: React.FC<{
     children: (visible: boolean) => React.ReactNode;
@@ -24,11 +25,12 @@ test('should not announce when initially rendered', () => {
 
 test('should not announce when dynamically rendered with initial content', () => {
     render(
-        <MountToggle>{() => <div role="status">Hello world</div>}</MountToggle>
+        <MountToggle>
+            {isVisible => isVisible && <div role="status">Hello world</div>}
+        </MountToggle>
     );
 
     userEvent.click(screen.getByRole('button', { name: 'Toggle' }));
-
     expect('Hello world').not.toBeAnnounced();
 });
 

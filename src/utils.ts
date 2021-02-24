@@ -14,7 +14,7 @@ export const LIVE_REGION_QUERY = [
 ].join(', ');
 
 function isElement(node: Node): node is Element {
-    return 'closest' in node;
+    return node && 'closest' in node;
 }
 
 export function getParentLiveRegion(node: Node): Element | null {
@@ -48,4 +48,73 @@ export function resolvePolitenessSetting(
     }
 
     return resolvePolitenessSetting(getParentLiveRegion(node));
+}
+
+export function isInDOM(node: Node): boolean {
+    return isElement(node) && node.closest('html') != null;
+}
+
+export function interceptSetter<
+    T extends Object = Object,
+    P extends keyof T = keyof T,
+    K extends T[P] = T[P]
+>(obj: T, property: P, method: (value: K) => void): { restore: () => void } {
+    const descriptor = Object.getOwnPropertyDescriptor(obj, property);
+    if (!descriptor || !descriptor.set) throw new Error('whereismydescriptor');
+
+    const originalSetter = descriptor.set;
+
+    descriptor.set = function interceptedSet(value: K) {
+        const output = originalSetter.call(this, value);
+        method.call(this, value);
+
+        return output;
+    };
+
+    Object.defineProperty(obj, property, descriptor);
+
+    return {
+        restore: () => {
+            descriptor.set = originalSetter;
+            Object.defineProperty(obj, property, descriptor);
+        },
+    };
+}
+
+export function interceptMethod<
+    T extends Object = Object,
+    P extends keyof T = keyof T
+>(
+    object: T,
+    methodName: P,
+    method: (...args: any[]) => void
+): { restore: () => void } {
+    const original = (object[methodName] as unknown) as Function;
+
+    if (typeof original !== 'function') {
+        throw new Error(
+            `Expected ${methodName} to be a function. Received ${typeof original}: ${original}`
+        );
+    }
+
+    if (typeof method !== 'function') {
+        throw new Error(
+            `Expected method to be a function. Received ${typeof method}: ${method}`
+        );
+    }
+
+    function interceptedMethod(this: T, ...args: any) {
+        const output = original.call(this, ...args);
+        method.call(this, ...args);
+
+        return output;
+    }
+
+    object[methodName] = interceptedMethod as any;
+
+    return {
+        restore: () => {
+            object[methodName] = original as any;
+        },
+    };
 }
