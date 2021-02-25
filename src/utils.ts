@@ -17,6 +17,10 @@ export function isElement(node: Node): node is Element {
     return node && 'closest' in node;
 }
 
+export function isInDOM(node: Node): boolean {
+    return isElement(node) && node.closest('html') != null;
+}
+
 export function getParentLiveRegion(node: Node): Element | null {
     if (isElement(node)) {
         return node.closest(LIVE_REGION_QUERY);
@@ -31,12 +35,18 @@ function isPolitenessSetting(
     return setting === 'polite' || setting === 'assertive' || setting === 'off';
 }
 
+/**
+ * Resolve politeness setting of given node
+ * - Recursively traverse tree up until live region is found
+ */
 export function resolvePolitenessSetting(
     node: Node | null
 ): 'polite' | 'assertive' | 'off' {
     if (!node || !isElement(node)) return 'off';
 
     const ariaLive = node.getAttribute('aria-live');
+
+    // TODO: Should "off" be ignored?
     if (isPolitenessSetting(ariaLive)) return ariaLive;
 
     const role = node.getAttribute('role');
@@ -48,10 +58,6 @@ export function resolvePolitenessSetting(
     }
 
     return resolvePolitenessSetting(getParentLiveRegion(node));
-}
-
-export function isInDOM(node: Node): boolean {
-    return isElement(node) && node.closest('html') != null;
 }
 
 export function interceptSetter<

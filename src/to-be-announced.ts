@@ -13,16 +13,34 @@ const announcements = new Map<string, boolean>();
 // Map of live regions to previous textContent
 const liveRegions = new Map<Node, string | null>();
 
-function onTextContentChange(node: Node) {
-    const previousText = liveRegions.get(node);
-    const newText = node.textContent || '';
+/**
+ * Check whether given node should trigger announcement
+ * - Node should be inside live region
+ * - Politeness setting should not be off
+ * - `textContent` of live region should have changed
+ */
+function updateAnnouncements(node: Node) {
+    const parentLiveRegion = getParentLiveRegion(node);
 
-    if (previousText !== newText) {
-        announcements.set(newText, true);
-        liveRegions.set(node, newText);
+    if (parentLiveRegion) {
+        const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
+
+        if (politenessSetting !== 'off' && isInDOM(parentLiveRegion)) {
+            const previousText = liveRegions.get(node);
+            const newText = node.textContent || '';
+
+            if (previousText !== newText) {
+                announcements.set(newText, true);
+                liveRegions.set(node, newText);
+            }
+        }
     }
 }
 
+/**
+ * Check DOM for live regions and update `liveRegions` store
+ * - TODO: Could be optimized based on appended child
+ */
 function updateLiveRegions() {
     for (const liveRegion of document.querySelectorAll(LIVE_REGION_QUERY)) {
         if (liveRegions.has(liveRegion)) continue;
@@ -39,46 +57,30 @@ function updateLiveRegions() {
     }
 }
 
-function interceptSetTextContent(this: Node) {
-    const parentLiveRegion = getParentLiveRegion(this);
-
-    if (parentLiveRegion) {
-        const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
-
-        if (politenessSetting !== 'off' && isInDOM(parentLiveRegion)) {
-            onTextContentChange(parentLiveRegion);
-        }
-    }
+function onTextContentChange(this: Node) {
+    updateAnnouncements(this);
 }
 
 // https://github.com/facebook/react/blob/9198a5cec0936a21a5ba194a22fcbac03eba5d1d/packages/react-dom/src/client/setTextContent.js#L12-L35
-function interceptSetNodeValue(this: Node) {
-    // This is likely a TEXT_NODE
+function onNodeValueChange(this: Node) {
+    // This should be a TEXT_NODE
     const element = isElement(this) ? this : this.parentElement;
 
     if (element) {
-        interceptSetTextContent.call(element);
+        updateAnnouncements(element);
     }
 }
 
-function interceptAppendChild(newChild: Node) {
+function onAppendChild(newChild: Node) {
     updateLiveRegions();
-
-    // Content updates inside live region
-    const parentLiveRegion = getParentLiveRegion(newChild);
-    if (parentLiveRegion) {
-        const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
-
-        if (politenessSetting !== 'off' && isInDOM(parentLiveRegion)) {
-            onTextContentChange(parentLiveRegion);
-        }
-    }
+    updateAnnouncements(newChild);
 }
 
 // TODO Move to register()
-interceptSetter(Node.prototype, 'textContent', interceptSetTextContent);
-interceptMethod(Node.prototype, 'appendChild', interceptAppendChild);
-interceptSetter(Node.prototype, 'nodeValue', interceptSetNodeValue);
+// TODO intercept setAttribute('role' | 'aria-live') ?
+interceptSetter(Node.prototype, 'textContent', onTextContentChange);
+interceptMethod(Node.prototype, 'appendChild', onAppendChild);
+interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange);
 
 export function register(): void {
     afterEach(() => {
