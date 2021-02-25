@@ -76,13 +76,22 @@ function onAppendChild(newChild: Node) {
     updateAnnouncements(newChild);
 }
 
-// TODO Move to register()
-// TODO intercept setAttribute('role' | 'aria-live') ?
-interceptSetter(Node.prototype, 'textContent', onTextContentChange);
-interceptMethod(Node.prototype, 'appendChild', onAppendChild);
-interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange);
-
 export function register(): void {
+    const cleanups: (() => void)[] = [];
+
+    beforeAll(() => {
+        // TODO intercept setAttribute('role' | 'aria-live') ?
+        cleanups.push(
+            interceptSetter(Node.prototype, 'textContent', onTextContentChange),
+            interceptMethod(Node.prototype, 'appendChild', onAppendChild),
+            interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange)
+        );
+    });
+
+    afterAll(() => {
+        cleanups.splice(0).forEach(cleanup => cleanup());
+    });
+
     afterEach(() => {
         liveRegions.clear();
         announcements.clear();

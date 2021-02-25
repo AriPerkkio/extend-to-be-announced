@@ -1,4 +1,5 @@
 type PolitenessSetting = 'polite' | 'assertive' | 'off';
+type Restore = () => void;
 
 export const LIVE_REGION_QUERY = [
     '[role="status"]',
@@ -64,7 +65,7 @@ export function interceptSetter<
     T extends Object = Object,
     P extends keyof T = keyof T,
     K extends T[P] = T[P]
->(obj: T, property: P, method: (value: K) => void): { restore: () => void } {
+>(obj: T, property: P, method: (value: K) => void): Restore {
     const descriptor = Object.getOwnPropertyDescriptor(obj, property);
     if (!descriptor || !descriptor.set) throw new Error('whereismydescriptor');
 
@@ -79,22 +80,16 @@ export function interceptSetter<
 
     Object.defineProperty(obj, property, descriptor);
 
-    return {
-        restore: () => {
-            descriptor.set = originalSetter;
-            Object.defineProperty(obj, property, descriptor);
-        },
+    return function restore(): void {
+        descriptor.set = originalSetter;
+        Object.defineProperty(obj, property, descriptor);
     };
 }
 
 export function interceptMethod<
     T extends Object = Object,
     P extends keyof T = keyof T
->(
-    object: T,
-    methodName: P,
-    method: (...args: any[]) => void
-): { restore: () => void } {
+>(object: T, methodName: P, method: (...args: any[]) => void): Restore {
     const original = (object[methodName] as unknown) as Function;
 
     if (typeof original !== 'function') {
@@ -118,9 +113,7 @@ export function interceptMethod<
 
     object[methodName] = interceptedMethod as any;
 
-    return {
-        restore: () => {
-            object[methodName] = original as any;
-        },
+    return function restore() {
+        object[methodName] = original as any;
     };
 }
