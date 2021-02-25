@@ -12,8 +12,6 @@ function removeRoot() {
     if (root) {
         return document.body.removeChild(root);
     }
-
-    throw new Error('Missig root');
 }
 
 // Keep DOM ready and clear
