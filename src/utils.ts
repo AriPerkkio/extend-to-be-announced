@@ -13,7 +13,7 @@ export const LIVE_REGION_QUERY = [
     // '[role="timer"]',
 ].join(', ');
 
-function isElement(node: Node): node is Element {
+export function isElement(node: Node): node is Element {
     return node && 'closest' in node;
 }
 

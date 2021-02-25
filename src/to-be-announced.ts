@@ -2,12 +2,15 @@ import {
     getParentLiveRegion,
     interceptMethod,
     interceptSetter,
+    isElement,
     isInDOM,
     LIVE_REGION_QUERY,
     resolvePolitenessSetting,
 } from './utils';
 
 const announcements = new Map<string, boolean>();
+
+// Map of live regions to previous textContent
 const liveRegions = new Map<Node, string | null>();
 
 function onTextContentChange(node: Node) {
@@ -16,6 +19,7 @@ function onTextContentChange(node: Node) {
 
     if (previousText !== newText) {
         announcements.set(newText, true);
+        liveRegions.set(node, newText);
     }
 }
 
@@ -47,6 +51,16 @@ function interceptSetTextContent(this: Node) {
     }
 }
 
+// https://github.com/facebook/react/blob/9198a5cec0936a21a5ba194a22fcbac03eba5d1d/packages/react-dom/src/client/setTextContent.js#L12-L35
+function interceptSetNodeValue(this: Node) {
+    // This is likely a TEXT_NODE
+    const element = isElement(this) ? this : this.parentElement;
+
+    if (element) {
+        interceptSetTextContent.call(element);
+    }
+}
+
 function interceptAppendChild(newChild: Node) {
     updateLiveRegions();
 
@@ -61,8 +75,10 @@ function interceptAppendChild(newChild: Node) {
     }
 }
 
+// TODO Move to register()
 interceptSetter(Node.prototype, 'textContent', interceptSetTextContent);
 interceptMethod(Node.prototype, 'appendChild', interceptAppendChild);
+interceptSetter(Node.prototype, 'nodeValue', interceptSetNodeValue);
 
 export function register(): void {
     afterEach(() => {

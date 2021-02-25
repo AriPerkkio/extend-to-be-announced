@@ -44,3 +44,23 @@ test('should announce when dynamically rendered into container', () => {
     userEvent.click(screen.getByRole('button', { name: 'Toggle' }));
     expect('Hello world').toBeAnnounced();
 });
+
+test('should announce when content changes', () => {
+    render(
+        <MountToggle>
+            {visible => (
+                <div role="status">{visible ? 'Message #1' : 'Message #2'}</div>
+            )}
+        </MountToggle>
+    );
+
+    screen.getByText('Message #2');
+    expect('Message #1').not.toBeAnnounced();
+    expect('Message #2').not.toBeAnnounced();
+
+    userEvent.click(screen.getByRole('button', { name: 'Toggle' }));
+    expect('Message #1').toBeAnnounced();
+
+    userEvent.click(screen.getByRole('button', { name: 'Toggle' }));
+    expect('Message #2').toBeAnnounced();
+});
