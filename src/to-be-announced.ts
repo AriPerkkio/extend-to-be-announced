@@ -98,11 +98,15 @@ export function register(): void {
     });
 }
 
-export function toBeAnnounced(text: string): jest.CustomMatcherResult {
+export function toBeAnnounced(
+    this: jest.MatcherContext,
+    text: string
+): jest.CustomMatcherResult {
     const textMissing = text == null || text === '';
+    const isAnnounced = announcements.has(text);
 
     return {
-        pass: !textMissing && announcements.has(text),
+        pass: !textMissing && isAnnounced,
         message: () => {
             if (textMissing) {
                 return `toBeAnnounced was given falsy or empty string: (${text})`;
@@ -113,9 +117,15 @@ export function toBeAnnounced(text: string): jest.CustomMatcherResult {
                 allAnnouncements.push(announcement);
             }
 
-            return `${text} was not announced. Captured announcements: [${allAnnouncements.join(
-                ', '
-            )}]`;
+            return [
+                text,
+                'was',
+                !this.isNot && 'not',
+                'announced. Captured announcements:',
+                `[${allAnnouncements.join(', ')}]`,
+            ]
+                .filter(Boolean)
+                .join(' ');
         },
     };
 }

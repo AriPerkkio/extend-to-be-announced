@@ -18,6 +18,20 @@ describe('Errors', () => {
         );
     });
 
+    test("should throw when asserting with '.not' and message was announced", () => {
+        const container = document.createElement('div');
+        container.setAttribute('role', 'status');
+
+        appendToRoot(container);
+        container.textContent = 'Hello world';
+
+        expect(() =>
+            expect('Hello world').not.toBeAnnounced()
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"Hello world was announced. Captured announcements: [Hello world]"`
+        );
+    });
+
     test('should throw when given empty string', () => {
         expect(() =>
             expect('').toBeAnnounced()
