@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import '../src/index';
 
+type Tag = 'div' | 'output';
+
 function render(node: React.ReactElement) {
     originalRender(node, { container: document.getElementById('root')! });
 }
@@ -28,12 +30,16 @@ function toggleContent() {
 [
     { name: 'role', value: 'status' },
     { name: 'aria-live', value: 'polite' },
-].forEach(({ name, value }) => {
-    describe(`[${name}="${value}"]`, () => {
-        const props = { [name]: value };
+    { tag: 'output' as Tag },
+].forEach(({ name, value, tag }) => {
+    const testName = name && value ? `[${name}="${value}"]` : `<${tag}>`;
+
+    describe(testName, () => {
+        const props = name && value ? { [name]: value } : {};
+        const Tag: Tag = tag || 'div';
 
         test('should not announce when initially rendered', () => {
-            render(<div {...props}>Hello world</div>);
+            render(<Tag {...props}>Hello world</Tag>);
 
             expect('Hello world').not.toBeAnnounced();
         });
@@ -42,7 +48,7 @@ function toggleContent() {
             render(
                 <MountToggle>
                     {isVisible =>
-                        isVisible && <div {...props}>Hello world</div>
+                        isVisible && <Tag {...props}>Hello world</Tag>
                     }
                 </MountToggle>
             );
@@ -55,7 +61,7 @@ function toggleContent() {
             render(
                 <MountToggle>
                     {visible => (
-                        <div {...props}>{visible && 'Hello world'}</div>
+                        <Tag {...props}>{visible && 'Hello world'}</Tag>
                     )}
                 </MountToggle>
             );
@@ -68,9 +74,9 @@ function toggleContent() {
             render(
                 <MountToggle>
                     {visible => (
-                        <div {...props}>
+                        <Tag {...props}>
                             {visible ? 'Message #1' : 'Message #2'}
-                        </div>
+                        </Tag>
                     )}
                 </MountToggle>
             );
@@ -147,10 +153,38 @@ function toggleContent() {
     });
 });
 
-describe('output', () => {
-    test.todo('');
-});
-
 describe('[aria-live="off"]', () => {
-    test.todo('');
+    test('should never announce', () => {
+        render(
+            <MountToggle>
+                {visible => (
+                    <div aria-live="off">
+                        {visible ? 'Message #1' : 'Message #2'}
+                    </div>
+                )}
+            </MountToggle>
+        );
+
+        toggleContent();
+        toggleContent();
+        toggleContent();
+
+        expect('Message #1').not.toBeAnnounced();
+        expect('Message #2').not.toBeAnnounced();
+    });
+
+    test('should never announce when implicit', () => {
+        render(
+            <MountToggle>
+                {visible => <div>{visible ? 'Message #1' : 'Message #2'}</div>}
+            </MountToggle>
+        );
+
+        toggleContent();
+        toggleContent();
+        toggleContent();
+
+        expect('Message #1').not.toBeAnnounced();
+        expect('Message #2').not.toBeAnnounced();
+    });
 });
