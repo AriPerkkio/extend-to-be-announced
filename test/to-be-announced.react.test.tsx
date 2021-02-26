@@ -3,8 +3,7 @@ import { render as originalRender, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import '../src/index';
-
-type Tag = 'div' | 'output';
+import { Tag } from './utils';
 
 function render(node: React.ReactElement) {
     originalRender(node, { container: document.getElementById('root')! });
@@ -38,7 +37,7 @@ function toggleContent() {
         const props = name && value ? { [name]: value } : {};
         const Tag: Tag = tag || 'div';
 
-        test('should not announce when initially rendered', () => {
+        test('should not announce when initially rendered with content', () => {
             render(<Tag {...props}>Hello world</Tag>);
 
             expect('Hello world').not.toBeAnnounced();

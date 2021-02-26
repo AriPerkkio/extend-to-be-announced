@@ -1,66 +1,89 @@
 import '../src/index';
-import { appendToRoot, createStatusContainer } from './utils';
+import { appendToRoot, Tag } from './utils';
 
-test('should not announce', () => {
-    const statusContainer = createStatusContainer();
-    statusContainer.textContent = 'Hello world';
-    appendToRoot(statusContainer);
+[
+    { name: 'role', value: 'status' },
+    { name: 'aria-live', value: 'polite' },
+    { tag: 'output' as Tag },
+].forEach(({ name, value, tag }) => {
+    const testName = name && value ? `[${name}="${value}"]` : `<${tag}>`;
 
-    expect('Hello world').not.toBeAnnounced();
+    describe(testName, () => {
+        let element: HTMLElement;
+
+        beforeEach(() => {
+            const container = document.createElement(tag || 'div');
+            if (name && value) {
+                container.setAttribute(name, value);
+            }
+
+            element = container;
+        });
+
+        test('should not announce when initially rendered with content', () => {
+            element.textContent = 'Hello world';
+            appendToRoot(element);
+
+            expect('Hello world').not.toBeAnnounced();
+        });
+
+        test('should announce when dynamically rendered into container', () => {
+            appendToRoot(element);
+
+            element.textContent = 'Hello world';
+
+            expect('Hello world').toBeAnnounced();
+        });
+
+        test('should announce when content changes', () => {
+            appendToRoot(element);
+
+            element.textContent = 'First';
+            element.textContent = 'Second';
+
+            expect('First').toBeAnnounced();
+            expect('Second').toBeAnnounced();
+        });
+    });
 });
 
-test('should announce once', () => {
-    const statusContainer = createStatusContainer();
-    appendToRoot(statusContainer);
+[
+    { name: 'role', value: 'alert' },
+    { name: 'aria-live', value: 'assertive' },
+].forEach(({ name, value }) => {
+    describe(`[${name}="${value}"]`, () => {
+        let element: HTMLElement;
 
-    statusContainer.textContent = 'Hello world';
+        beforeEach(() => {
+            const container = document.createElement('div');
+            if (name && value) {
+                container.setAttribute(name, value);
+            }
 
-    expect('Hello world').toBeAnnounced();
-});
+            element = container;
+        });
 
-test('should announce twice', () => {
-    const statusContainer = createStatusContainer();
-    appendToRoot(statusContainer);
+        test('should announce when dynamically rendered with initially content', () => {
+            element.textContent = 'Hello world';
+            appendToRoot(element);
 
-    statusContainer.textContent = 'First';
-    statusContainer.textContent = 'Second';
+            expect('Hello world').toBeAnnounced();
+        });
 
-    expect('First').toBeAnnounced();
-    expect('Second').toBeAnnounced();
-});
+        test('should announce when dynamically rendered into container', () => {
+            appendToRoot(element);
+            element.textContent = 'Hello world';
 
-test('should throw captured announcements', () => {
-    const statusContainer = createStatusContainer();
-    appendToRoot(statusContainer);
+            expect('Hello world').toBeAnnounced();
+        });
 
-    statusContainer.textContent = 'First';
-    statusContainer.textContent = 'Second';
+        test('should announce when content changes', () => {
+            appendToRoot(element);
+            element.textContent = 'Message #1';
+            element.textContent = 'Message #2';
 
-    expect(() =>
-        expect('HELLO WORLD').toBeAnnounced()
-    ).toThrowErrorMatchingInlineSnapshot(
-        `"HELLO WORLD was not announced. Captured announcements: [First, Second]"`
-    );
-});
-
-test('should throw when given empty string', () => {
-    expect(() => expect('').toBeAnnounced()).toThrowErrorMatchingInlineSnapshot(
-        `"toBeAnnounced was given falsy or empty string: ()"`
-    );
-});
-
-test('should throw when given null', () => {
-    expect(() =>
-        expect(null).toBeAnnounced()
-    ).toThrowErrorMatchingInlineSnapshot(
-        `"toBeAnnounced was given falsy or empty string: (null)"`
-    );
-});
-
-test('should throw when given undefined', () => {
-    expect(() =>
-        expect(undefined).toBeAnnounced()
-    ).toThrowErrorMatchingInlineSnapshot(
-        `"toBeAnnounced was given falsy or empty string: (undefined)"`
-    );
+            expect('Message #1').toBeAnnounced();
+            expect('Message #2').toBeAnnounced();
+        });
+    });
 });
