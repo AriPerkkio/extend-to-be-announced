@@ -1,13 +1,13 @@
 import {
     getParentLiveRegion,
-    interceptMethod,
-    interceptSetter,
     isElement,
     isInDOM,
     LIVE_REGION_QUERY,
     resolvePolitenessSetting,
 } from './utils';
+import { interceptMethod, interceptSetter, Restore } from './interceptors';
 
+// TODO include politeness setting
 const announcements = new Map<string, boolean>();
 
 // Map of live regions to previous textContent
@@ -77,7 +77,7 @@ function onAppendChild(newChild: Node) {
 }
 
 export function register(): void {
-    const cleanups: (() => void)[] = [];
+    const cleanups: Restore[] = [];
 
     beforeAll(() => {
         // TODO intercept setAttribute('role' | 'aria-live') ?
