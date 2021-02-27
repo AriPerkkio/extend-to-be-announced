@@ -8,13 +8,23 @@ import {
 } from './utils';
 import { interceptMethod, interceptSetter, Restore } from './interceptors';
 
-// TODO Capture incorrectly used aria-live="polite"
+interface Options {
+    warnIncorrectStatusMessages: boolean;
+}
 
 // Map of announcements to their politeness settings
 const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
 
 // Map of live regions to previous textContent
 const liveRegions = new Map<Node, string | null>();
+
+/**
+ * List of incorrectly used status messages
+ * - Messages are marked as "invalid" when `polite` messages are mounted on DOM
+ *   when their live region container mounts - instead of being updated into
+ *   the container
+ */
+const incorrectlyUsedStatusMessages: string[] = [];
 
 /**
  * Check whether given node should trigger announcement
@@ -54,8 +64,12 @@ function updateLiveRegions() {
         liveRegions.set(liveRegion, liveRegion.textContent);
 
         // Content of assertive live regions is announced on initial mount
-        if (politenessSetting === 'assertive' && liveRegion.textContent) {
-            announcements.set(liveRegion.textContent, politenessSetting);
+        if (liveRegion.textContent) {
+            if (politenessSetting === 'assertive') {
+                announcements.set(liveRegion.textContent, politenessSetting);
+            } else if (politenessSetting === 'polite') {
+                incorrectlyUsedStatusMessages.push(liveRegion.textContent);
+            }
         }
     }
 }
@@ -79,8 +93,25 @@ function onAppendChild(newChild: Node) {
     updateAnnouncements(newChild);
 }
 
-// TODO Add options: { "warnIncorrectlyUsedPoliteContainer": boolean (defaults to false) }
-export function register(): void {
+function warnAboutIncorrectlyUsedStatusMessages() {
+    if (incorrectlyUsedStatusMessages.length > 0) {
+        // prettier-ignore
+        process.stdout.write(
+            [
+                '\x1b[33mtoBeAnnounced identified',
+                incorrectlyUsedStatusMessages.length,
+                `incorrectly used messages in ARIA live regions with "polite" as politeness setting.`,
+                'Instead of rendering content of such containers immediately these messages should be updated to an existing container.',
+                `Captured messages: [${incorrectlyUsedStatusMessages.join(', ')}].`,
+                'This warning can be disabled by setting "warnIncorrectStatusMessages" off.\n\x1b[0m',
+            ].join(' ')
+        );
+    }
+}
+
+export function register(
+    options: Options = { warnIncorrectStatusMessages: false }
+): void {
     const cleanups: Restore[] = [];
 
     beforeAll(() => {
@@ -97,8 +128,13 @@ export function register(): void {
     });
 
     afterEach(() => {
+        if (options.warnIncorrectStatusMessages) {
+            warnAboutIncorrectlyUsedStatusMessages();
+        }
+
         liveRegions.clear();
         announcements.clear();
+        incorrectlyUsedStatusMessages.splice(0);
     });
 }
 

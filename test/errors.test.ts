@@ -1,11 +1,9 @@
 import '../src/index';
-import { appendToRoot } from './utils';
+import { appendToRoot, createStatusContainer } from './utils';
 
 describe('Errors', () => {
     test('should throw captured announcements', () => {
-        const container = document.createElement('div');
-        container.setAttribute('role', 'status');
-
+        const container = createStatusContainer();
         appendToRoot(container);
 
         container.textContent = 'First';
@@ -19,8 +17,7 @@ describe('Errors', () => {
     });
 
     test("should throw when asserting with '.not' and message was announced", () => {
-        const container = document.createElement('div');
-        container.setAttribute('role', 'status');
+        const container = createStatusContainer();
 
         appendToRoot(container);
         container.textContent = 'Hello world';
@@ -33,9 +30,9 @@ describe('Errors', () => {
     });
 
     test('should throw when asserting with incorrect polite setting', () => {
-        const container = document.createElement('div');
-        container.setAttribute('role', 'status');
+        const container = createStatusContainer();
         appendToRoot(container);
+
         container.textContent = 'Hello world';
 
         expect(() =>
