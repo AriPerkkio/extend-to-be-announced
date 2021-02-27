@@ -107,27 +107,32 @@ export function toBeAnnounced(
     text: string,
     politenessSetting?: Exclude<PolitenessSetting, 'off'>
 ): jest.CustomMatcherResult {
-    const textMissing = text == null || text === '';
-    const isAnnounced = announcements.has(text);
+    if (text == null || text === '') {
+        return {
+            pass: false,
+            message: () =>
+                `toBeAnnounced was given falsy or empty string: (${text})`,
+        };
+    }
 
-    // Optionally asserted by politeness setting
+    const isAnnounced = announcements.has(text);
     const politenessSettingMatch =
         politenessSetting == null ||
         (isAnnounced && announcements.get(text) === politenessSetting);
 
-    // TODO Refactor to use multiple returns instead of a complex single return
+    // Optionally asserted by politeness setting
+    if (isAnnounced && !politenessSettingMatch) {
+        const actual = announcements.get(text);
+        return {
+            pass: false,
+            message: () =>
+                `${text} was announced with politeness setting "${actual}" when "${politenessSetting}" was expected`,
+        };
+    }
+
     return {
-        pass: !textMissing && isAnnounced && politenessSettingMatch,
+        pass: isAnnounced,
         message: () => {
-            if (textMissing) {
-                return `toBeAnnounced was given falsy or empty string: (${text})`;
-            }
-
-            if (!politenessSettingMatch && isAnnounced) {
-                const actual = announcements.get(text);
-                return `${text} was announced with politeness setting "${actual}" when "${politenessSetting}" was expected`;
-            }
-
             const allAnnouncements: string[] = [];
             for (const [announcement] of announcements.entries()) {
                 allAnnouncements.push(announcement);
