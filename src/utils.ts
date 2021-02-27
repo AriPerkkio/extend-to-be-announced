@@ -1,4 +1,4 @@
-type PolitenessSetting = 'polite' | 'assertive' | 'off';
+export type PolitenessSetting = 'polite' | 'assertive' | 'off';
 
 export const LIVE_REGION_QUERY = [
     '[role="status"]',

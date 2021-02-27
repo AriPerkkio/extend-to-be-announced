@@ -85,10 +85,10 @@ function toggleContent() {
             expect('Message #2').not.toBeAnnounced();
 
             toggleContent();
-            expect('Message #1').toBeAnnounced();
+            expect('Message #1').toBeAnnounced('polite');
 
             toggleContent();
-            expect('Message #2').toBeAnnounced();
+            expect('Message #2').toBeAnnounced('polite');
         });
     });
 });
@@ -144,10 +144,10 @@ function toggleContent() {
             );
 
             screen.getByText('Message #2');
-            expect('Message #2').toBeAnnounced();
+            expect('Message #2').toBeAnnounced('assertive');
 
             toggleContent();
-            expect('Message #1').toBeAnnounced();
+            expect('Message #1').toBeAnnounced('assertive');
         });
     });
 });

@@ -3,12 +3,15 @@ import {
     isElement,
     isInDOM,
     LIVE_REGION_QUERY,
+    PolitenessSetting,
     resolvePolitenessSetting,
 } from './utils';
 import { interceptMethod, interceptSetter, Restore } from './interceptors';
 
-// TODO include politeness setting
-const announcements = new Map<string, boolean>();
+// TODO Capture incorrectly used aria-live="polite"
+
+// Map of announcements to their politeness settings
+const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
 
 // Map of live regions to previous textContent
 const liveRegions = new Map<Node, string | null>();
@@ -30,7 +33,7 @@ function updateAnnouncements(node: Node) {
             const newText = node.textContent || '';
 
             if (previousText !== newText) {
-                announcements.set(newText, true);
+                announcements.set(newText, politenessSetting);
                 liveRegions.set(node, newText);
             }
         }
@@ -52,7 +55,7 @@ function updateLiveRegions() {
 
         // Content of assertive live regions is announced on initial mount
         if (politenessSetting === 'assertive' && liveRegion.textContent) {
-            announcements.set(liveRegion.textContent, true);
+            announcements.set(liveRegion.textContent, politenessSetting);
         }
     }
 }
@@ -76,6 +79,7 @@ function onAppendChild(newChild: Node) {
     updateAnnouncements(newChild);
 }
 
+// TODO Add options: { "warnIncorrectlyUsedPoliteContainer": boolean (defaults to false) }
 export function register(): void {
     const cleanups: Restore[] = [];
 
@@ -100,16 +104,28 @@ export function register(): void {
 
 export function toBeAnnounced(
     this: jest.MatcherContext,
-    text: string
+    text: string,
+    politenessSetting?: Exclude<PolitenessSetting, 'off'>
 ): jest.CustomMatcherResult {
     const textMissing = text == null || text === '';
     const isAnnounced = announcements.has(text);
 
+    // Optionally asserted by politeness setting
+    const politenessSettingMatch =
+        politenessSetting == null ||
+        (isAnnounced && announcements.get(text) === politenessSetting);
+
+    // TODO Refactor to use multiple returns instead of a complex single return
     return {
-        pass: !textMissing && isAnnounced,
+        pass: !textMissing && isAnnounced && politenessSettingMatch,
         message: () => {
             if (textMissing) {
                 return `toBeAnnounced was given falsy or empty string: (${text})`;
+            }
+
+            if (!politenessSettingMatch && isAnnounced) {
+                const actual = announcements.get(text);
+                return `${text} was announced with politeness setting "${actual}" when "${politenessSetting}" was expected`;
             }
 
             const allAnnouncements: string[] = [];

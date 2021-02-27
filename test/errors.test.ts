@@ -32,6 +32,19 @@ describe('Errors', () => {
         );
     });
 
+    test('should throw when asserting with incorrect polite setting', () => {
+        const container = document.createElement('div');
+        container.setAttribute('role', 'status');
+        appendToRoot(container);
+        container.textContent = 'Hello world';
+
+        expect(() =>
+            expect('Hello world').toBeAnnounced('assertive')
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"Hello world was announced with politeness setting \\"polite\\" when \\"assertive\\" was expected"`
+        );
+    });
+
     test('should throw when given empty string', () => {
         expect(() =>
             expect('').toBeAnnounced()
