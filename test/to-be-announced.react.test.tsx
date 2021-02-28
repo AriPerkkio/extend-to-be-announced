@@ -1,6 +1,5 @@
-import React, { useReducer } from 'react';
-import { render as originalRender, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { render as originalRender } from '@testing-library/react';
 
 import '../src/index';
 import { Tag } from './utils';
@@ -9,23 +8,6 @@ function render(node: React.ReactElement) {
     return originalRender(node, {
         container: document.getElementById('root')!,
     });
-}
-
-const MountToggle: React.FC<{
-    children: (visible: boolean) => React.ReactNode;
-}> = props => {
-    const [visible, toggle] = useReducer(s => !s, false);
-
-    return (
-        <div>
-            <button onClick={toggle}>Toggle</button>
-            {props.children(visible)}
-        </div>
-    );
-};
-
-function toggleContent() {
-    userEvent.click(screen.getByRole('button', { name: 'Toggle' }));
 }
 
 [
@@ -46,51 +28,30 @@ function toggleContent() {
         });
 
         test('should not announce when dynamically rendered with initial content', () => {
-            render(
-                <MountToggle>
-                    {isVisible =>
-                        isVisible && <Tag {...props}>Hello world</Tag>
-                    }
-                </MountToggle>
-            );
+            const { rerender } = render(<h1></h1>);
 
-            toggleContent();
+            rerender(<Tag {...props}>Hello world</Tag>);
+
             expect('Hello world').not.toBeAnnounced();
         });
 
         test('should announce when dynamically rendered into container', () => {
-            render(
-                <MountToggle>
-                    {visible => (
-                        <Tag {...props}>{visible && 'Hello world'}</Tag>
-                    )}
-                </MountToggle>
-            );
+            const { rerender } = render(<Tag {...props}></Tag>);
 
-            toggleContent();
+            rerender(<Tag {...props}>Hello world</Tag>);
+
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when content changes', () => {
-            render(
-                <MountToggle>
-                    {visible => (
-                        <Tag {...props}>
-                            {visible ? 'Message #1' : 'Message #2'}
-                        </Tag>
-                    )}
-                </MountToggle>
-            );
-
-            screen.getByText('Message #2');
+            const { rerender } = render(<Tag {...props}>Message #1</Tag>);
             expect('Message #1').not.toBeAnnounced();
-            expect('Message #2').not.toBeAnnounced();
 
-            toggleContent();
-            expect('Message #1').toBeAnnounced('polite');
-
-            toggleContent();
+            rerender(<Tag {...props}>Message #2</Tag>);
             expect('Message #2').toBeAnnounced('polite');
+
+            rerender(<Tag {...props}>Message #1</Tag>);
+            expect('Message #1').toBeAnnounced('polite');
         });
 
         test('should not announce when role is set after render', () => {
@@ -127,47 +88,27 @@ function toggleContent() {
         });
 
         test('should announce when dynamically rendered with initially content', () => {
-            render(
-                <MountToggle>
-                    {isVisible =>
-                        isVisible && <div {...props}>Hello world</div>
-                    }
-                </MountToggle>
-            );
+            const { rerender } = render(<div></div>);
 
-            toggleContent();
+            rerender(<div {...props}>Hello world</div>);
+
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when dynamically rendered into container', () => {
-            render(
-                <MountToggle>
-                    {visible => (
-                        <div {...props}>{visible && 'Hello world'}</div>
-                    )}
-                </MountToggle>
-            );
+            const { rerender } = render(<div {...props}></div>);
 
-            toggleContent();
+            rerender(<div {...props}>Hello world</div>);
+
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when content changes', () => {
-            render(
-                <MountToggle>
-                    {visible => (
-                        <div {...props}>
-                            {visible ? 'Message #1' : 'Message #2'}
-                        </div>
-                    )}
-                </MountToggle>
-            );
-
-            screen.getByText('Message #2');
-            expect('Message #2').toBeAnnounced('assertive');
-
-            toggleContent();
+            const { rerender } = render(<div {...props}>Message #1</div>);
             expect('Message #1').toBeAnnounced('assertive');
+
+            rerender(<div {...props}>Message #2</div>);
+            expect('Message #2').toBeAnnounced('assertive');
         });
 
         test('should announce when role is set after render', () => {
@@ -191,34 +132,20 @@ function toggleContent() {
 
 describe('[aria-live="off"]', () => {
     test('should never announce', () => {
-        render(
-            <MountToggle>
-                {visible => (
-                    <div aria-live="off">
-                        {visible ? 'Message #1' : 'Message #2'}
-                    </div>
-                )}
-            </MountToggle>
-        );
-
-        toggleContent();
-        toggleContent();
-        toggleContent();
+        const { rerender } = render(<div aria-live="off">Message #1</div>);
+        rerender(<div aria-live="off">Message #1</div>);
+        rerender(<div aria-live="off">Message #2</div>);
+        rerender(<div aria-live="off">Message #1</div>);
 
         expect('Message #1').not.toBeAnnounced();
         expect('Message #2').not.toBeAnnounced();
     });
 
     test('should never announce when implicit', () => {
-        render(
-            <MountToggle>
-                {visible => <div>{visible ? 'Message #1' : 'Message #2'}</div>}
-            </MountToggle>
-        );
-
-        toggleContent();
-        toggleContent();
-        toggleContent();
+        const { rerender } = render(<div>Message #1</div>);
+        rerender(<div>Message #1</div>);
+        rerender(<div>Message #2</div>);
+        rerender(<div>Message #1</div>);
 
         expect('Message #1').not.toBeAnnounced();
         expect('Message #2').not.toBeAnnounced();
