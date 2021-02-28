@@ -1,5 +1,8 @@
 export type PolitenessSetting = 'polite' | 'assertive' | 'off';
 
+const LIVE_REGION_ROLES = ['status', 'log', 'alert'] as const;
+type LiveRegionRole = typeof LIVE_REGION_ROLES[number];
+
 export const LIVE_REGION_QUERY = [
     '[role="status"]',
     '[role="log"]',
@@ -15,6 +18,15 @@ export const LIVE_REGION_QUERY = [
 
 export function isElement(node: Node): node is Element {
     return node && 'closest' in node;
+}
+
+export function isLiveRegionAttribute(
+    attribute: string
+): attribute is LiveRegionRole | PolitenessSetting {
+    return (
+        LIVE_REGION_ROLES.includes(attribute as LiveRegionRole) ||
+        isPolitenessSetting(attribute)
+    );
 }
 
 export function isInDOM(node: Node): boolean {

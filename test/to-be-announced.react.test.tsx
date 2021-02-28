@@ -6,7 +6,9 @@ import '../src/index';
 import { Tag } from './utils';
 
 function render(node: React.ReactElement) {
-    originalRender(node, { container: document.getElementById('root')! });
+    return originalRender(node, {
+        container: document.getElementById('root')!,
+    });
 }
 
 const MountToggle: React.FC<{
@@ -90,6 +92,24 @@ function toggleContent() {
             toggleContent();
             expect('Message #2').toBeAnnounced('polite');
         });
+
+        test('should not announce when role is set after render', () => {
+            const { rerender } = render(<Tag>Hello world</Tag>);
+
+            rerender(<Tag {...props}>Hello world</Tag>);
+
+            expect('Hello world').not.toBeAnnounced();
+        });
+
+        test('should announce when role is set after render and content is updated', () => {
+            const { rerender } = render(<Tag>Initial</Tag>);
+
+            rerender(<Tag {...props}>Initial</Tag>);
+            rerender(<Tag {...props}>Hello world</Tag>);
+
+            expect('Hello world').toBeAnnounced();
+            expect('Initial').not.toBeAnnounced();
+        });
     });
 });
 
@@ -148,6 +168,23 @@ function toggleContent() {
 
             toggleContent();
             expect('Message #1').toBeAnnounced('assertive');
+        });
+
+        test('should announce when role is set after render', () => {
+            const { rerender } = render(<div>Hello world</div>);
+
+            rerender(<div {...props}>Hello world</div>);
+
+            expect('Hello world').toBeAnnounced();
+        });
+
+        test('should announce when role is set after render and content is updated', () => {
+            const { rerender } = render(<div>First</div>);
+
+            rerender(<div {...props}>Second</div>);
+
+            expect('First').toBeAnnounced();
+            expect('Second').toBeAnnounced();
         });
     });
 });

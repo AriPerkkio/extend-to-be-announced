@@ -2,6 +2,7 @@ import {
     getParentLiveRegion,
     isElement,
     isInDOM,
+    isLiveRegionAttribute,
     LIVE_REGION_QUERY,
     PolitenessSetting,
     resolvePolitenessSetting,
@@ -50,27 +51,31 @@ function updateAnnouncements(node: Node) {
     }
 }
 
+function addLiveRegion(liveRegion: Element) {
+    if (liveRegions.has(liveRegion)) return;
+
+    const politenessSetting = resolvePolitenessSetting(liveRegion);
+    if (politenessSetting === 'off') return;
+
+    liveRegions.set(liveRegion, liveRegion.textContent);
+
+    // Content of assertive live regions is announced on initial mount
+    if (liveRegion.textContent) {
+        if (politenessSetting === 'assertive') {
+            announcements.set(liveRegion.textContent, politenessSetting);
+        } else if (politenessSetting === 'polite') {
+            incorrectlyUsedStatusMessages.push(liveRegion.textContent);
+        }
+    }
+}
+
 /**
  * Check DOM for live regions and update `liveRegions` store
- * - TODO: Could be optimized based on appended child
+ * - TODO: Could be optimized based on appended/updated child
  */
 function updateLiveRegions() {
     for (const liveRegion of document.querySelectorAll(LIVE_REGION_QUERY)) {
-        if (liveRegions.has(liveRegion)) continue;
-
-        const politenessSetting = resolvePolitenessSetting(liveRegion);
-        if (politenessSetting === 'off') continue;
-
-        liveRegions.set(liveRegion, liveRegion.textContent);
-
-        // Content of assertive live regions is announced on initial mount
-        if (liveRegion.textContent) {
-            if (politenessSetting === 'assertive') {
-                announcements.set(liveRegion.textContent, politenessSetting);
-            } else if (politenessSetting === 'polite') {
-                incorrectlyUsedStatusMessages.push(liveRegion.textContent);
-            }
-        }
+        addLiveRegion(liveRegion);
     }
 }
 
@@ -91,6 +96,51 @@ function onNodeValueChange(this: Node) {
 function onAppendChild(newChild: Node) {
     updateLiveRegions();
     updateAnnouncements(newChild);
+}
+
+function onSetAttribute(
+    this: Element,
+    ...args: Parameters<Element['setAttribute']>
+): void {
+    if (!isElement(this)) return;
+    if (!isInDOM(this)) return;
+    if (args[0] !== 'role' && args[0] !== 'aria-live') return;
+
+    const isAlreadyTracked = liveRegions.has(this);
+    const liveRegionAttribute = isLiveRegionAttribute(args[1]);
+
+    // Attribute vale was changed from live region attribute to something else.
+    // Stop tracking this element.
+    if (isAlreadyTracked && !liveRegionAttribute) {
+        liveRegions.delete(this);
+        return;
+    }
+
+    // Previous value was not live region attribute value
+    if (!isAlreadyTracked && liveRegionAttribute) {
+        return addLiveRegion(this);
+    }
+
+    // Value was changed to assertive - announce content immediately
+    if (
+        isAlreadyTracked &&
+        liveRegionAttribute &&
+        resolvePolitenessSetting(this) === 'assertive'
+    ) {
+        return updateAnnouncements(this);
+    }
+}
+
+function onRemoveAttribute(
+    this: Element,
+    ...args: Parameters<Element['removeAttribute']>
+) {
+    if (!isElement(this)) return;
+    if (args[0] !== 'role' && args[0] !== 'aria-live') return;
+
+    if (liveRegions.has(this)) {
+        liveRegions.delete(this);
+    }
 }
 
 function warnAboutIncorrectlyUsedStatusMessages() {
@@ -115,10 +165,12 @@ export function register(
     const cleanups: Restore[] = [];
 
     beforeAll(() => {
-        // TODO intercept setAttribute('role' | 'aria-live') ?
+        // prettier-ignore
         cleanups.push(
-            interceptSetter(Node.prototype, 'textContent', onTextContentChange),
+            interceptMethod(Element.prototype, 'setAttribute', onSetAttribute),
+            interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
             interceptMethod(Node.prototype, 'appendChild', onAppendChild),
+            interceptSetter(Node.prototype, 'textContent', onTextContentChange),
             interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange)
         );
     });

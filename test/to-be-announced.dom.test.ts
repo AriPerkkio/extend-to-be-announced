@@ -44,6 +44,32 @@ import { appendToRoot, Tag } from './utils';
             expect('First').toBeAnnounced();
             expect('Second').toBeAnnounced();
         });
+
+        test('should not announce when role is set after render', () => {
+            const container = document.createElement(tag || 'div');
+            container.textContent = 'Hello world';
+            appendToRoot(container);
+
+            if (name && value) {
+                container.setAttribute(name, value);
+            }
+
+            expect('Hello world').not.toBeAnnounced();
+        });
+
+        test('should announce when role is set after render and content is updated', () => {
+            const container = document.createElement(tag || 'div');
+            container.textContent = 'First';
+            appendToRoot(container);
+
+            if (name && value) {
+                container.setAttribute(name, value);
+            }
+            container.textContent = 'Second';
+
+            expect('First').not.toBeAnnounced();
+            expect('Second').toBeAnnounced();
+        });
     });
 });
 
@@ -84,6 +110,32 @@ import { appendToRoot, Tag } from './utils';
 
             expect('Message #1').toBeAnnounced();
             expect('Message #2').toBeAnnounced();
+        });
+
+        test('should announce when role is set after render', () => {
+            const container = document.createElement('div');
+            container.textContent = 'Hello world';
+            appendToRoot(container);
+
+            if (name && value) {
+                container.setAttribute(name, value);
+            }
+
+            expect('Hello world').toBeAnnounced();
+        });
+
+        test('should announce when role is set after render and content is updated', () => {
+            const container = document.createElement('div');
+            container.textContent = 'First';
+            appendToRoot(container);
+
+            if (name && value) {
+                container.setAttribute(name, value);
+            }
+            container.textContent = 'Second';
+
+            expect('First').toBeAnnounced();
+            expect('Second').toBeAnnounced();
         });
     });
 });
