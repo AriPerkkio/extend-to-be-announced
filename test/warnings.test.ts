@@ -45,6 +45,33 @@ describe('Warnings', () => {
         `);
     });
 
+    test('should not warn when status message is used correctly', () => {
+        const afterEachHook = captureAfterEach(() =>
+            register({ warnIncorrectStatusMessages: true })
+        );
+
+        const container = createStatusContainer();
+        appendToRoot(container);
+        container.textContent = 'Hello world';
+
+        const warning = captureWrite(afterEachHook);
+        expect(warning).toBeFalsy();
+    });
+
+    test('should not warn when assertive message is used', () => {
+        const afterEachHook = captureAfterEach(() =>
+            register({ warnIncorrectStatusMessages: true })
+        );
+
+        const container = document.createElement('div');
+        container.setAttribute('role', 'alert');
+        container.textContent = 'Hello world';
+        appendToRoot(container);
+
+        const warning = captureWrite(afterEachHook);
+        expect(warning).toBeFalsy();
+    });
+
     test('should not warn about incorrectly used status messages when options.warnIncorrectStatusMessages is disabled', () => {
         const afterEachHook = captureAfterEach(register);
 
