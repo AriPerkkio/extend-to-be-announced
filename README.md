@@ -90,7 +90,7 @@ expect('Loading').toBeAnnounced();
 |     Feature     |          Support          |
 | :-------------: | :-----------------------: |
 |     `role`      |    :white_check_mark:     |
-|   `aria-ive`    |    :white_check_mark:     |
+|   `aria-live`   |    :white_check_mark:     |
 |  `aria-atomic`  | :x: :construction_worker: |
 |   `aria-busy`   |            :x:            |
 | `aria-relevant` |            :x:            |

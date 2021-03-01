@@ -109,7 +109,7 @@ function onSetAttribute(
     const isAlreadyTracked = liveRegions.has(this);
     const liveRegionAttribute = isLiveRegionAttribute(args[1]);
 
-    // Attribute vale was changed from live region attribute to something else.
+    // Attribute value was changed from live region attribute to something else.
     // Stop tracking this element.
     if (isAlreadyTracked && !liveRegionAttribute) {
         liveRegions.delete(this);
