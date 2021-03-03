@@ -1,4 +1,5 @@
 import {
+    getClosestElement,
     getParentLiveRegion,
     isElement,
     isInDOM,
@@ -34,7 +35,10 @@ const incorrectlyUsedStatusMessages: string[] = [];
  * - `textContent` of live region should have changed
  */
 function updateAnnouncements(node: Node) {
-    const parentLiveRegion = getParentLiveRegion(node);
+    const element = getClosestElement(node);
+    if (!element) return;
+
+    const parentLiveRegion = getParentLiveRegion(element);
 
     if (parentLiveRegion) {
         const politenessSetting = resolvePolitenessSetting(parentLiveRegion);
@@ -85,12 +89,7 @@ function onTextContentChange(this: Node) {
 
 // https://github.com/facebook/react/blob/9198a5cec0936a21a5ba194a22fcbac03eba5d1d/packages/react-dom/src/client/setTextContent.js#L12-L35
 function onNodeValueChange(this: Node) {
-    // This should be a TEXT_NODE
-    const element = isElement(this) ? this : this.parentElement;
-
-    if (element) {
-        updateAnnouncements(element);
-    }
+    updateAnnouncements(this);
 }
 
 function onAppendChild(newChild: Node) {

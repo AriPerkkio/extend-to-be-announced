@@ -16,8 +16,20 @@ export const LIVE_REGION_QUERY = [
     // '[role="timer"]',
 ].join(', ');
 
-export function isElement(node: Node): node is Element {
-    return node && 'closest' in node;
+export function isElement(node: Node | null): node is Element {
+    return node != null && 'closest' in node;
+}
+
+export function getClosestElement(node: Node): Element | null {
+    if (isElement(node)) {
+        return node;
+    }
+
+    if (node.parentNode) {
+        return getClosestElement(node.parentNode);
+    }
+
+    return null;
 }
 
 export function isLiveRegionAttribute(
@@ -33,12 +45,8 @@ export function isInDOM(node: Node): boolean {
     return isElement(node) && node.closest('html') != null;
 }
 
-export function getParentLiveRegion(node: Node): Element | null {
-    if (isElement(node)) {
-        return node.closest(LIVE_REGION_QUERY);
-    }
-
-    return null;
+export function getParentLiveRegion(element: Element): Element | null {
+    return element.closest(LIVE_REGION_QUERY);
 }
 
 function isPolitenessSetting(

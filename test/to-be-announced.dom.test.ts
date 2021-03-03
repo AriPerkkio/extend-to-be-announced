@@ -70,6 +70,14 @@ import { appendToRoot, Tag } from './utils';
             expect('First').not.toBeAnnounced();
             expect('Second').toBeAnnounced();
         });
+
+        test('should announce when text node is appended into existing container', () => {
+            appendToRoot(element);
+
+            element.appendChild(document.createTextNode('Hello world'));
+
+            expect('Hello world').toBeAnnounced();
+        });
     });
 });
 
