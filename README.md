@@ -11,9 +11,11 @@ Assistive technologies are only expected to announce **updates** of Aria Live Co
 ```js
 render(<div role="status">Loading...</div>);
 
-// Loading should be announced
+// Loading should be announced ❌
 const statusContainer = screen.getByRole('status');
 expect(statusContainer).toHaveTextContent('Loading...');
+// Not detected by assistive technologies since content of
+// live container was not updated
 ```
 
 Instead developers should check that messages are rendered into existing Aria Live Containers.
@@ -23,11 +25,14 @@ const { rerender } = render(<div role="status"></div>);
 
 // Status container should be present
 const statusContainer = screen.getByRole('status');
+
+// Status container should initially be empty
 expect(statusContainer).toBeEmptyDOMElement();
 
+// Update content of live region
 rerender(<div role="status">Loading...</div>);
 
-// Loading should be announced
+// Loading should be announced ✅
 expect(statusContainer).toHaveTextContent('Loading...');
 ```
 
