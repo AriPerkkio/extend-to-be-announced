@@ -1,4 +1,19 @@
-export type Tag = 'div' | 'output';
+interface TestAttributes {
+    name?: 'role' | 'aria-live';
+    value?: 'status' | 'alert' | 'assertive' | 'polite';
+    tag?: 'div' | 'output';
+}
+
+export const POLITE_CASES: TestAttributes[] = [
+    { name: 'role', value: 'status' },
+    { name: 'aria-live', value: 'polite' },
+    { tag: 'output' },
+];
+
+export const ASSERTIVE_CASES: TestAttributes[] = [
+    { name: 'role', value: 'alert' },
+    { name: 'aria-live', value: 'assertive' },
+];
 
 export function createStatusContainer(): HTMLDivElement {
     const container = document.createElement('div');

@@ -1,11 +1,7 @@
 import '../src/index';
-import { appendToRoot, Tag } from './utils';
+import { appendToRoot, POLITE_CASES, ASSERTIVE_CASES } from './utils';
 
-[
-    { name: 'role', value: 'status' },
-    { name: 'aria-live', value: 'polite' },
-    { tag: 'output' as Tag },
-].forEach(({ name, value, tag }) => {
+POLITE_CASES.forEach(({ name, value, tag }) => {
     const testName = name && value ? `[${name}="${value}"]` : `<${tag}>`;
 
     describe(testName, () => {
@@ -81,10 +77,7 @@ import { appendToRoot, Tag } from './utils';
     });
 });
 
-[
-    { name: 'role', value: 'alert' },
-    { name: 'aria-live', value: 'assertive' },
-].forEach(({ name, value }) => {
+ASSERTIVE_CASES.forEach(({ name, value }) => {
     describe(`[${name}="${value}"]`, () => {
         let element: HTMLElement;
 

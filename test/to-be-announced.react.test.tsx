@@ -2,7 +2,7 @@ import React from 'react';
 import { render as originalRender } from '@testing-library/react';
 
 import '../src/index';
-import { Tag } from './utils';
+import { POLITE_CASES, ASSERTIVE_CASES } from './utils';
 
 function render(node: React.ReactElement) {
     return originalRender(node, {
@@ -10,16 +10,12 @@ function render(node: React.ReactElement) {
     });
 }
 
-[
-    { name: 'role', value: 'status' },
-    { name: 'aria-live', value: 'polite' },
-    { tag: 'output' as Tag },
-].forEach(({ name, value, tag }) => {
+POLITE_CASES.forEach(({ name, value, tag }) => {
     const testName = name && value ? `[${name}="${value}"]` : `<${tag}>`;
 
     describe(testName, () => {
         const props = name && value ? { [name]: value } : {};
-        const Tag: Tag = tag || 'div';
+        const Tag = tag || 'div';
 
         test('should not announce when initially rendered with content', () => {
             render(<Tag {...props}>Hello world</Tag>);
@@ -74,11 +70,9 @@ function render(node: React.ReactElement) {
     });
 });
 
-[
-    { name: 'role', value: 'alert' },
-    { name: 'aria-live', value: 'assertive' },
-].forEach(({ name, value }) => {
+ASSERTIVE_CASES.forEach(({ name, value }) => {
     describe(`[${name}="${value}"]`, () => {
+        if (!name) throw new Error('Expected attribute name');
         const props = { [name]: value };
 
         test('should announce when initially rendered', () => {
