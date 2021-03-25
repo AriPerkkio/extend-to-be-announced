@@ -121,6 +121,26 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             expect('First').toBeAnnounced();
             expect('Second').toBeAnnounced();
         });
+
+        test('should announce when content is added with `insertBefore`', () => {
+            const { rerender } = render(
+                <div>
+                    <span>Hello world</span>
+                    This is required for React to use insertBefore
+                </div>
+            );
+
+            expect('Hello world').not.toBeAnnounced();
+
+            rerender(
+                <div>
+                    <div {...props}>Hello world</div>
+                    This is required for React to use insertBefore
+                </div>
+            );
+
+            expect('Hello world').toBeAnnounced('assertive');
+        });
     });
 });
 

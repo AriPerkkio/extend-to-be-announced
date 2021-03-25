@@ -97,6 +97,8 @@ function onAppendChild(newChild: Node) {
     updateAnnouncements(newChild);
 }
 
+const onInsertBefore = onAppendChild;
+
 function onSetAttribute(
     this: Element,
     ...args: Parameters<Element['setAttribute']>
@@ -166,9 +168,11 @@ export function register(
     beforeAll(() => {
         // prettier-ignore
         cleanups.push(
+            // TODO: Check MDN for all Node & Element methods
             interceptMethod(Element.prototype, 'setAttribute', onSetAttribute),
             interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
             interceptMethod(Node.prototype, 'appendChild', onAppendChild),
+            interceptMethod(Node.prototype, 'insertBefore', onInsertBefore),
             interceptSetter(Node.prototype, 'textContent', onTextContentChange),
             interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange)
         );
