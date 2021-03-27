@@ -92,12 +92,13 @@ function onNodeValueChange(this: Node) {
     updateAnnouncements(this);
 }
 
-function onAppendChild(newChild: Node) {
+/**
+ * Shared handler for methods which mount new nodes on DOM, e.g. appendChild, insertBefore
+ */
+function onNodeMount(node: Node) {
     updateLiveRegions();
-    updateAnnouncements(newChild);
+    updateAnnouncements(node);
 }
-
-const onInsertBefore = onAppendChild;
 
 function onSetAttribute(
     this: Element,
@@ -171,8 +172,8 @@ export function register(
             // TODO: Check MDN for all Node & Element methods
             interceptMethod(Element.prototype, 'setAttribute', onSetAttribute),
             interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
-            interceptMethod(Node.prototype, 'appendChild', onAppendChild),
-            interceptMethod(Node.prototype, 'insertBefore', onInsertBefore),
+            interceptMethod(Node.prototype, 'appendChild', onNodeMount),
+            interceptMethod(Node.prototype, 'insertBefore', onNodeMount),
             interceptSetter(Node.prototype, 'textContent', onTextContentChange),
             interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange)
         );
