@@ -17,7 +17,7 @@ export const LIVE_REGION_QUERY = [
 ].join(', ');
 
 export function isElement(node: Node | null): node is Element {
-    return node != null && 'closest' in node;
+    return node != null && node.nodeType === Node.ELEMENT_NODE;
 }
 
 export function getClosestElement(node: Node): Element | null {
