@@ -162,5 +162,17 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
 
             expect('Hello world').toBeAnnounced();
         });
+
+        test('should announce when content is added with `insertAdjacentElement`', async () => {
+            const parent = document.createElement('div');
+            const sibling = document.createElement('div');
+            parent.appendChild(sibling);
+            appendToRoot(parent);
+
+            element.textContent = 'Hello world';
+            sibling.insertAdjacentElement('afterbegin', element);
+
+            expect('Hello world').toBeAnnounced();
+        });
     });
 });
