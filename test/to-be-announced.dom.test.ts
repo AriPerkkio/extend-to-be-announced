@@ -150,5 +150,17 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
 
             expect('Hello world').toBeAnnounced();
         });
+
+        test('should announce when content is added with `replaceChild`', async () => {
+            const parent = document.createElement('div');
+            const oldChild = document.createElement('div');
+            parent.appendChild(oldChild);
+            appendToRoot(parent);
+
+            element.textContent = 'Hello world';
+            parent.replaceChild(element, oldChild);
+
+            expect('Hello world').toBeAnnounced();
+        });
     });
 });

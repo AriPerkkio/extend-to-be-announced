@@ -174,6 +174,7 @@ export function register(
             interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
             interceptMethod(Node.prototype, 'appendChild', onNodeMount),
             interceptMethod(Node.prototype, 'insertBefore', onNodeMount),
+            interceptMethod(Node.prototype, 'replaceChild', onNodeMount),
             interceptSetter(Node.prototype, 'textContent', onTextContentChange),
             interceptSetter(Node.prototype, 'nodeValue', onNodeValueChange)
         );
