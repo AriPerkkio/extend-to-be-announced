@@ -230,6 +230,7 @@ export function toBeAnnounced(
         return text === announcement;
     }
 
+    const isPattern = text instanceof RegExp;
     const allAnnouncements = getAllAnnouncements();
     const matchingAnnouncement = allAnnouncements.find(matches);
 
@@ -242,18 +243,20 @@ export function toBeAnnounced(
     if (isAnnounced(matchingAnnouncement) && !politenessSettingMatch) {
         const actual = announcements.get(matchingAnnouncement);
 
-        // TODO: Error message should change when '.not' is used
         return {
             pass: false,
             message: () =>
-                `${text} was announced with politeness setting "${actual}" when "${politenessSetting}" was expected`,
+                [
+                    text,
+                    isPattern ? 'matched an announcement' : 'was announced',
+                    `with politeness setting "${actual}" when "${politenessSetting}" was expected`,
+                ].join(' '),
         };
     }
 
     return {
         pass: isAnnounced(matchingAnnouncement),
         message: () => {
-            const isPattern = text instanceof RegExp;
             const message = [text];
 
             // "Hello was", "/hello/i did"
@@ -266,13 +269,19 @@ export function toBeAnnounced(
                 // "/hello/i did not match any announcements.", "/hello/i did match an announcement."
                 message.push(
                     this.isNot
-                        ? 'match an announcement.'
-                        : 'match any announcements.'
+                        ? 'match an announcement'
+                        : 'match any announcements'
                 );
             } else {
                 // "Hello was (not) announced."
-                message.push('announced.');
+                message.push('announced');
             }
+
+            if (politenessSetting) {
+                message.push(`with politeness setting "${politenessSetting}"`);
+            }
+
+            message[message.length - 1] += '.';
 
             return [
                 ...message,

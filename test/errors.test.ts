@@ -50,7 +50,7 @@ describe('Errors', () => {
         );
     });
 
-    test('should throw when asserting with incorrect polite setting', () => {
+    test('should throw when asserting with incorrect politeness setting', () => {
         const container = createStatusContainer();
         appendToRoot(container);
 
@@ -61,6 +61,54 @@ describe('Errors', () => {
         ).toThrowErrorMatchingInlineSnapshot(
             `"Hello world was announced with politeness setting \\"polite\\" when \\"assertive\\" was expected"`
         );
+    });
+
+    test('should throw when asserting with pattern and incorrect politeness setting', () => {
+        const container = createStatusContainer();
+        appendToRoot(container);
+
+        container.textContent = 'Hello world';
+
+        expect(() =>
+            expect(/hello/i).toBeAnnounced('assertive')
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"/hello/i matched an announcement with politeness setting \\"polite\\" when \\"assertive\\" was expected"`
+        );
+    });
+
+    test("should throw when asserting with '.not' and correct politeness setting", () => {
+        const container = createStatusContainer();
+        appendToRoot(container);
+
+        container.textContent = 'Hello world';
+
+        expect(() =>
+            expect('Hello world').not.toBeAnnounced('polite')
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"Hello world was announced with politeness setting \\"polite\\". Captured announcements: [Hello world]"`
+        );
+    });
+
+    test("should throw when asserting with pattern, '.not' and correct politeness setting", () => {
+        const container = createStatusContainer();
+        appendToRoot(container);
+
+        container.textContent = 'Hello world';
+
+        expect(() =>
+            expect(/hello/i).not.toBeAnnounced('polite')
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"/hello/i did match an announcement with politeness setting \\"polite\\". Captured announcements: [Hello world]"`
+        );
+    });
+
+    test("should not throw when asserting with '.not' and incorrect politeness setting", () => {
+        const container = createStatusContainer();
+        appendToRoot(container);
+
+        container.textContent = 'Hello world';
+
+        expect('Hello world').not.toBeAnnounced('assertive');
     });
 
     test('should throw when given empty string', () => {
