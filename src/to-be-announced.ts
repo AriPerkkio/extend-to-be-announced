@@ -199,9 +199,22 @@ export function register(
     });
 }
 
+// Convert Map<string, x> to string[]. Required due to iteration of Map.
+function getAllAnnouncements() {
+    const allAnnouncements: string[] = [];
+    for (const [announcement] of announcements.entries()) {
+        allAnnouncements.push(announcement);
+    }
+    return allAnnouncements;
+}
+
+function isAnnounced(announcement: string | undefined): announcement is string {
+    return Boolean(announcement);
+}
+
 export function toBeAnnounced(
     this: jest.MatcherContext,
-    text: string,
+    text: string | RegExp,
     politenessSetting?: Exclude<PolitenessSetting, 'off'>
 ): jest.CustomMatcherResult {
     if (text == null || text === '') {
@@ -212,14 +225,24 @@ export function toBeAnnounced(
         };
     }
 
-    const isAnnounced = announcements.has(text);
+    function matches(announcement: string) {
+        if (text instanceof RegExp) return text.test(announcement);
+        return text === announcement;
+    }
+
+    const allAnnouncements = getAllAnnouncements();
+    const matchingAnnouncement = allAnnouncements.find(matches);
+
     const politenessSettingMatch =
         politenessSetting == null ||
-        (isAnnounced && announcements.get(text) === politenessSetting);
+        (isAnnounced(matchingAnnouncement) &&
+            announcements.get(matchingAnnouncement) === politenessSetting);
 
     // Optionally asserted by politeness setting
-    if (isAnnounced && !politenessSettingMatch) {
-        const actual = announcements.get(text);
+    if (isAnnounced(matchingAnnouncement) && !politenessSettingMatch) {
+        const actual = announcements.get(matchingAnnouncement);
+
+        // TODO: Error message should change when '.not' is used
         return {
             pass: false,
             message: () =>
@@ -228,18 +251,32 @@ export function toBeAnnounced(
     }
 
     return {
-        pass: isAnnounced,
+        pass: isAnnounced(matchingAnnouncement),
         message: () => {
-            const allAnnouncements: string[] = [];
-            for (const [announcement] of announcements.entries()) {
-                allAnnouncements.push(announcement);
+            const isPattern = text instanceof RegExp;
+            const message = [text];
+
+            // "Hello was", "/hello/i did"
+            message.push(isPattern ? 'did' : 'was');
+
+            // "Hello was not", "/hello/i did not"
+            if (!this.isNot) message.push('not');
+
+            if (isPattern) {
+                // "/hello/i did not match any announcements.", "/hello/i did match an announcement."
+                message.push(
+                    this.isNot
+                        ? 'match an announcement.'
+                        : 'match any announcements.'
+                );
+            } else {
+                // "Hello was (not) announced."
+                message.push('announced.');
             }
 
             return [
-                text,
-                'was',
-                !this.isNot && 'not',
-                'announced. Captured announcements:',
+                ...message,
+                'Captured announcements:',
                 `[${allAnnouncements.join(', ')}]`,
             ]
                 .filter(Boolean)

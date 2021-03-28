@@ -16,6 +16,14 @@ describe('Errors', () => {
         );
     });
 
+    test('should throw pattern when not matched', () => {
+        expect(() =>
+            expect(/hello/i).toBeAnnounced()
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"/hello/i did not match any announcements. Captured announcements: []"`
+        );
+    });
+
     test("should throw when asserting with '.not' and message was announced", () => {
         const container = createStatusContainer();
 
@@ -26,6 +34,19 @@ describe('Errors', () => {
             expect('Hello world').not.toBeAnnounced()
         ).toThrowErrorMatchingInlineSnapshot(
             `"Hello world was announced. Captured announcements: [Hello world]"`
+        );
+    });
+
+    test("should throw pattern when asserting with '.not' and message was announced", () => {
+        const container = createStatusContainer();
+
+        appendToRoot(container);
+        container.textContent = 'Hello world';
+
+        expect(() =>
+            expect(/hello/i).not.toBeAnnounced()
+        ).toThrowErrorMatchingInlineSnapshot(
+            `"/hello/i did match an announcement. Captured announcements: [Hello world]"`
         );
     });
 

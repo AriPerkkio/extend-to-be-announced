@@ -74,6 +74,15 @@ POLITE_CASES.forEach(({ name, value, tag }) => {
 
             expect('Hello world').toBeAnnounced();
         });
+
+        test('supports matching by regexp', () => {
+            appendToRoot(element);
+
+            element.textContent = 'Hello world';
+
+            expect(/hello/i).toBeAnnounced();
+            expect(/world/i).toBeAnnounced();
+        });
     });
 });
 
