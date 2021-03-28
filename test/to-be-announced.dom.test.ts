@@ -194,5 +194,15 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
 
             expect('Hello world').toBeAnnounced();
         });
+
+        test('should announce when content is added with `prepend`', async () => {
+            const parent = document.createElement('div');
+            appendToRoot(parent);
+
+            element.textContent = 'Hello world';
+            parent.prepend(element);
+
+            expect('Hello world').toBeAnnounced();
+        });
     });
 });
