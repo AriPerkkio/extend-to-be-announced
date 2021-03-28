@@ -174,5 +174,15 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
 
             expect('Hello world').toBeAnnounced();
         });
+
+        test('should announce when content is added with `before`', async () => {
+            const sibling = document.createElement('div');
+            appendToRoot(sibling);
+
+            element.textContent = 'Hello world';
+            sibling.before(element);
+
+            expect('Hello world').toBeAnnounced();
+        });
     });
 });
