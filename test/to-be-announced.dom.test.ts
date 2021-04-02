@@ -213,5 +213,10 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
 
             expect('Hello world').toBeAnnounced();
         });
+
+        // Missing: replaceChildren, jsdom#3102
+        test.todo(
+            'should announce when content is added with `replaceChildren`'
+        );
     });
 });
