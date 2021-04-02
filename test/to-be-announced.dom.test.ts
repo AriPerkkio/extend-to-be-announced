@@ -1,5 +1,5 @@
 import '../src/index';
-import { clearAnnouncements } from '../src/to-be-announced';
+import { clearAnnouncements, getAnnouncements } from '../src/to-be-announced';
 import { appendToRoot, POLITE_CASES, ASSERTIVE_CASES } from './utils';
 
 POLITE_CASES.forEach(({ name, value, tag }) => {
@@ -258,4 +258,26 @@ test('should clear announcements during test when clearAnnouncements is called',
 
     clearAnnouncements();
     expect('Second').not.toBeAnnounced();
+});
+
+test('should return all announcements with politeness setting when getAnnouncements is called', () => {
+    const element = document.createElement('div');
+    appendToRoot(element);
+
+    element.setAttribute('role', 'status');
+    element.textContent = 'First status message';
+    element.textContent = 'Second status message';
+
+    element.setAttribute('role', 'alert');
+    element.textContent = 'First alert message';
+    element.textContent = 'Second alert message';
+
+    expect(getAnnouncements()).toMatchInlineSnapshot(`
+        Map {
+          "First status message" => "polite",
+          "Second status message" => "polite",
+          "First alert message" => "assertive",
+          "Second alert message" => "assertive",
+        }
+    `);
 });

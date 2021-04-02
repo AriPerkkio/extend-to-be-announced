@@ -36,6 +36,13 @@ export function clearAnnouncements(): void {
 }
 
 /**
+ * Get all captured announcements. Part of public API.
+ */
+export function getAnnouncements(): Map<string, PolitenessSetting> {
+    return announcements;
+}
+
+/**
  * Check whether given node should trigger announcement
  * - Node should be inside live region
  * - Politeness setting should not be off
