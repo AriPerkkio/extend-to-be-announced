@@ -29,6 +29,13 @@ const liveRegions = new Map<Node, string | null>();
 const incorrectlyUsedStatusMessages: string[] = [];
 
 /**
+ * Reset all captured announcements. Part of public API.
+ */
+export function clearAnnouncements(): void {
+    announcements.clear();
+}
+
+/**
  * Check whether given node should trigger announcement
  * - Node should be inside live region
  * - Politeness setting should not be off
@@ -186,7 +193,6 @@ export function register(
     beforeAll(() => {
         // prettier-ignore
         cleanups.push(
-            // TODO: Check MDN for all Node & Element methods
             interceptMethod(Element.prototype, 'setAttribute', onSetAttribute),
             interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
             interceptMethod(Element.prototype, 'insertAdjacentElement', onInsertAdjacent),
@@ -213,7 +219,7 @@ export function register(
         }
 
         liveRegions.clear();
-        announcements.clear();
+        clearAnnouncements();
         incorrectlyUsedStatusMessages.splice(0);
     });
 }

@@ -1,4 +1,5 @@
 import '../src/index';
+import { clearAnnouncements } from '../src/to-be-announced';
 import { appendToRoot, POLITE_CASES, ASSERTIVE_CASES } from './utils';
 
 POLITE_CASES.forEach(({ name, value, tag }) => {
@@ -239,4 +240,22 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             'should announce when content is added with `replaceChildren`'
         );
     });
+});
+
+test('should clear announcements during test when clearAnnouncements is called', () => {
+    const element = document.createElement('div');
+    element.setAttribute('role', 'status');
+    appendToRoot(element);
+
+    element.textContent = 'First';
+    expect('First').toBeAnnounced();
+
+    clearAnnouncements();
+    expect('First').not.toBeAnnounced();
+
+    element.textContent = 'Second';
+    expect('Second').toBeAnnounced();
+
+    clearAnnouncements();
+    expect('Second').not.toBeAnnounced();
 });
