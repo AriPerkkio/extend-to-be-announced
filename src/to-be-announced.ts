@@ -189,7 +189,7 @@ export function register(
             // TODO: Check MDN for all Node & Element methods
             interceptMethod(Element.prototype, 'setAttribute', onSetAttribute),
             interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
-            interceptMethod(Element.prototype, 'insertAdjacentElement', onNodeMount),
+            interceptMethod(Element.prototype, 'insertAdjacentElement', onInsertAdjacent),
             interceptMethod(Element.prototype, 'insertAdjacentText', onInsertAdjacent),
             interceptMethod(Element.prototype, 'before', onNodeMount),
             interceptMethod(Element.prototype, 'append', onNodeMount),
