@@ -194,6 +194,16 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             expect('Hello world').toBeAnnounced();
         });
 
+        test('should announce when content is added with `insertAdjacentHTML`', async () => {
+            const child = document.createElement('div');
+            element.appendChild(child);
+            appendToRoot(element);
+
+            child.insertAdjacentHTML('beforebegin', '<div>Hello world</div>');
+
+            expect('Hello world').toBeAnnounced();
+        });
+
         test('should announce when content is added with `before`', async () => {
             const sibling = document.createElement('div');
             appendToRoot(sibling);
