@@ -100,6 +100,23 @@ function onNodeMount(node: Node) {
     updateAnnouncements(node);
 }
 
+function onInsertAdjacent(
+    this: Node,
+    position: string,
+    elementOrText: Element | string
+) {
+    if (!this.parentNode) {
+        const log =
+            typeof elementOrText === 'string'
+                ? elementOrText
+                : elementOrText.outerHTML;
+
+        throw new Error(`Unable to find parentNode for element/text ${log}`);
+    }
+
+    onNodeMount(this.parentNode);
+}
+
 function onSetAttribute(
     this: Element,
     ...args: Parameters<Element['setAttribute']>
@@ -173,6 +190,7 @@ export function register(
             interceptMethod(Element.prototype, 'setAttribute', onSetAttribute),
             interceptMethod(Element.prototype, 'removeAttribute', onRemoveAttribute),
             interceptMethod(Element.prototype, 'insertAdjacentElement', onNodeMount),
+            interceptMethod(Element.prototype, 'insertAdjacentText', onInsertAdjacent),
             interceptMethod(Element.prototype, 'before', onNodeMount),
             interceptMethod(Element.prototype, 'append', onNodeMount),
             interceptMethod(Element.prototype, 'prepend', onNodeMount),
