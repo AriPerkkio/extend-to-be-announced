@@ -317,7 +317,7 @@ export function toBeAnnounced(
 
             return [
                 ...message,
-                'Captured announcements:',
+                `Captured announcements (${allAnnouncements.length}):`,
                 `[${allAnnouncements.join(', ')}]`,
             ]
                 .filter(Boolean)
