@@ -3,6 +3,7 @@
         "strict": true,
         "module": "commonjs",
         "target": "es6",
+        "declaration": true,
         "outDir": "dist",
         "moduleResolution": "node",
         "esModuleInterop": true,
@@ -10,5 +11,5 @@
         "jsx": "react",
         "baseUrl": "."
     },
-    "include": ["src", "test", "index.d.ts"]
+    "include": ["src", "test"]
 }

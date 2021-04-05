@@ -4,10 +4,8 @@
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Utility for asserting Aria Live Regions",
     "main": "dist/index.js",
-    "types": "./index.d.ts",
     "files": [
-        "dist",
-        "index.d.ts"
+        "dist"
     ],
     "license": "MIT",
     "scripts": {

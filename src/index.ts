@@ -1,4 +1,8 @@
 import './extend-expect';
-import { register } from './to-be-announced';
+import {
+    clearAnnouncements,
+    getAnnouncements,
+    register,
+} from './to-be-announced';
 
-register();
+export { register, clearAnnouncements, getAnnouncements };

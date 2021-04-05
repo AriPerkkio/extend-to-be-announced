@@ -1,5 +1,4 @@
-import '../src/extend-expect';
-import { register } from '../src/to-be-announced';
+import { register } from '../src/index';
 import { appendToRoot, createStatusContainer } from './utils';
 
 function captureAfterEach(method: Function): Function {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render as originalRender } from '@testing-library/react';
 
-import '../src/index';
+import '../src/register';
 import { POLITE_CASES, ASSERTIVE_CASES } from './utils';
 
 function render(node: React.ReactElement) {

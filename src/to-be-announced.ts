@@ -11,6 +11,7 @@ import {
 import { interceptMethod, interceptSetter, Restore } from './interceptors';
 
 interface Options {
+    /** Whether incorrectly used status messages should be logged as warning. */
     warnIncorrectStatusMessages: boolean;
 }
 
@@ -29,7 +30,7 @@ const liveRegions = new Map<Node, string | null>();
 const incorrectlyUsedStatusMessages: string[] = [];
 
 /**
- * Reset all captured announcements. Part of public API.
+ * Clear all captured announcements. Part of public API.
  */
 export function clearAnnouncements(): void {
     announcements.clear();
@@ -202,6 +203,9 @@ function warnAboutIncorrectlyUsedStatusMessages() {
     }
 }
 
+/**
+ * Register `extend-to-be-expected` to track DOM nodes
+ */
 export function register(
     options: Options = { warnIncorrectStatusMessages: false }
 ): void {
