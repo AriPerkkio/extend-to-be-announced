@@ -12,7 +12,7 @@ describe('Errors', () => {
         expect(() =>
             expect('HELLO WORLD').toBeAnnounced()
         ).toThrowErrorMatchingInlineSnapshot(
-            `"HELLO WORLD was not announced. Captured announcements (2): [First, Second]"`
+            `"HELLO WORLD was not announced. Captured announcements (2): [\\"First\\", \\"Second\\"]"`
         );
     });
 
@@ -33,7 +33,7 @@ describe('Errors', () => {
         expect(() =>
             expect('Hello world').not.toBeAnnounced()
         ).toThrowErrorMatchingInlineSnapshot(
-            `"Hello world was announced. Captured announcements (1): [Hello world]"`
+            `"Hello world was announced. Captured announcements (1): [\\"Hello world\\"]"`
         );
     });
 
@@ -46,7 +46,7 @@ describe('Errors', () => {
         expect(() =>
             expect(/hello/i).not.toBeAnnounced()
         ).toThrowErrorMatchingInlineSnapshot(
-            `"/hello/i did match an announcement. Captured announcements (1): [Hello world]"`
+            `"/hello/i did match an announcement. Captured announcements (1): [\\"Hello world\\"]"`
         );
     });
 
@@ -85,7 +85,7 @@ describe('Errors', () => {
         expect(() =>
             expect('Hello world').not.toBeAnnounced('polite')
         ).toThrowErrorMatchingInlineSnapshot(
-            `"Hello world was announced with politeness setting \\"polite\\". Captured announcements (1): [Hello world]"`
+            `"Hello world was announced with politeness setting \\"polite\\". Captured announcements (1): [\\"Hello world\\"]"`
         );
     });
 
@@ -98,7 +98,7 @@ describe('Errors', () => {
         expect(() =>
             expect(/hello/i).not.toBeAnnounced('polite')
         ).toThrowErrorMatchingInlineSnapshot(
-            `"/hello/i did match an announcement with politeness setting \\"polite\\". Captured announcements (1): [Hello world]"`
+            `"/hello/i did match an announcement with politeness setting \\"polite\\". Captured announcements (1): [\\"Hello world\\"]"`
         );
     });
 
