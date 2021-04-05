@@ -42,6 +42,16 @@ export function getAnnouncements(): Map<string, PolitenessSetting> {
     return announcements;
 }
 
+function addAnnouncement(
+    textContent: string,
+    politenessSetting: Exclude<PolitenessSetting, 'off'>
+) {
+    announcements.set(
+        textContent.trim().replace(/\s+/g, ' '),
+        politenessSetting
+    );
+}
+
 /**
  * Check whether given node should trigger announcement
  * - Node should be inside live region
@@ -62,7 +72,7 @@ function updateAnnouncements(node: Node) {
             const newText = node.textContent || '';
 
             if (previousText !== newText) {
-                announcements.set(newText, politenessSetting);
+                addAnnouncement(newText, politenessSetting);
                 liveRegions.set(node, newText);
             }
         }
@@ -80,7 +90,7 @@ function addLiveRegion(liveRegion: Element) {
     // Content of assertive live regions is announced on initial mount
     if (liveRegion.textContent) {
         if (politenessSetting === 'assertive') {
-            announcements.set(liveRegion.textContent, politenessSetting);
+            addAnnouncement(liveRegion.textContent, politenessSetting);
         } else if (politenessSetting === 'polite') {
             incorrectlyUsedStatusMessages.push(liveRegion.textContent);
         }

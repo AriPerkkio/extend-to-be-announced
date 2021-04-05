@@ -283,3 +283,21 @@ test('should return all announcements with politeness setting when getAnnounceme
         }
     `);
 });
+
+test('should trim white-space', () => {
+    const parent = document.createElement('div');
+    parent.setAttribute('role', 'status');
+    appendToRoot(parent);
+
+    const first = document.createElement('div');
+    first.textContent = '    First   message here';
+    const second = document.createElement('div');
+    second.textContent = '    Second   message   here ';
+
+    const child = document.createElement('div');
+    child.appendChild(first);
+    child.appendChild(second);
+    parent.appendChild(child);
+
+    expect('First message here Second message here').toBeAnnounced();
+});
