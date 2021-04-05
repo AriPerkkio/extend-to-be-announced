@@ -75,15 +75,6 @@ POLITE_CASES.forEach(({ name, value, tag }) => {
 
             expect('Hello world').toBeAnnounced();
         });
-
-        test('supports matching by regexp', () => {
-            appendToRoot(element);
-
-            element.textContent = 'Hello world';
-
-            expect(/hello/i).toBeAnnounced();
-            expect(/world/i).toBeAnnounced();
-        });
     });
 });
 
@@ -240,6 +231,17 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             'should announce when content is added with `replaceChildren`'
         );
     });
+});
+
+test('supports matching by regexp', () => {
+    const element = document.createElement('div');
+    element.setAttribute('role', 'status');
+    appendToRoot(element);
+
+    element.textContent = 'Hello world';
+
+    expect(/hello/i).toBeAnnounced();
+    expect(/world/i).toBeAnnounced();
 });
 
 test('should clear announcements during test when clearAnnouncements is called', () => {
