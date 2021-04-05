@@ -3,14 +3,12 @@
     "version": "0.2.0",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Utility for asserting Aria Live Regions",
-    "main": "dist/index.js",
-    "files": [
-        "dist"
-    ],
+    "main": "index.js",
     "license": "MIT",
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
+        "postbuild": "node scripts/postbuild.mjs",
         "test": "jest"
     },
     "repository": {
