@@ -1,12 +1,12 @@
 # extend-to-be-announced
 
-> Utility for asserting [Aria Live Regions](https://www.w3.org/TR/wai-aria-1.2/#dfn-live-region).
+> Utility for asserting [ARIA live regions](https://www.w3.org/TR/wai-aria-1.2/#dfn-live-region).
 
-Validating Aria Live Regions with `@testing-library` and `jest-dom` requires developers to consider implementation details.
+Validating ARIA live regions with `@testing-library` and `jest-dom` requires developers to consider implementation details.
 Current solutions are prone to false positives.
 
 In test below it is not clearly visible that `Loading...` is not actually announced.
-Assistive technologies are only expected to announce **updates** of Aria Live Containers with `polite` as politeness setting.
+Assistive technologies are only expected to announce **updates** of ARIA live regions with `polite` as politeness setting.
 
 ```js
 render(<div role="status">Loading...</div>);
@@ -47,55 +47,115 @@ expect('Loading...').toBeAnnounced('polite');
 
 ## Installation
 
+`extend-to-be-announced` should be included in development dependencies.
+
 ```bash
 yarn add --dev extend-to-be-announced
 ```
 
-```js
-import 'extend-to-be-announced';
+## Usage
 
+### Test setup
+
+Import registration entrypoint in your [test setup](https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array).
+
+```js
+import 'extend-to-be-announced/register';
+```
+
+For setting up registration options use `register(options)` method instead.
+
+```js
+import { register } from 'extend-to-be-announced';
+
+register({
+    /** Whether incorrectly used status messages should be logged as warning. */
+    warnIncorrectStatusMessages: true,
+});
+```
+
+### Assertions
+
+#### toBeAnnounced
+
+Assert whether given message was announced by ARIA live region.
+Accepts string or regexp as matcher value.
+
+```js
 expect('Loading...').toBeAnnounced();
-expect('Loading...').toBeAnnounced('polite');
+expect(/loading/i).toBeAnnounced();
 expect('Error occured...').toBeAnnounced();
+expect(/error occured/i).toBeAnnounced();
+```
+
+Politeness setting of announcement can be optionally asserted.
+
+```js
+expect('Loading...').toBeAnnounced('polite');
 expect('Error occured...').toBeAnnounced('assertive');
 ```
 
-## Usage
+##### Examples
 
-### PASS :white_check_mark:
-
-```
-// Render#1
-<div role='status></div>
-
-// Render#2
-<div role='status>Loading</div>
-
-expect('Loading').toBeAnnounced();
+```html
+Render#1 | <div role="status"></div>
+Render#2 | <div role="status">Loading</div>
+PASS ✅  | expect('Loading').toBeAnnounced('polite');
 ```
 
-```
-// Render#1
-<div role='alert>Error</div>
-
-expect('Error').toBeAnnounced();
+```html
+Render#1 | <div role="alert">Error</div>
+PASS ✅  | expect('Error').toBeAnnounced('assertive');
 ```
 
-### FAIL :x:
-
+```html
+Render#1 | <div></div>
+Render#2 | <div role="alert">Error</div>
+PASS ✅  | expect('Error').toBeAnnounced();
 ```
-// Render#1
-<div role='status>Loading</div>
 
-expect('Loading').toBeAnnounced();
+```html
+Render#1 | <div role="status">Loading</div>
+FAIL ❌  | expect('Loading').toBeAnnounced();
+```
+
+```html
+Render#1 | <div></div>
+Render#2 | <div role="status">Loading</div>
+FAIL ❌  | expect('Loading').toBeAnnounced();
+```
+
+### Utilities
+
+#### getAnnouncements
+
+Get all announcements as `Map<string, PolitenessSetting>`.
+
+```js
+import { getAnnouncements } from 'extend-to-be-announced';
+getAnnouncements();
+
+> Map {
+>   "Status message" => "polite",
+>   "Alert message" => "assertive",
+> }
+```
+
+#### clearAnnouncements
+
+Clear all captured announcements.
+
+```js
+import { clearAnnouncements } from 'extend-to-be-announced';
+clearAnnouncements();
 ```
 
 ## Support
 
-|     Feature     |          Support          |
-| :-------------: | :-----------------------: |
-|     `role`      |    :white_check_mark:     |
-|   `aria-live`   |    :white_check_mark:     |
-|  `aria-atomic`  | :x: :construction_worker: |
-|   `aria-busy`   |            :x:            |
-| `aria-relevant` |            :x:            |
+|     Feature     | Status |
+| :-------------: | :----: |
+|     `role`      |   ✅   |
+|   `aria-live`   |   ✅   |
+|  `aria-atomic`  | ❌ 👷  |
+|   `aria-busy`   |   ❌   |
+| `aria-relevant` |   ❌   |

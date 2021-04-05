@@ -1,4 +1,4 @@
-import '../src/index';
+import '../src/register';
 import { appendToRoot, createStatusContainer } from './utils';
 
 describe('Errors', () => {

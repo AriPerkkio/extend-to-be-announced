@@ -1,5 +1,5 @@
-import '../src/index';
-import { clearAnnouncements, getAnnouncements } from '../src/to-be-announced';
+import '../src/register';
+import { clearAnnouncements, getAnnouncements } from '../src/index';
 import { appendToRoot, POLITE_CASES, ASSERTIVE_CASES } from './utils';
 
 POLITE_CASES.forEach(({ name, value, tag }) => {
