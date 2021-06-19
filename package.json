@@ -17,6 +17,9 @@
     },
     "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
     "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
+    "dependencies": {
+        "aria-live-capture": "^0.2.0"
+    },
     "devDependencies": {
         "@testing-library/dom": "^7.29.4",
         "@testing-library/jest-dom": "^5.11.9",
