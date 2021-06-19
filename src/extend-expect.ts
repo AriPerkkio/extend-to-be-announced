@@ -1,5 +1,4 @@
-import { toBeAnnounced } from './to-be-announced';
-import { PolitenessSetting } from './utils';
+import { toBeAnnounced, PolitenessSetting } from './to-be-announced';
 
 expect.extend({ toBeAnnounced });
 
