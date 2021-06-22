@@ -1,6 +1,4 @@
-import CaptureAnnouncements from 'aria-live-capture';
-
-export type PolitenessSetting = 'polite' | 'assertive' | 'off';
+import CaptureAnnouncements, { PolitenessSetting } from 'aria-live-capture';
 
 interface Options {
     /** Whether incorrectly used status messages should be logged as warning. */

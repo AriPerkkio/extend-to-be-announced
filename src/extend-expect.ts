@@ -1,4 +1,5 @@
-import { toBeAnnounced, PolitenessSetting } from './to-be-announced';
+import { PolitenessSetting } from 'aria-live-capture';
+import { toBeAnnounced } from './to-be-announced';
 
 expect.extend({ toBeAnnounced });
 
