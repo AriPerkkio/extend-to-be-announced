@@ -1,11 +1,12 @@
 interface TestAttributes {
     name?: 'role' | 'aria-live';
-    value?: 'status' | 'alert' | 'assertive' | 'polite';
+    value?: 'status' | 'log' | 'alert' | 'assertive' | 'polite';
     tag?: 'div' | 'output';
 }
 
 export const POLITE_CASES: TestAttributes[] = [
     { name: 'role', value: 'status' },
+    { name: 'role', value: 'log' },
     { name: 'aria-live', value: 'polite' },
     { tag: 'output' },
 ];
