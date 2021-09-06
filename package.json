@@ -9,7 +9,9 @@
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "node scripts/postbuild.mjs",
-        "test": "jest"
+        "test": "jest",
+        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx",
+        "validate": "yarn build && yarn lint && yarn test"
     },
     "repository": {
         "type": "git",
