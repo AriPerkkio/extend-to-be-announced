@@ -1,20 +1,7 @@
 import CaptureAnnouncements, { PolitenessSetting } from 'aria-live-capture';
 
-interface Options {
-    /** Whether incorrectly used status messages should be logged as warning. */
-    warnIncorrectStatusMessages: boolean;
-}
-
 // Map of announcements to their politeness settings
 const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
-
-/**
- * List of incorrectly used status messages
- * - Messages are marked as "invalid" when `polite` messages are mounted on DOM
- *   when their live region container mounts - instead of being updated into
- *   the container
- */
-const incorrectlyUsedStatusMessages: string[] = [];
 
 export function toBeAnnounced(
     this: jest.MatcherContext,
@@ -103,9 +90,7 @@ export function toBeAnnounced(
 /**
  * Register `extend-to-be-expected` to track DOM nodes
  */
-export function register(
-    options: Options = { warnIncorrectStatusMessages: false }
-): void {
+export function register(): void {
     let cleanup: undefined | (() => void);
 
     beforeEach(() => {
@@ -113,23 +98,16 @@ export function register(
             onCapture: (textContent, politenessSetting) => {
                 announcements.set(textContent, politenessSetting);
             },
-            onIncorrectStatusMessage: text =>
-                incorrectlyUsedStatusMessages.push(text),
         });
     });
 
     afterEach(() => {
-        if (options.warnIncorrectStatusMessages) {
-            warnAboutIncorrectlyUsedStatusMessages();
-        }
-
         if (cleanup) {
             cleanup();
             cleanup = undefined;
         }
 
         clearAnnouncements();
-        incorrectlyUsedStatusMessages.splice(0);
     });
 }
 
@@ -160,20 +138,4 @@ function getAllAnnouncements() {
 
 function isAnnounced(announcement: string | undefined): announcement is string {
     return Boolean(announcement);
-}
-
-function warnAboutIncorrectlyUsedStatusMessages() {
-    if (incorrectlyUsedStatusMessages.length > 0) {
-        // prettier-ignore
-        process.stdout.write(
-            [
-                '\x1b[33mtoBeAnnounced identified',
-                incorrectlyUsedStatusMessages.length,
-                `incorrectly used messages in ARIA live regions with "polite" as politeness setting.`,
-                'Instead of rendering content of such containers immediately these messages should be updated to an existing container.',
-                `Captured messages: [${incorrectlyUsedStatusMessages.join(', ')}].`,
-                'This warning can be disabled by setting "warnIncorrectStatusMessages" off.\n\x1b[0m',
-            ].join(' ')
-        );
-    }
 }

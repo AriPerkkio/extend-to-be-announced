@@ -68,10 +68,7 @@ For setting up registration options use `register(options)` method instead.
 ```js
 import { register } from 'extend-to-be-announced';
 
-register({
-    /** Whether incorrectly used status messages should be logged as warning. */
-    warnIncorrectStatusMessages: true,
-});
+register();
 ```
 
 ### Assertions
@@ -97,28 +94,33 @@ expect('Error occured...').toBeAnnounced('assertive');
 
 ##### Examples
 
+<!-- prettier-ignore -->
 ```html
 Render#1 | <div role="status"></div>
 Render#2 | <div role="status">Loading</div>
 PASS ✅  | expect('Loading').toBeAnnounced('polite');
 ```
 
+<!-- prettier-ignore -->
 ```html
 Render#1 | <div role="alert">Error</div>
 PASS ✅  | expect('Error').toBeAnnounced('assertive');
 ```
 
+<!-- prettier-ignore -->
 ```html
 Render#1 | <div></div>
 Render#2 | <div role="alert">Error</div>
 PASS ✅  | expect('Error').toBeAnnounced();
 ```
 
+<!-- prettier-ignore -->
 ```html
 Render#1 | <div role="status">Loading</div>
 FAIL ❌  | expect('Loading').toBeAnnounced();
 ```
 
+<!-- prettier-ignore -->
 ```html
 Render#1 | <div></div>
 Render#2 | <div role="status">Loading</div>
