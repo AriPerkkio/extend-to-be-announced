@@ -75,19 +75,52 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
         if (!name) throw new Error('Expected attribute name');
         const props = { [name]: value };
 
-        test('should announce when initially rendered', () => {
-            render(<div {...props}>Hello world</div>);
+        if (name === 'role' && value === 'alert') {
+            test('should announce when initially rendered', () => {
+                render(<div {...props}>Hello world</div>);
 
-            expect('Hello world').toBeAnnounced();
-        });
+                expect('Hello world').toBeAnnounced();
+            });
 
-        test('should announce when dynamically rendered with initially content', () => {
-            const { rerender } = render(<div></div>);
+            test('should announce when dynamically rendered with initially content', () => {
+                const { rerender } = render(<div></div>);
 
-            rerender(<div {...props}>Hello world</div>);
+                rerender(<div {...props}>Hello world</div>);
 
-            expect('Hello world').toBeAnnounced();
-        });
+                expect('Hello world').toBeAnnounced();
+            });
+
+            test('should announce when role is set after render and content is updated', () => {
+                const { rerender } = render(<div>First</div>);
+
+                rerender(<div {...props}>Second</div>);
+
+                expect('First').toBeAnnounced();
+                expect('Second').toBeAnnounced();
+            });
+
+            test('should announce when role is set after render', () => {
+                const { rerender } = render(<div>Hello world</div>);
+
+                rerender(<div {...props}>Hello world</div>);
+
+                expect('Hello world').toBeAnnounced();
+            });
+
+            test('should announce when content changes', () => {
+                const { rerender } = render(<div {...props}>Message #1</div>);
+                expect('Message #1').toBeAnnounced('assertive');
+
+                rerender(<div {...props}>Message #2</div>);
+                expect('Message #2').toBeAnnounced('assertive');
+            });
+        } else {
+            test('should not announce when initially rendered', () => {
+                render(<div {...props}>Hello world</div>);
+
+                expect('Hello world').not.toBeAnnounced();
+            });
+        }
 
         test('should announce when dynamically rendered into container', () => {
             const { rerender } = render(<div {...props}></div>);
@@ -95,51 +128,6 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             rerender(<div {...props}>Hello world</div>);
 
             expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content changes', () => {
-            const { rerender } = render(<div {...props}>Message #1</div>);
-            expect('Message #1').toBeAnnounced('assertive');
-
-            rerender(<div {...props}>Message #2</div>);
-            expect('Message #2').toBeAnnounced('assertive');
-        });
-
-        test('should announce when role is set after render', () => {
-            const { rerender } = render(<div>Hello world</div>);
-
-            rerender(<div {...props}>Hello world</div>);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when role is set after render and content is updated', () => {
-            const { rerender } = render(<div>First</div>);
-
-            rerender(<div {...props}>Second</div>);
-
-            expect('First').toBeAnnounced();
-            expect('Second').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `insertBefore`', () => {
-            const { rerender } = render(
-                <div>
-                    <span>Hello world</span>
-                    This is required for React to use insertBefore
-                </div>
-            );
-
-            expect('Hello world').not.toBeAnnounced();
-
-            rerender(
-                <div>
-                    <div {...props}>Hello world</div>
-                    This is required for React to use insertBefore
-                </div>
-            );
-
-            expect('Hello world').toBeAnnounced('assertive');
         });
     });
 });
