@@ -91,12 +91,45 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             element = container;
         });
 
-        test('should announce when dynamically rendered with initially content', () => {
-            element.textContent = 'Hello world';
-            appendToRoot(element);
+        if (name === 'role' && value === 'alert') {
+            test('should announce when dynamically rendered with initially content', () => {
+                element.textContent = 'Hello world';
+                appendToRoot(element);
 
-            expect('Hello world').toBeAnnounced();
-        });
+                expect('Hello world').toBeAnnounced();
+            });
+
+            test('should announce when role is set after render and content is updated', () => {
+                const container = document.createElement('div');
+                container.textContent = 'First';
+                appendToRoot(container);
+
+                container.setAttribute(name, value);
+                container.textContent = 'Second';
+
+                expect('First').toBeAnnounced();
+                expect('Second').toBeAnnounced();
+            });
+
+            test('should announce when role is set after render', () => {
+                const container = document.createElement('div');
+                container.textContent = 'Hello world';
+                appendToRoot(container);
+
+                if (name && value) {
+                    container.setAttribute(name, value);
+                }
+
+                expect('Hello world').toBeAnnounced();
+            });
+        } else {
+            test('should not announce when dynamically rendered with initially content', () => {
+                element.textContent = 'Hello world';
+                appendToRoot(element);
+
+                expect('Hello world').not.toBeAnnounced();
+            });
+        }
 
         test('should announce when dynamically rendered into container', () => {
             appendToRoot(element);
@@ -114,64 +147,36 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
             expect('Message #2').toBeAnnounced();
         });
 
-        test('should announce when role is set after render', () => {
-            const container = document.createElement('div');
-            container.textContent = 'Hello world';
-            appendToRoot(container);
-
-            if (name && value) {
-                container.setAttribute(name, value);
-            }
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when role is set after render and content is updated', () => {
-            const container = document.createElement('div');
-            container.textContent = 'First';
-            appendToRoot(container);
-
-            if (name && value) {
-                container.setAttribute(name, value);
-            }
-            container.textContent = 'Second';
-
-            expect('First').toBeAnnounced();
-            expect('Second').toBeAnnounced();
-        });
-
         test('should announce when content is added with `insertBefore`', async () => {
-            const parent = document.createElement('div');
-            const sibling = document.createElement('div');
-            parent.appendChild(sibling);
-            appendToRoot(parent);
+            const child = document.createElement('span');
+            element.append(child);
+            appendToRoot(element);
 
-            element.textContent = 'Hello world';
-            parent.insertBefore(element, sibling);
+            const sibling = document.createElement('span');
+            sibling.textContent = 'Hello world';
+            element.insertBefore(sibling, child);
 
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when content is added with `replaceChild`', async () => {
-            const parent = document.createElement('div');
             const oldChild = document.createElement('div');
-            parent.appendChild(oldChild);
-            appendToRoot(parent);
+            element.appendChild(oldChild);
+            appendToRoot(element);
 
-            element.textContent = 'Hello world';
-            parent.replaceChild(element, oldChild);
+            const newChild = document.createElement('span');
+            newChild.textContent = 'Hello world';
+            element.replaceChild(newChild, oldChild);
 
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when content is added with `insertAdjacentElement`', async () => {
-            const parent = document.createElement('div');
-            const sibling = document.createElement('div');
-            parent.appendChild(sibling);
-            appendToRoot(parent);
+            appendToRoot(element);
 
-            element.textContent = 'Hello world';
-            sibling.insertAdjacentElement('afterbegin', element);
+            const child = document.createElement('span');
+            child.textContent = 'Hello world';
+            element.insertAdjacentElement('afterbegin', child);
 
             expect('Hello world').toBeAnnounced();
         });
@@ -197,31 +202,33 @@ ASSERTIVE_CASES.forEach(({ name, value }) => {
         });
 
         test('should announce when content is added with `before`', async () => {
-            const sibling = document.createElement('div');
-            appendToRoot(sibling);
+            const child = document.createElement('span');
+            element.append(child);
+            appendToRoot(element);
 
-            element.textContent = 'Hello world';
-            sibling.before(element);
+            const sibling = document.createElement('div');
+            sibling.textContent = 'Hello world';
+            child.before(sibling);
 
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when content is added with `append`', async () => {
-            const parent = document.createElement('div');
-            appendToRoot(parent);
+            appendToRoot(element);
 
-            element.textContent = 'Hello world';
-            parent.append(element);
+            const child = document.createElement('div');
+            child.textContent = 'Hello world';
+            element.append(child);
 
             expect('Hello world').toBeAnnounced();
         });
 
         test('should announce when content is added with `prepend`', async () => {
-            const parent = document.createElement('div');
-            appendToRoot(parent);
+            appendToRoot(element);
 
-            element.textContent = 'Hello world';
-            parent.prepend(element);
+            const child = document.createElement('div');
+            child.textContent = 'Hello world';
+            element.prepend(child);
 
             expect('Hello world').toBeAnnounced();
         });
