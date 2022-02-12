@@ -919,10 +919,10 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
-aria-live-capture@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/aria-live-capture/-/aria-live-capture-0.4.0.tgz#bd7e4382423abe57653f6ba80d05b67d18184024"
-  integrity sha512-0J4yuml37kmBKOWwDQtP6ppYD2mpcoMFH2oHKGqTTdc9e3yX7fDtgVYvu8UFOHaPrdsVV8Aoq3K6TR175ObgXw==
+aria-live-capture@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/aria-live-capture/-/aria-live-capture-0.5.1.tgz#4db0e084e3b023a2f81119ebd35b3b9f66c3b0bf"
+  integrity sha512-jn+kdECH+Yxu/Hy0uu1myvc7TTw/kT1kByn5qsDeEUdcEDzaEQfz1C3CR1FGeh8jZsY+5eoNpTUVAXokbR5bMA==
 
 aria-query@^4.2.2:
   version "4.2.2"

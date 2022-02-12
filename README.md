@@ -68,7 +68,10 @@ For setting up registration options use `register(options)` method instead.
 ```js
 import { register } from 'extend-to-be-announced';
 
-register();
+register({
+    /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
+    includeShadowDom: true,
+});
 ```
 
 ### Assertions
@@ -125,6 +128,23 @@ FAIL ❌  | expect('Loading').toBeAnnounced();
 Render#1 | <div></div>
 Render#2 | <div role="status">Loading</div>
 FAIL ❌  | expect('Loading').toBeAnnounced();
+```
+
+With `register({ includeShadowDom: true })`:
+
+<!-- prettier-ignore -->
+```html
+Render#1 | <div role="status">
+         |     #shadow-root
+         |     <div></div>
+         | </div>
+         |
+Render#2 | <div role="status">
+         |     #shadow-root
+         |     <div>Loading</div>
+         | </div>
+         |
+PASS ✅  | expect('Loading').toBeAnnounced()
 ```
 
 ### Utilities

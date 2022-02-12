@@ -1,5 +1,10 @@
 import CaptureAnnouncements, { PolitenessSetting } from 'aria-live-capture';
 
+interface Options {
+    /** Indicates whether live regions inside `ShadowRoot`s should be tracked */
+    includeShadowDom?: boolean;
+}
+
 // Map of announcements to their politeness settings
 const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
 
@@ -90,11 +95,12 @@ export function toBeAnnounced(
 /**
  * Register `extend-to-be-expected` to track DOM nodes
  */
-export function register(): void {
+export function register(options: Options = {}): void {
     let cleanup: undefined | (() => void);
 
     beforeEach(() => {
         cleanup = CaptureAnnouncements({
+            ...options,
             onCapture: (textContent, politenessSetting) => {
                 announcements.set(textContent, politenessSetting);
             },
