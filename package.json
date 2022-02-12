@@ -21,7 +21,7 @@
     "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
     "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
     "dependencies": {
-        "aria-live-capture": "^0.4.0"
+        "aria-live-capture": "^0.5.1"
     },
     "devDependencies": {
         "@testing-library/dom": "^7.29.4",
