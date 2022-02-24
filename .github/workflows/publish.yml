@@ -1,23 +1,50 @@
 name: Publish
 
 on:
-  release:
-    types: [created]
-  workflow_dispatch:
+    workflow_dispatch:
+        inputs:
+            release-type:
+                type: choice
+                description: Type of the release
+                options:
+                    - patch
+                    - minor
+                    - major
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '14.x'
-        registry-url: 'https://registry.npmjs.org'
-    - run: yarn install
-    - run: yarn build
-    - run: yarn test
-    - run: npm publish
-      working-directory: ./dist
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: '16'
+                  registry-url: 'https://registry.npmjs.org'
+
+            - name: Install
+              run: yarn install
+
+            - name: Build
+              run: yarn build
+
+            - name: Test
+              run: yarn test
+
+            - name: Lint
+              run: yarn lint
+
+            - name: Configure github-actions git
+              run: |
+                  git config --global user.name 'github-actions'
+                  git config --global user.email 'github-actions@users.noreply.github.com'
+
+            - name: Bump version
+              run: npm version ${{ github.event.inputs.release-type }}
+
+            - name: Push release tag
+              run: git push origin master --follow-tags
+
+            - name: Publish to npm
+              run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
