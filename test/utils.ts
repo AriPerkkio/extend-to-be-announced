@@ -1,26 +1,8 @@
-interface TestAttributes {
-    name?: 'role' | 'aria-live';
-    value?: 'status' | 'log' | 'alert' | 'assertive' | 'polite';
-    tag?: 'div' | 'output';
-}
+export function createLiveRegion(): HTMLDivElement {
+    const element = document.createElement('div');
+    element.setAttribute('role', 'status');
 
-export const POLITE_CASES: TestAttributes[] = [
-    { name: 'role', value: 'status' },
-    { name: 'role', value: 'log' },
-    { name: 'aria-live', value: 'polite' },
-    { tag: 'output' },
-];
-
-export const ASSERTIVE_CASES: TestAttributes[] = [
-    { name: 'role', value: 'alert' },
-    { name: 'aria-live', value: 'assertive' },
-];
-
-export function createStatusContainer(): HTMLDivElement {
-    const container = document.createElement('div');
-    container.setAttribute('role', 'status');
-
-    return container;
+    return element;
 }
 
 export function appendToRoot(element: HTMLElement): void {

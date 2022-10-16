@@ -1,248 +1,38 @@
 import '../src/register';
 import { clearAnnouncements, getAnnouncements } from '../src/index';
-import { appendToRoot, POLITE_CASES, ASSERTIVE_CASES } from './utils';
+import { appendToRoot, createLiveRegion } from './utils';
 
-POLITE_CASES.forEach(({ name, value, tag }) => {
-    const testName = name && value ? `[${name}="${value}"]` : `<${tag}>`;
+test('should not announce when initially rendered with content', () => {
+    const element = createLiveRegion();
+    element.textContent = 'Hello world';
 
-    describe(testName, () => {
-        let element: HTMLElement;
+    appendToRoot(element);
 
-        beforeEach(() => {
-            const container = document.createElement(tag || 'div');
-            if (name && value) {
-                container.setAttribute(name, value);
-            }
-
-            element = container;
-        });
-
-        test('should not announce when initially rendered with content', () => {
-            element.textContent = 'Hello world';
-            appendToRoot(element);
-
-            expect('Hello world').not.toBeAnnounced();
-        });
-
-        test('should announce when dynamically rendered into container', () => {
-            appendToRoot(element);
-
-            element.textContent = 'Hello world';
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content changes', () => {
-            appendToRoot(element);
-
-            element.textContent = 'First';
-            element.textContent = 'Second';
-
-            expect('First').toBeAnnounced();
-            expect('Second').toBeAnnounced();
-        });
-
-        test('should not announce when role is set after render', () => {
-            const container = document.createElement(tag || 'div');
-            container.textContent = 'Hello world';
-            appendToRoot(container);
-
-            if (name && value) {
-                container.setAttribute(name, value);
-            }
-
-            expect('Hello world').not.toBeAnnounced();
-        });
-
-        test('should announce when role is set after render and content is updated', () => {
-            const container = document.createElement(tag || 'div');
-            container.textContent = 'First';
-            appendToRoot(container);
-
-            if (name && value) {
-                container.setAttribute(name, value);
-            }
-            container.textContent = 'Second';
-
-            expect('First').not.toBeAnnounced();
-            expect('Second').toBeAnnounced();
-        });
-
-        test('should announce when text node is appended into existing container', () => {
-            appendToRoot(element);
-
-            element.appendChild(document.createTextNode('Hello world'));
-
-            expect('Hello world').toBeAnnounced();
-        });
-    });
+    expect('Hello world').not.toBeAnnounced();
 });
 
-ASSERTIVE_CASES.forEach(({ name, value }) => {
-    describe(`[${name}="${value}"]`, () => {
-        let element: HTMLElement;
+test('should announce when dynamically rendered into live region', () => {
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-        beforeEach(() => {
-            const container = document.createElement('div');
-            if (name && value) {
-                container.setAttribute(name, value);
-            }
+    element.textContent = 'Hello world';
 
-            element = container;
-        });
+    expect('Hello world').toBeAnnounced();
+});
 
-        if (name === 'role' && value === 'alert') {
-            test('should announce when dynamically rendered with initially content', () => {
-                element.textContent = 'Hello world';
-                appendToRoot(element);
+test('should announce when content changes', () => {
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-                expect('Hello world').toBeAnnounced();
-            });
+    element.textContent = 'First';
+    expect('First').toBeAnnounced();
 
-            test('should announce when role is set after render and content is updated', () => {
-                const container = document.createElement('div');
-                container.textContent = 'First';
-                appendToRoot(container);
-
-                container.setAttribute(name, value);
-                container.textContent = 'Second';
-
-                expect('First').toBeAnnounced();
-                expect('Second').toBeAnnounced();
-            });
-
-            test('should announce when role is set after render', () => {
-                const container = document.createElement('div');
-                container.textContent = 'Hello world';
-                appendToRoot(container);
-
-                if (name && value) {
-                    container.setAttribute(name, value);
-                }
-
-                expect('Hello world').toBeAnnounced();
-            });
-        } else {
-            test('should not announce when dynamically rendered with initially content', () => {
-                element.textContent = 'Hello world';
-                appendToRoot(element);
-
-                expect('Hello world').not.toBeAnnounced();
-            });
-        }
-
-        test('should announce when dynamically rendered into container', () => {
-            appendToRoot(element);
-            element.textContent = 'Hello world';
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content changes', () => {
-            appendToRoot(element);
-            element.textContent = 'Message #1';
-            element.textContent = 'Message #2';
-
-            expect('Message #1').toBeAnnounced();
-            expect('Message #2').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `insertBefore`', async () => {
-            const child = document.createElement('span');
-            element.append(child);
-            appendToRoot(element);
-
-            const sibling = document.createElement('span');
-            sibling.textContent = 'Hello world';
-            element.insertBefore(sibling, child);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `replaceChild`', async () => {
-            const oldChild = document.createElement('div');
-            element.appendChild(oldChild);
-            appendToRoot(element);
-
-            const newChild = document.createElement('span');
-            newChild.textContent = 'Hello world';
-            element.replaceChild(newChild, oldChild);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `insertAdjacentElement`', async () => {
-            appendToRoot(element);
-
-            const child = document.createElement('span');
-            child.textContent = 'Hello world';
-            element.insertAdjacentElement('afterbegin', child);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `insertAdjacentText`', async () => {
-            const child = document.createElement('div');
-            element.appendChild(child);
-            appendToRoot(element);
-
-            child.insertAdjacentText('beforebegin', 'Hello world');
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `insertAdjacentHTML`', async () => {
-            const child = document.createElement('div');
-            element.appendChild(child);
-            appendToRoot(element);
-
-            child.insertAdjacentHTML('beforebegin', '<div>Hello world</div>');
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `before`', async () => {
-            const child = document.createElement('span');
-            element.append(child);
-            appendToRoot(element);
-
-            const sibling = document.createElement('div');
-            sibling.textContent = 'Hello world';
-            child.before(sibling);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `append`', async () => {
-            appendToRoot(element);
-
-            const child = document.createElement('div');
-            child.textContent = 'Hello world';
-            element.append(child);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        test('should announce when content is added with `prepend`', async () => {
-            appendToRoot(element);
-
-            const child = document.createElement('div');
-            child.textContent = 'Hello world';
-            element.prepend(child);
-
-            expect('Hello world').toBeAnnounced();
-        });
-
-        // Missing: replaceChildren, jsdom#3102
-        test.todo(
-            'should announce when content is added with `replaceChildren`'
-        );
-    });
+    element.textContent = 'Second';
+    expect('Second').toBeAnnounced();
 });
 
 test('supports matching by regexp', () => {
-    const element = document.createElement('div');
-    element.setAttribute('role', 'status');
+    const element = createLiveRegion();
     appendToRoot(element);
 
     element.textContent = 'Hello world';
@@ -252,8 +42,7 @@ test('supports matching by regexp', () => {
 });
 
 test('should clear announcements during test when clearAnnouncements is called', () => {
-    const element = document.createElement('div');
-    element.setAttribute('role', 'status');
+    const element = createLiveRegion();
     appendToRoot(element);
 
     element.textContent = 'First';
@@ -281,12 +70,22 @@ test('should return all announcements with politeness setting when getAnnounceme
     element.textContent = 'First alert message';
     element.textContent = 'Second alert message';
 
+    element.removeAttribute('role');
+
+    element.setAttribute('aria-live', 'polite');
+    element.textContent = 'Third status message';
+
+    element.setAttribute('aria-live', 'assertive');
+    element.textContent = 'Third alert message';
+
     expect(getAnnouncements()).toMatchInlineSnapshot(`
         Map {
           "First status message" => "polite",
           "Second status message" => "polite",
           "First alert message" => "assertive",
           "Second alert message" => "assertive",
+          "Third status message" => "polite",
+          "Third alert message" => "assertive",
         }
     `);
 });

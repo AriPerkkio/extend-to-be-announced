@@ -1,12 +1,12 @@
 import '../src/register';
-import { appendToRoot, createStatusContainer } from './utils';
+import { appendToRoot, createLiveRegion } from './utils';
 
 test('should throw captured announcements', () => {
-    const container = createStatusContainer();
-    appendToRoot(container);
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-    container.textContent = 'First';
-    container.textContent = 'Second';
+    element.textContent = 'First';
+    element.textContent = 'Second';
 
     expect(() =>
         expect('HELLO WORLD').toBeAnnounced()
@@ -24,10 +24,10 @@ test('should throw pattern when not matched', () => {
 });
 
 test("should throw when asserting with '.not' and message was announced", () => {
-    const container = createStatusContainer();
+    const element = createLiveRegion();
 
-    appendToRoot(container);
-    container.textContent = 'Hello world';
+    appendToRoot(element);
+    element.textContent = 'Hello world';
 
     expect(() =>
         expect('Hello world').not.toBeAnnounced()
@@ -37,10 +37,10 @@ test("should throw when asserting with '.not' and message was announced", () => 
 });
 
 test("should throw pattern when asserting with '.not' and message was announced", () => {
-    const container = createStatusContainer();
+    const element = createLiveRegion();
 
-    appendToRoot(container);
-    container.textContent = 'Hello world';
+    appendToRoot(element);
+    element.textContent = 'Hello world';
 
     expect(() =>
         expect(/hello/i).not.toBeAnnounced()
@@ -50,10 +50,10 @@ test("should throw pattern when asserting with '.not' and message was announced"
 });
 
 test('should throw when asserting with incorrect politeness setting', () => {
-    const container = createStatusContainer();
-    appendToRoot(container);
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-    container.textContent = 'Hello world';
+    element.textContent = 'Hello world';
 
     expect(() =>
         expect('Hello world').toBeAnnounced('assertive')
@@ -63,10 +63,10 @@ test('should throw when asserting with incorrect politeness setting', () => {
 });
 
 test('should throw when asserting with pattern and incorrect politeness setting', () => {
-    const container = createStatusContainer();
-    appendToRoot(container);
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-    container.textContent = 'Hello world';
+    element.textContent = 'Hello world';
 
     expect(() =>
         expect(/hello/i).toBeAnnounced('assertive')
@@ -76,10 +76,10 @@ test('should throw when asserting with pattern and incorrect politeness setting'
 });
 
 test("should throw when asserting with '.not' and correct politeness setting", () => {
-    const container = createStatusContainer();
-    appendToRoot(container);
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-    container.textContent = 'Hello world';
+    element.textContent = 'Hello world';
 
     expect(() =>
         expect('Hello world').not.toBeAnnounced('polite')
@@ -89,10 +89,10 @@ test("should throw when asserting with '.not' and correct politeness setting", (
 });
 
 test("should throw when asserting with pattern, '.not' and correct politeness setting", () => {
-    const container = createStatusContainer();
-    appendToRoot(container);
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-    container.textContent = 'Hello world';
+    element.textContent = 'Hello world';
 
     expect(() =>
         expect(/hello/i).not.toBeAnnounced('polite')
@@ -102,10 +102,10 @@ test("should throw when asserting with pattern, '.not' and correct politeness se
 });
 
 test("should not throw when asserting with '.not' and incorrect politeness setting", () => {
-    const container = createStatusContainer();
-    appendToRoot(container);
+    const element = createLiveRegion();
+    appendToRoot(element);
 
-    container.textContent = 'Hello world';
+    element.textContent = 'Hello world';
 
     expect('Hello world').not.toBeAnnounced('assertive');
 });
