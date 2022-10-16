@@ -41,6 +41,12 @@ jobs:
             - name: Bump version
               run: npm version ${{ github.event.inputs.release-type }}
 
+            - name: Generate changelog
+              run: |
+                  yarn changelog
+                  git add CHANGELOG.md
+                  git commit -m 'chore: changelog'
+
             - name: Push release tag
               run: git push origin master --follow-tags
 
