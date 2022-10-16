@@ -83,7 +83,7 @@ export function toBeAnnounced(
                 ...message,
                 `Captured announcements (${allAnnouncements.length}):`,
                 `[${allAnnouncements
-                    .map(announcement => `"${announcement}"`)
+                    .map((announcement) => `"${announcement}"`)
                     .join(', ')}]`,
             ]
                 .filter(Boolean)
