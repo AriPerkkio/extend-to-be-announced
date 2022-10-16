@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import '../src/register';
 import { clearAnnouncements, getAnnouncements } from '../src/index';
 import { appendToRoot, createLiveRegion } from './utils';

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { register } from '../src';
 import { appendToRoot } from './utils';
 

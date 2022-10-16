@@ -1,3 +1,5 @@
+import { afterEach, beforeEach } from 'vitest';
+
 function addRoot() {
     const main = document.createElement('main');
     main.id = 'root';
@@ -8,7 +10,7 @@ function removeRoot() {
     const root = document.getElementById('root');
 
     if (root) {
-        return document.body.removeChild(root);
+        document.body.removeChild(root);
     }
 }
 
