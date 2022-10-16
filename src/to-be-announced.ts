@@ -9,10 +9,10 @@ interface Options {
 const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
 
 export function toBeAnnounced(
-    this: jest.MatcherContext,
+    this: { isNot?: boolean },
     text: string | RegExp,
     politenessSetting?: Exclude<PolitenessSetting, 'off'>
-): jest.CustomMatcherResult {
+): { pass: boolean; message: () => string } {
     if (text == null || text === '') {
         return {
             pass: false,

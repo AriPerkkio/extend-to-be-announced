@@ -8,7 +8,10 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "baseUrl": "."
+        "baseUrl": ".",
+
+        // Disables Jest's automatic types
+        "types": ["node"]
     },
     "include": ["src", "test"]
 }

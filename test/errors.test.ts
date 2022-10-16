@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import '../src/register';
 import { appendToRoot, createLiveRegion } from './utils';
 
@@ -11,7 +13,7 @@ test('should throw captured announcements', () => {
     expect(() =>
         expect('HELLO WORLD').toBeAnnounced()
     ).toThrowErrorMatchingInlineSnapshot(
-        `"HELLO WORLD was not announced. Captured announcements (2): ["First", "Second"]"`
+        '"HELLO WORLD was not announced. Captured announcements (2): [\\"First\\", \\"Second\\"]"'
     );
 });
 
@@ -32,7 +34,7 @@ test("should throw when asserting with '.not' and message was announced", () => 
     expect(() =>
         expect('Hello world').not.toBeAnnounced()
     ).toThrowErrorMatchingInlineSnapshot(
-        `"Hello world was announced. Captured announcements (1): ["Hello world"]"`
+        '"Hello world was announced. Captured announcements (1): [\\"Hello world\\"]"'
     );
 });
 
@@ -45,7 +47,7 @@ test("should throw pattern when asserting with '.not' and message was announced"
     expect(() =>
         expect(/hello/i).not.toBeAnnounced()
     ).toThrowErrorMatchingInlineSnapshot(
-        `"/hello/i did match an announcement. Captured announcements (1): ["Hello world"]"`
+        '"/hello/i did match an announcement. Captured announcements (1): [\\"Hello world\\"]"'
     );
 });
 
@@ -58,7 +60,7 @@ test('should throw when asserting with incorrect politeness setting', () => {
     expect(() =>
         expect('Hello world').toBeAnnounced('assertive')
     ).toThrowErrorMatchingInlineSnapshot(
-        `"Hello world was announced with politeness setting "polite" when "assertive" was expected"`
+        '"Hello world was announced with politeness setting \\"polite\\" when \\"assertive\\" was expected"'
     );
 });
 
@@ -71,7 +73,7 @@ test('should throw when asserting with pattern and incorrect politeness setting'
     expect(() =>
         expect(/hello/i).toBeAnnounced('assertive')
     ).toThrowErrorMatchingInlineSnapshot(
-        `"/hello/i matched an announcement with politeness setting "polite" when "assertive" was expected"`
+        '"/hello/i matched an announcement with politeness setting \\"polite\\" when \\"assertive\\" was expected"'
     );
 });
 
@@ -84,7 +86,7 @@ test("should throw when asserting with '.not' and correct politeness setting", (
     expect(() =>
         expect('Hello world').not.toBeAnnounced('polite')
     ).toThrowErrorMatchingInlineSnapshot(
-        `"Hello world was announced with politeness setting "polite". Captured announcements (1): ["Hello world"]"`
+        '"Hello world was announced with politeness setting \\"polite\\". Captured announcements (1): [\\"Hello world\\"]"'
     );
 });
 
@@ -97,7 +99,7 @@ test("should throw when asserting with pattern, '.not' and correct politeness se
     expect(() =>
         expect(/hello/i).not.toBeAnnounced('polite')
     ).toThrowErrorMatchingInlineSnapshot(
-        `"/hello/i did match an announcement with politeness setting "polite". Captured announcements (1): ["Hello world"]"`
+        '"/hello/i did match an announcement with politeness setting \\"polite\\". Captured announcements (1): [\\"Hello world\\"]"'
     );
 });
 
