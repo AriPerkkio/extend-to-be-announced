@@ -1,3 +1,4 @@
+/** @type {import('eslint/lib/shared/types').ConfigData} */
 module.exports = {
     root: true,
     env: {
@@ -18,8 +19,6 @@ module.exports = {
         'eslint:recommended',
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:testing-library/dom',
-        'plugin:jest-dom/recommended',
     ],
     rules: {
         '@typescript-eslint/ban-types': 'off',
@@ -33,4 +32,5 @@ module.exports = {
             },
         },
     ],
+    ignorePatterns: ['dist'],
 };

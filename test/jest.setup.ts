@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom';
-
 function addRoot() {
     const main = document.createElement('main');
     main.id = 'root';
