@@ -1,0 +1,15 @@
+{
+    "name": "example-vitest-shadow-dom",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "test": "vitest run",
+        "typecheck": "tsc"
+    },
+    "dependencies": {
+        "extend-to-be-announced": "file:../../build.tgz",
+        "jsdom": "^20.0.1",
+        "typescript": "^4.8.4",
+        "vitest": "^0.24.3"
+    }
+}

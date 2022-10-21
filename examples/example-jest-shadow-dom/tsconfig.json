@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ESNext",
+        "moduleResolution": "Node16",
+        "noEmit": true
+    }
+}
