@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { register } from '../src';
+import { register } from '../src/vitest/register';
 import { appendToRoot } from './utils';
 
 describe('default options', () => {

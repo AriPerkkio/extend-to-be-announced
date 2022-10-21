@@ -1,11 +1,8 @@
 import { PolitenessSetting } from 'aria-live-capture';
-import { toBeAnnounced } from './to-be-announced';
 
-expect.extend({ toBeAnnounced });
+import { toBeAnnounced, register as __register } from '../to-be-announced';
 
-/// <reference types="jest" />
 declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace jest {
         interface Matchers<R> {
             /**
@@ -18,4 +15,18 @@ declare global {
             ): R;
         }
     }
+}
+
+// @ts-expect-error -- Jest globals
+expect.extend({ toBeAnnounced });
+
+/**
+ * Register `extend-to-be-expected` to track DOM nodes
+ */
+export function register(options?: Parameters<typeof __register>[0]) {
+    __register(
+        options,
+        // @ts-expect-error -- Jest globals
+        { afterEach, beforeEach }
+    );
 }
