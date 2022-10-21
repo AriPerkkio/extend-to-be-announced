@@ -112,6 +112,18 @@ register({
 });
 ```
 
+### Typescript
+
+This package utilizes Typescripts `exports` support for type declarations. You'll need to set `"moduleResolution": "Node16"` in your `tsconfig.json` in order to have typings picked properly.
+
+```json
+{
+    "compilerOptions": {
+        "moduleResolution": "Node16"
+    }
+}
+```
+
 ### Assertions
 
 #### toBeAnnounced
