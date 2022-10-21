@@ -11,6 +11,10 @@
         {
             "depTypeList": ["peerDependencies", "engines"],
             "enabled": false
+        },
+        {
+            "matchPaths": ["examples/**"],
+            "enabled": false
         }
     ]
 }

@@ -31,3 +31,36 @@ jobs:
 
             - name: Lint
               run: yarn lint
+
+            - name: Prepare build for examples
+              run: |
+                  npm pack
+                  mv extend-to-be-announced-*.tgz build.tgz
+
+            - name: Build and test example-jest
+              working-directory: ./examples/example-jest
+              run: |
+                  yarn install
+                  yarn test
+                  yarn typecheck
+
+            - name: Build and test example-jest-shadow-dom
+              working-directory: ./examples/example-jest-shadow-dom
+              run: |
+                  yarn install
+                  yarn test
+                  yarn typecheck
+
+            - name: Build and test example-vitest
+              working-directory: ./examples/example-vitest
+              run: |
+                  yarn install
+                  yarn test
+                  yarn typecheck
+
+            - name: Build and test example-vitest-shadow-dom
+              working-directory: ./examples/example-vitest-shadow-dom
+              run: |
+                  yarn install
+                  yarn test
+                  yarn typecheck
