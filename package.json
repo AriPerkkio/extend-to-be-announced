@@ -3,14 +3,44 @@
     "version": "0.6.0",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Utility for asserting ARIA Live Regions",
-    "main": "./index.js",
-    "types": "./index.d.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs",
+            "types": "./dist/index.d.ts"
+        },
+        "./jest": {
+            "require": "./dist/jest/index.js",
+            "import": "./dist/jest/index.mjs",
+            "types": "./dist/jest/index.d.ts"
+        },
+        "./jest/register": {
+            "require": "./dist/jest/register.js",
+            "import": "./dist/jest/register.mjs",
+            "types": "./dist/jest/register.d.ts"
+        },
+        "./vitest": {
+            "require": "./dist/vitest/index.js",
+            "import": "./dist/vitest/index.mjs",
+            "types": "./dist/vitest/index.d.ts"
+        },
+        "./vitest/register": {
+            "require": "./dist/vitest/register.js",
+            "import": "./dist/vitest/register.mjs",
+            "types": "./dist/vitest/register.d.ts"
+        }
+    },
+    "files": [
+        "dist"
+    ],
     "license": "MIT",
     "scripts": {
         "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -s -r 0",
         "prebuild": "rm -rf ./dist",
-        "build": "tsc --project tsconfig.prod.json",
-        "postbuild": "node scripts/postbuild.mjs",
+        "build": "rollup --config rollup.config.ts --configPlugin typescript",
         "test": "vitest run",
         "test:watch": "vitest --watch --verbose=false",
         "lint": "eslint . --max-warnings 0 --ext .js,.ts",
@@ -28,11 +58,17 @@
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.40.0",
         "@typescript-eslint/parser": "^5.40.0",
+        "esbuild": "^0.15.12",
         "eslint": "^8.25.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "jsdom": "^20.0.1",
         "prettier": "^2.7.1",
+        "rollup": "^2.79.1",
+        "rollup-plugin-dts": "^5.0.0",
+        "rollup-plugin-esbuild": "^4.10.1",
+        "rollup-plugin-local-import": "^1.0.0",
+        "rollup-plugin-typescript": "^1.0.1",
         "typescript": "^4.8.4",
         "vitest": "^0.24.3"
     },
