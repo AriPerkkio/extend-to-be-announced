@@ -57,16 +57,54 @@ yarn add --dev extend-to-be-announced
 
 ### Test setup
 
+There are out-of-the-box setups for Jest and Vitest.
+
+#### Jest
+
 Import registration entrypoint in your [test setup](https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array).
 
 ```js
-import 'extend-to-be-announced/register';
+import 'extend-to-be-announced/jest';
 ```
 
 For setting up registration options use `register(options)` method instead.
 
 ```js
-import { register } from 'extend-to-be-announced';
+import { register } from 'extend-to-be-announced/jest/register';
+
+register({
+    /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
+    includeShadowDom: true,
+});
+```
+
+#### Vitest
+
+Import registration entrypoint in your [test setup](https://vitest.dev/config/#setupfiles).
+
+```js
+import 'extend-to-be-announced/vitest';
+```
+
+Vitest also requires all dependencies that `import` Vitest internally to be inlined. Add `extend-to-be-announced` to your configuration's `test.deps.inline` array:
+
+```js
+// vitest.config.ts
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+    test: {
+        deps: {
+            inline: ['extend-to-be-announced'],
+        },
+    },
+});
+```
+
+For setting up registration options use `register(options)` method instead.
+
+```js
+import { register } from 'extend-to-be-announced/vitest/register';
 
 register({
     /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */

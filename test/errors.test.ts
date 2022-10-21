@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import '../src/register';
+import '../src/vitest';
 import { appendToRoot, createLiveRegion } from './utils';
 
 test('should throw captured announcements', () => {

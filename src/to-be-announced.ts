@@ -95,10 +95,15 @@ export function toBeAnnounced(
 /**
  * Register `extend-to-be-expected` to track DOM nodes
  */
-export function register(options: Options = {}): void {
+export function register<
+    TestHook extends (hook: () => any, ...rest: any[]) => any
+>(
+    options: Options = {},
+    hooks: { beforeEach: TestHook; afterEach: TestHook }
+): void {
     let cleanup: undefined | (() => void);
 
-    beforeEach(() => {
+    hooks.beforeEach(() => {
         cleanup = CaptureAnnouncements({
             ...options,
             onCapture: (textContent, politenessSetting) => {
@@ -107,7 +112,7 @@ export function register(options: Options = {}): void {
         });
     });
 
-    afterEach(() => {
+    hooks.afterEach(() => {
         if (cleanup) {
             cleanup();
             cleanup = undefined;
@@ -118,14 +123,14 @@ export function register(options: Options = {}): void {
 }
 
 /**
- * Clear all captured announcements. Part of public API.
+ * Clear all captured announcements.
  */
 export function clearAnnouncements(): void {
     announcements.clear();
 }
 
 /**
- * Get all captured announcements. Part of public API.
+ * Get all captured announcements.
  */
 export function getAnnouncements(): Map<string, PolitenessSetting> {
     return announcements;

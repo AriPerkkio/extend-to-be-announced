@@ -2,8 +2,9 @@
     "name": "extend-to-be-announced",
     "version": "0.6.0",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "description": "Utility for asserting Aria Live Regions",
-    "main": "index.js",
+    "description": "Utility for asserting ARIA Live Regions",
+    "main": "./index.js",
+    "types": "./index.d.ts",
     "license": "MIT",
     "scripts": {
         "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -s -r 0",

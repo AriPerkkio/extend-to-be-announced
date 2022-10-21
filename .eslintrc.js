@@ -23,6 +23,9 @@ module.exports = {
     rules: {
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-namespace': 'off',
+        '@typescript-eslint/triple-slash-reference': 'off',
+        '@typescript-eslint/no-empty-interface': 'off',
     },
     overrides: [
         {
