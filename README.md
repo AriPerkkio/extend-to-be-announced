@@ -1,45 +1,58 @@
 # extend-to-be-announced
 
+[![version](https://img.shields.io/npm/v/extend-to-be-announced)](https://www.npmjs.com/package/extend-to-be-announced)
+
+[Motivation](#Motivation) | [Installation](#installation) | [Usage](#usage) | [Support](#support)
+
 > Utility for asserting [ARIA live regions](https://www.w3.org/TR/wai-aria-1.2/#dfn-live-region).
 
-Validating ARIA live regions with `@testing-library` and `jest-dom` requires developers to consider implementation details.
+`extend-to-be-announced` is a matcher extender for [Jest](https://jestjs.io/) and [Vitest](https://vitest.dev/). It makes validating ARIA live regions extremely easy. Internally it is utilizing [`aria-live-capture`](https://github.com/AriPerkkio/aria-live-capture) for announcement detection.
+
+For Storybook integration see [`storybook-addon-aria-live`](https://github.com/AriPerkkio/storybook-addon-aria-live).
+
+## Motivation
+
+Read more about inspiration from [Building testing tools for ARIA live regions](https://loihdefactor.com/en/2022/04/29/building-testing-tools-for-aria-live-regions).
+
+Validating ARIA live regions with [`@testing-library`](https://testing-library.com/) and [`jest-dom`](https://github.com/testing-library/jest-dom) requires developers to consider implementation details.
 Current solutions are prone to false positives.
 
 In test below it is not clearly visible that `Loading...` is not actually announced.
-Assistive technologies are only expected to announce **updates** of ARIA live regions with `polite` as politeness setting.
+Assistive technologies are only expected to announce **updates** of ARIA live regions - not the initial content.
 
 ```js
 render(<div role="status">Loading...</div>);
 
-// Loading should be announced ❌
-const statusContainer = screen.getByRole('status');
-expect(statusContainer).toHaveTextContent('Loading...');
-// Not detected by assistive technologies since content of
-// live container was not updated
+const liveRegion = screen.getByRole('status');
+
+// Loading is not be announced by assistive technologies ❌
+// Content of live region has not updated. This is it's initial text content.
+expect(liveRegion).toHaveTextContent('Loading...');
 ```
 
-Instead developers should check that messages are rendered into existing Aria Live Containers.
+Instead developers should check that messages are rendered into existing ARIA Live regions.
 
 ```js
 const { rerender } = render(<div role="status"></div>);
 
-// Status container should be present
-const statusContainer = screen.getByRole('status');
+// Live region should be present
+const liveRegion = screen.getByRole('status');
 
-// Status container should initially be empty
-expect(statusContainer).toBeEmptyDOMElement();
+// Live region should initially be empty
+expect(liveRegion).toBeEmptyDOMElement();
 
-// Update content of live region
+// Update content of the live region
 rerender(<div role="status">Loading...</div>);
 
-// Loading should be announced ✅
-expect(statusContainer).toHaveTextContent('Loading...');
+// Loading is announced by assistive technologies ✅
+expect(liveRegion).toHaveTextContent('Loading...');
 ```
 
 `toBeAnnounced` can be used to hide such implementation detail from tests.
 
 ```js
 const { rerender } = render(<div role="status"></div>);
+
 rerender(<div role="status">Loading...</div>);
 
 expect('Loading...').toBeAnnounced('polite');
@@ -128,7 +141,7 @@ This package utilizes Typescripts `exports` support for type declarations. You'l
 
 #### toBeAnnounced
 
-Assert whether given message was announced by ARIA live region.
+Assert whether given message was announced by assistive technologies.
 Accepts string or regexp as matcher value.
 
 ```js
