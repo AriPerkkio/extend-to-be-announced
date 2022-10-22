@@ -279,10 +279,10 @@ argparse@^2.0.1:
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
-aria-live-capture@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/aria-live-capture/-/aria-live-capture-0.5.1.tgz#4db0e084e3b023a2f81119ebd35b3b9f66c3b0bf"
-  integrity sha512-jn+kdECH+Yxu/Hy0uu1myvc7TTw/kT1kByn5qsDeEUdcEDzaEQfz1C3CR1FGeh8jZsY+5eoNpTUVAXokbR5bMA==
+aria-live-capture@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/aria-live-capture/-/aria-live-capture-1.0.0.tgz#f9849e6e704239e2d93dfd9e55fc71aa73eaf0e1"
+  integrity sha512-JOs2g+pKYL5gIMNCWjJIfCPs8GxFdtf3kuthWZXbetKTcmcr+/maKMU68Ha960Lb3fpBtjfPS645vpiLN9aZCg==
 
 array-union@^2.1.0:
   version "2.1.0"

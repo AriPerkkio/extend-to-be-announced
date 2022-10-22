@@ -53,7 +53,7 @@
     "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
     "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
     "dependencies": {
-        "aria-live-capture": "^0.5.1"
+        "aria-live-capture": "^1.0.0"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.40.0",
