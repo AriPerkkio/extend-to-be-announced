@@ -1,6 +1,6 @@
 {
     "name": "extend-to-be-announced",
-    "version": "0.6.0",
+    "version": "1.0.0",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Utility for asserting ARIA Live Regions",
     "main": "./dist/index.js",
