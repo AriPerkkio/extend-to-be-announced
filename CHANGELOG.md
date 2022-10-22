@@ -1,3 +1,17 @@
+# [1.0.0](https://github.com/AriPerkkio/extend-to-be-announced/compare/v0.6.0...v1.0.0) (2022-10-22)
+
+
+* feat!: support vitest ([4f2995c](https://github.com/AriPerkkio/extend-to-be-announced/commit/4f2995cd2665c0d6b341d3ae62e8f83561b5194a))
+
+
+### BREAKING CHANGES
+
+* Adds support for Vitest
+- Entrypoint for Jest has moved to `import 'extend-to-be-announced/jest'`
+- Entrypoint for Jest's manual registration has moved to `import { register } 'extend-to-be-announced/jest/register'`
+
+
+
 # [0.6.0](https://github.com/AriPerkkio/extend-to-be-announced/compare/v0.5.0...v0.6.0) (2022-02-13)
 
 
