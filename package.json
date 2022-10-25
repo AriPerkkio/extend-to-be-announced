@@ -34,7 +34,8 @@
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "jest.@(d.ts|js)"
     ],
     "license": "MIT",
     "scripts": {
