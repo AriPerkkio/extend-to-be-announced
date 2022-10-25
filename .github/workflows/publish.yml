@@ -16,6 +16,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
             - uses: actions/setup-node@v3
               with:
                   node-version: '16'
@@ -41,12 +44,11 @@ jobs:
             - name: Bump version
               run: npm version ${{ github.event.inputs.release-type }}
 
-            # TODO This does not "see" earlier commits
-            #- name: Generate changelog
-            #  run: |
-            #      yarn changelog
-            #      git add CHANGELOG.md
-            #      git commit -m 'chore: changelog'
+            - name: Generate changelog
+              run: |
+                  yarn changelog
+                  git add CHANGELOG.md
+                  git commit -m 'chore: changelog'
 
             - name: Push release tag
               run: git push origin master --follow-tags
