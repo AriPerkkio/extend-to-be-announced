@@ -38,7 +38,7 @@
     ],
     "license": "MIT",
     "scripts": {
-        "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -p angular -s -r 0",
+        "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -p conventionalcommits -s -r 0",
         "prebuild": "rm -rf ./dist",
         "build": "rollup --config rollup.config.ts --configPlugin typescript",
         "test": "vitest run",
