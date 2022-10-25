@@ -1,0 +1,19 @@
+{
+    "name": "example-create-react-app",
+    "private": true,
+    "scripts": {
+        "test": "react-scripts test",
+        "typecheck": "tsc"
+    },
+    "dependencies": {
+        "@types/jest": "^29.2.0",
+        "@types/node": "^18.11.5",
+        "@types/react": "^18.0.22",
+        "@types/react-dom": "^18.0.7",
+        "extend-to-be-announced": "file:../../build.tgz",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-scripts": "^5.0.0",
+        "typescript": "^4.8.4"
+    }
+}
