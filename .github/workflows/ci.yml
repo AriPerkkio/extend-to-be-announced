@@ -37,29 +37,38 @@ jobs:
                   npm pack
                   mv extend-to-be-announced-*.tgz build.tgz
 
-            - name: Build and test example-jest
-              working-directory: ./examples/example-jest
-              run: |
-                  yarn install
-                  yarn test
-                  yarn typecheck
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: built-package
+                  path: build.tgz
 
-            - name: Build and test example-jest-shadow-dom
-              working-directory: ./examples/example-jest-shadow-dom
-              run: |
-                  yarn install
-                  yarn test
-                  yarn typecheck
+    examples:
+        needs: build
+        runs-on: ubuntu-latest
 
-            - name: Build and test example-vitest
-              working-directory: ./examples/example-vitest
-              run: |
-                  yarn install
-                  yarn test
-                  yarn typecheck
+        strategy:
+            matrix:
+                node-version: [14, 16]
+                example-name:
+                    [
+                        example-jest,
+                        example-jest-shadow-dom,
+                        example-vitest,
+                        example-vitest-shadow-dom,
+                    ]
 
-            - name: Build and test example-vitest-shadow-dom
-              working-directory: ./examples/example-vitest-shadow-dom
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - uses: actions/download-artifact@v3
+              with:
+                  name: built-package
+
+            - name: Build and test ${{ matrix.example-name }}
+              working-directory: ./examples/${{ matrix.example-name }}
               run: |
                   yarn install
                   yarn test
