@@ -127,12 +127,12 @@ register({
 
 ### Typescript
 
-This package utilizes Typescripts `exports` support for type declarations. You'll need to set `"moduleResolution": "Node16"` in your `tsconfig.json` in order to have typings picked properly.
+This package utilizes [Typescript's `exports` support](https://www.typescriptlang.org/docs/handbook/esm-node.html#packagejson-exports-imports-and-self-referencing) for type declarations. You'll need to set `"moduleResolution": "node16"` or `"moduleResolution": "nodenext"` in your `tsconfig.json` in order to have typings picked properly. For legacy setups where certain fields of `tsconfig.json` cannot be modified, such as `create-react-app`, there is a work-around entrypoint for `jest`.
 
 ```json
 {
     "compilerOptions": {
-        "moduleResolution": "Node16"
+        "moduleResolution": "node16" // Or nodenext
     }
 }
 ```
