@@ -3,6 +3,7 @@
         "module": "CommonJS",
         "target": "ESNext",
         "moduleResolution": "Node16",
-        "noEmit": true
+        "noEmit": true,
+        "skipLibCheck": true
     }
 }
