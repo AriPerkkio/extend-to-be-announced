@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/AriPerkkio/extend-to-be-announced/compare/v1.0.0...v1.1.0) (2022-11-17)
+
+
+### Features
+
+* add work-around entrypoint for `jest@<=27` and `typescript<=4.6` ([193a403](https://github.com/AriPerkkio/extend-to-be-announced/commit/193a403b8c22340ed9292caf147ce9dbb3d9b272))
+
 ## [1.0.0](https://github.com/AriPerkkio/extend-to-be-announced/compare/v0.6.0...v1.0.0) (2022-10-22)
 
 
