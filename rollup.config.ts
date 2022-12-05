@@ -28,6 +28,7 @@ export default entries
                     file: `dist/${entry}.js`,
                     format: 'cjs',
                     exports: 'auto',
+                    interop: 'compat',
                 },
                 plugins: [
                     esbuild(),
