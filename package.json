@@ -65,7 +65,7 @@
         "eslint-plugin-prettier": "^4.2.1",
         "jsdom": "^20.0.3",
         "prettier": "^2.8.0",
-        "rollup": "^2.79.1",
+        "rollup": "^3.6.0",
         "rollup-plugin-dts": "^5.0.0",
         "rollup-plugin-esbuild": "^5.0.0",
         "rollup-plugin-local-import": "^1.2.0",
