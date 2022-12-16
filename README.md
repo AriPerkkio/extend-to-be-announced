@@ -63,7 +63,7 @@ expect('Loading...').toBeAnnounced('polite');
 `extend-to-be-announced` should be included in development dependencies.
 
 ```bash
-yarn add --dev extend-to-be-announced
+npm install --save-dev extend-to-be-announced
 ```
 
 ## Usage

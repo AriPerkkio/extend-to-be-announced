@@ -1,4 +1,5 @@
 {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["schedule:weekly"],
     "labels": ["dependencies"],
     "rangeStrategy": "bump",
@@ -7,6 +8,12 @@
             "matchUpdateTypes": ["minor", "patch"],
             "groupName": "all non-major dependencies",
             "groupSlug": "all-minor-patch"
+        },
+        {
+            "matchUpdateTypes": ["major", "minor"],
+            "groupName": "typescript breaking changes",
+            "matchPackageNames": ["typescript"],
+            "description": "Typescript does not follow semver. Minor versions can introduce breaking changes."
         },
         {
             "depTypeList": ["peerDependencies", "engines"],

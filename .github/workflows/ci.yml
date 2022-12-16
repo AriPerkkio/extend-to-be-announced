@@ -13,25 +13,28 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [14, 16]
+                node-version: [14, 16, 18]
 
         steps:
             - uses: actions/checkout@v3
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v2
+
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Install
-              run: yarn install
-
-            - name: Build
-              run: yarn build
-
-            - name: Test
-              run: yarn test
+            - name: Install & Build
+              run: |
+                  pnpm install
+                  pnpm build
 
             - name: Lint
-              run: yarn lint
+              run: pnpm lint
+
+            - name: Test
+              run: pnpm test
 
             - name: Prepare build for examples
               run: |
@@ -49,7 +52,7 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [14, 16]
+                node-version: [14, 16, 18]
                 example-name:
                     [
                         example-jest,
@@ -61,6 +64,10 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v2
+
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
@@ -72,6 +79,6 @@ jobs:
             - name: Build and test ${{ matrix.example-name }}
               working-directory: ./examples/${{ matrix.example-name }}
               run: |
-                  yarn install
-                  yarn test
-                  yarn typecheck
+                  pnpm install
+                  pnpm test
+                  pnpm typecheck
