@@ -8,8 +8,8 @@
     },
     "dependencies": {
         "extend-to-be-announced": "file:../../build.tgz",
-        "jsdom": "^20.0.1",
+        "jsdom": "^20.0.3",
         "typescript": "^4.8.4",
-        "vitest": "^0.24.3"
+        "vitest": "^0.25.8"
     }
 }
