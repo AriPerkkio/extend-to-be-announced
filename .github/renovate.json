@@ -20,8 +20,9 @@
             "enabled": false
         },
         {
-            "matchPaths": ["examples/**"],
-            "enabled": false
+            "matchPackageNames": ["extend-to-be-announced"],
+            "enabled": false,
+            "description": "Local file links in examples"
         }
     ]
 }
