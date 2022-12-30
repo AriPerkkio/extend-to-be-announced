@@ -6,5 +6,12 @@ export default defineConfig({
         environment: 'jsdom',
         reporters: 'verbose',
         setupFiles: ['./test/setup.ts'],
+        coverage: {
+            enabled: true,
+            provider: 'istanbul',
+            all: true,
+            include: ['src'],
+            reporter: ['text', 'json-summary'],
+        },
     },
 });
