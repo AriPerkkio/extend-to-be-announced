@@ -3,6 +3,7 @@
     "extends": ["schedule:weekly"],
     "labels": ["dependencies"],
     "rangeStrategy": "bump",
+    "ignorePaths": ["**/examples/**"],
     "packageRules": [
         {
             "matchUpdateTypes": ["minor", "patch"],
@@ -18,11 +19,6 @@
         {
             "depTypeList": ["peerDependencies", "engines"],
             "enabled": false
-        },
-        {
-            "matchPackageNames": ["extend-to-be-announced"],
-            "enabled": false,
-            "description": "Local file links in examples"
         }
     ]
 }
