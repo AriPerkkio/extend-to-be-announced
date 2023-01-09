@@ -4,7 +4,7 @@ specifiers:
   '@types/node': ^18.11.18
   '@typescript-eslint/eslint-plugin': ^5.47.1
   '@typescript-eslint/parser': ^5.47.1
-  aria-live-capture: ^1.0.0
+  aria-live-capture: ^1.0.1
   esbuild: ^0.16.12
   eslint: ^8.31.0
   eslint-config-prettier: ^8.5.0
@@ -20,7 +20,7 @@ specifiers:
   vitest: ^0.26.3
 
 dependencies:
-  aria-live-capture: 1.0.0
+  aria-live-capture: 1.0.1
 
 devDependencies:
   '@types/node': 18.11.18
@@ -570,8 +570,8 @@ packages:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
     dev: true
 
-  /aria-live-capture/1.0.0:
-    resolution: {integrity: sha512-JOs2g+pKYL5gIMNCWjJIfCPs8GxFdtf3kuthWZXbetKTcmcr+/maKMU68Ha960Lb3fpBtjfPS645vpiLN9aZCg==}
+  /aria-live-capture/1.0.1:
+    resolution: {integrity: sha512-xLYuJ7oEs39bX4yVu4zJGzNhxZAXQlQ7wpiJjnP8bsPtuD8/am67y5nxrs7AIkF0Q1OzMFQ/oi8uQNG76/7aPg==}
     dev: false
 
   /array-union/2.1.0:

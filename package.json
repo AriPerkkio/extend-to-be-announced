@@ -54,7 +54,7 @@
     "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
     "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
     "dependencies": {
-        "aria-live-capture": "^1.0.0"
+        "aria-live-capture": "^1.0.1"
     },
     "devDependencies": {
         "@types/node": "^18.11.18",
