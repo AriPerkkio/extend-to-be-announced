@@ -1,3 +1,10 @@
+### [1.1.1](https://github.com/AriPerkkio/extend-to-be-announced/compare/v1.1.0...v1.1.1) (2023-01-10)
+
+
+### Bug Fixes
+
+* types in package exports to be the first entry ([a24add7](https://github.com/AriPerkkio/extend-to-be-announced/commit/a24add712dec297e0501b047a3ef0e9fbd592bd8))
+
 ## [1.1.0](https://github.com/AriPerkkio/extend-to-be-announced/compare/v1.0.0...v1.1.0) (2022-11-17)
 
 
