@@ -8,29 +8,29 @@
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "require": "./dist/index.js",
-            "import": "./dist/index.mjs",
-            "types": "./dist/index.d.ts"
+            "import": "./dist/index.mjs"
         },
         "./jest": {
+            "types": "./dist/jest/index.d.ts",
             "require": "./dist/jest/index.js",
-            "import": "./dist/jest/index.mjs",
-            "types": "./dist/jest/index.d.ts"
+            "import": "./dist/jest/index.mjs"
         },
         "./jest/register": {
+            "types": "./dist/jest/register.d.ts",
             "require": "./dist/jest/register.js",
-            "import": "./dist/jest/register.mjs",
-            "types": "./dist/jest/register.d.ts"
+            "import": "./dist/jest/register.mjs"
         },
         "./vitest": {
+            "types": "./dist/vitest/index.d.ts",
             "require": "./dist/vitest/index.js",
-            "import": "./dist/vitest/index.mjs",
-            "types": "./dist/vitest/index.d.ts"
+            "import": "./dist/vitest/index.mjs"
         },
         "./vitest/register": {
+            "types": "./dist/vitest/register.d.ts",
             "require": "./dist/vitest/register.js",
-            "import": "./dist/vitest/register.mjs",
-            "types": "./dist/vitest/register.d.ts"
+            "import": "./dist/vitest/register.mjs"
         }
     },
     "files": [
