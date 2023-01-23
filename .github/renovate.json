@@ -19,6 +19,16 @@
         {
             "depTypeList": ["peerDependencies", "engines"],
             "enabled": false
+        },
+        {
+            "matchPackageNames": ["extend-to-be-announced"],
+            "enabled": false,
+            "description": "Local file links in examples"
+        },
+        {
+            "matchPaths": ["examples/**"],
+            "enabled": false,
+            "description": "Exclude examples"
         }
     ]
 }
