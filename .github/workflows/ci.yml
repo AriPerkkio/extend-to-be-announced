@@ -36,21 +36,12 @@ jobs:
             - name: Test
               run: pnpm test
 
-            - name: Prepare build for examples
-              run: |
-                  npm pack
-                  mv extend-to-be-announced-*.tgz build.tgz
-
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: built-package
-                  path: build.tgz
-
     examples:
         needs: build
         runs-on: ubuntu-latest
 
         strategy:
+            fail-fast: false
             matrix:
                 node-version: [14, 16, 18]
                 example-name:
@@ -72,13 +63,13 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - uses: actions/download-artifact@v3
-              with:
-                  name: built-package
+            - name: Install & Build
+              run: |
+                  pnpm install
+                  pnpm build
 
             - name: Build and test ${{ matrix.example-name }}
               working-directory: ./examples/${{ matrix.example-name }}
               run: |
-                  pnpm install
                   pnpm test
                   pnpm typecheck
