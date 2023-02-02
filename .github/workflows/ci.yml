@@ -71,5 +71,6 @@ jobs:
             - name: Build and test ${{ matrix.example-name }}
               working-directory: ./examples/${{ matrix.example-name }}
               run: |
+                  pnpm install
                   pnpm test
                   pnpm typecheck

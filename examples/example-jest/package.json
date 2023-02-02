@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@types/jest": "^29.2.4",
-        "extend-to-be-announced": "workspace:*",
+        "extend-to-be-announced": "file:../../",
         "jest": "^29.3.1",
         "jest-environment-jsdom": "^29.3.1",
         "ts-jest": "^29.0.3",
