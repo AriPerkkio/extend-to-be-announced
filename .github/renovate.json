@@ -4,6 +4,7 @@
     "labels": ["dependencies"],
     "rangeStrategy": "bump",
     "ignorePaths": ["**/examples/**"],
+    "dependencyDashboard": true,
     "packageRules": [
         {
             "matchUpdateTypes": ["minor", "patch"],
