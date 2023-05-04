@@ -1,3 +1,10 @@
+### [1.1.2](https://github.com/AriPerkkio/extend-to-be-announced/compare/v1.1.1...v1.1.2) (2023-05-04)
+
+
+### Bug Fixes
+
+* support new vitest typings ([7a661b6](https://github.com/AriPerkkio/extend-to-be-announced/commit/7a661b6bcbdd5948ffc3a204b8a978f8364f2489))
+
 ### [1.1.1](https://github.com/AriPerkkio/extend-to-be-announced/compare/v1.1.0...v1.1.1) (2023-01-10)
 
 
