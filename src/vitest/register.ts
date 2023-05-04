@@ -3,18 +3,23 @@ import { afterEach, beforeEach, expect } from 'vitest';
 
 import { register as __register, toBeAnnounced } from '../to-be-announced';
 
-interface ToBeAnnouncedMatchers {
+interface ToBeAnnouncedMatchers<T = any> {
     /**
      * Assert whether given message was announced by ARIA live region.
      *
      * @param politenessSetting `POLITENESS_SETTING` of the announcement
      */
-    toBeAnnounced(politenessSetting?: Exclude<PolitenessSetting, 'off'>): void;
+    toBeAnnounced(politenessSetting?: Exclude<PolitenessSetting, 'off'>): T;
 }
 
+declare module '@vitest/expect' {
+    interface Assertion<T> extends ToBeAnnouncedMatchers<T> {}
+}
+
+// For Vitest below 0.31.x
 declare global {
     namespace Vi {
-        interface Assertion extends ToBeAnnouncedMatchers {}
+        interface Assertion<T> extends ToBeAnnouncedMatchers<T> {}
     }
 }
 
