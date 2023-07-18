@@ -11,7 +11,7 @@ declare global {
              * @param politenessSetting `POLITENESS_SETTING` of the announcement
              */
             toBeAnnounced(
-                politenessSetting?: Exclude<PolitenessSetting, 'off'>
+                politenessSetting?: Exclude<PolitenessSetting, 'off'>,
             ): R;
         }
     }
@@ -27,6 +27,6 @@ export function register(options?: Parameters<typeof __register>[0]) {
     __register(
         options,
         // @ts-expect-error -- Jest globals
-        { afterEach, beforeEach }
+        { afterEach, beforeEach },
     );
 }

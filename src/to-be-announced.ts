@@ -11,7 +11,7 @@ const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
 export function toBeAnnounced(
     this: { isNot?: boolean },
     text: string | RegExp,
-    politenessSetting?: Exclude<PolitenessSetting, 'off'>
+    politenessSetting?: Exclude<PolitenessSetting, 'off'>,
 ): { pass: boolean; message: () => string } {
     if (text == null || text === '') {
         return {
@@ -66,7 +66,7 @@ export function toBeAnnounced(
                 message.push(
                     this.isNot
                         ? 'match an announcement'
-                        : 'match any announcements'
+                        : 'match any announcements',
                 );
             } else {
                 // "Hello was (not) announced."
@@ -96,10 +96,10 @@ export function toBeAnnounced(
  * Register `extend-to-be-expected` to track DOM nodes
  */
 export function register<
-    TestHook extends (hook: () => any, ...rest: any[]) => any
+    TestHook extends (hook: () => any, ...rest: any[]) => any,
 >(
     options: Options = {},
-    hooks: { beforeEach: TestHook; afterEach: TestHook }
+    hooks: { beforeEach: TestHook; afterEach: TestHook },
 ): void {
     let cleanup: undefined | (() => void);
 
