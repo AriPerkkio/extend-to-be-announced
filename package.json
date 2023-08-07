@@ -57,25 +57,25 @@
         "aria-live-capture": "^1.0.1"
     },
     "devDependencies": {
-        "@types/node": "^20.4.5",
+        "@types/node": "^20.4.8",
         "@typescript-eslint/eslint-plugin": "^6.2.1",
         "@typescript-eslint/parser": "^6.2.1",
-        "@vitest/expect": "^0.34.0",
-        "esbuild": "^0.18.17",
+        "@vitest/expect": "^0.34.1",
+        "esbuild": "^0.18.19",
         "eslint": "^8.46.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
         "jsdom": "^22.1.0",
-        "prettier": "^3.0.0",
-        "rollup": "^3.27.0",
+        "prettier": "^3.0.1",
+        "rollup": "^3.27.2",
         "rollup-plugin-dts": "^5.3.1",
         "rollup-plugin-esbuild": "^5.0.0",
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
         "typescript": "^5.1.6",
-        "vitest": "^0.34.0"
+        "vitest": "^0.34.1"
     },
-    "packageManager": "pnpm@8.6.11",
+    "packageManager": "pnpm@8.6.12",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
