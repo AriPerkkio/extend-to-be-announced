@@ -16,7 +16,7 @@ jobs:
                 node-version: [16, 18]
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - name: Install pnpm
               uses: pnpm/action-setup@v2
@@ -54,7 +54,7 @@ jobs:
                     ]
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - name: Install pnpm
               uses: pnpm/action-setup@v2
