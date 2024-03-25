@@ -54,12 +54,12 @@
     "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
     "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
     "dependencies": {
-        "aria-live-capture": "^1.0.1"
+        "aria-live-capture": "^1.0.2"
     },
     "devDependencies": {
-        "@types/node": "^20.11.28",
-        "@typescript-eslint/eslint-plugin": "^7.2.0",
-        "@typescript-eslint/parser": "^7.2.0",
+        "@types/node": "^20.11.30",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "@typescript-eslint/parser": "^7.3.1",
         "@vitest/expect": "^1.4.0",
         "esbuild": "^0.20.2",
         "eslint": "^8.57.0",
@@ -72,7 +72,7 @@
         "rollup-plugin-esbuild": "^6.1.1",
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
-        "typescript": "^5.4.2",
+        "typescript": "^5.4.3",
         "vitest": "^1.4.0"
     },
     "packageManager": "pnpm@8.15.5",
