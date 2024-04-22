@@ -76,7 +76,7 @@
         "typescript-eslint": "^7.7.0",
         "vitest": "^1.5.0"
     },
-    "packageManager": "pnpm@8.15.7",
+    "packageManager": "pnpm@9.0.5",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
