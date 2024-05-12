@@ -99,21 +99,6 @@ Import registration entrypoint in your [test setup](https://vitest.dev/config/#s
 import 'extend-to-be-announced/vitest';
 ```
 
-Vitest also requires all dependencies that `import` Vitest internally to be inlined. Add `extend-to-be-announced` to your configuration's `test.deps.inline` array:
-
-```js
-// vitest.config.ts
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
-    test: {
-        deps: {
-            inline: ['extend-to-be-announced'],
-        },
-    },
-});
-```
-
 For setting up registration options use `register(options)` method instead.
 
 ```js

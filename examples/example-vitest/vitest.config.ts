@@ -5,8 +5,5 @@ export default defineConfig({
         environment: 'jsdom',
         reporters: 'verbose',
         setupFiles: ['./setup.ts'],
-        deps: {
-            inline: ['extend-to-be-announced'],
-        },
     },
 });
