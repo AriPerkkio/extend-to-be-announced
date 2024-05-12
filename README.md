@@ -10,6 +10,18 @@
 
 For Storybook integration see [`storybook-addon-aria-live`](https://github.com/AriPerkkio/storybook-addon-aria-live).
 
+```js
+test('live region is announced', () => {
+    const region = document.createElement('div');
+    region.setAttribute('role', 'status');
+
+    document.body.appendChild(region);
+    region.textContent = 'Loading';
+
+    expect('Loading').toBeAnnounced('polite');
+});
+```
+
 ## Motivation
 
 Read more about inspiration from [Building testing tools for ARIA live regions](https://loihdefactor.com/en/2022/04/29/building-testing-tools-for-aria-live-regions).
