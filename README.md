@@ -70,7 +70,26 @@ npm install --save-dev extend-to-be-announced
 
 ### Test setup
 
-There are out-of-the-box setups for Jest and Vitest.
+There are out-of-the-box setups for Vitest and Jest.
+
+#### Vitest
+
+Import registration entrypoint in your [test setup](https://vitest.dev/config/#setupfiles).
+
+```js
+import 'extend-to-be-announced/vitest';
+```
+
+For setting up registration options use `register(options)` method instead.
+
+```js
+import { register } from 'extend-to-be-announced/vitest/register';
+
+register({
+    /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
+    includeShadowDom: true,
+});
+```
 
 #### Jest
 
@@ -91,23 +110,10 @@ register({
 });
 ```
 
-#### Vitest
-
-Import registration entrypoint in your [test setup](https://vitest.dev/config/#setupfiles).
+Note that you'll need to add ESM dependencies of this package to your Jest config's `transformIgnorePatterns`. For example with `pnpm`:
 
 ```js
-import 'extend-to-be-announced/vitest';
-```
-
-For setting up registration options use `register(options)` method instead.
-
-```js
-import { register } from 'extend-to-be-announced/vitest/register';
-
-register({
-    /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
-    includeShadowDom: true,
-});
+transformIgnorePatterns: ['/node_modules/.pnpm/(?!(aria-live-capture)@)'],
 ```
 
 ### Typescript
