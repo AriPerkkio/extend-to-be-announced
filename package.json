@@ -54,7 +54,7 @@
     "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
     "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
     "dependencies": {
-        "aria-live-capture": "^1.0.2"
+        "aria-live-capture": "^2.0.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.2.0",

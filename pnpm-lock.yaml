@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       aria-live-capture:
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^2.0.0
+        version: 2.0.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.2.0
@@ -634,8 +634,8 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  aria-live-capture@1.0.2:
-    resolution: {integrity: sha512-qkRstEzhec0TWLhrjZh7uJM7ITaRr/WbJRp4xg7iupWkC3TE0oLaIDGWZ9QpBe+UZh71xNQq7FPlWfF1GXwefw==}
+  aria-live-capture@2.0.0:
+    resolution: {integrity: sha512-h2c193NGHIvPJqbVJwrX+Yyn2ir6z2CLokfrqczSReVgEl89PtwYqT0DA3Sw6+Anb6Awq7Mv9o1uTbiipkvh3w==}
 
   array-union@2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
@@ -2108,7 +2108,7 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  aria-live-capture@1.0.2: {}
+  aria-live-capture@2.0.0: {}
 
   array-union@2.1.0: {}
 
