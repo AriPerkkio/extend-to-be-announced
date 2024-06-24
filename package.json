@@ -72,7 +72,7 @@
         "rollup-plugin-esbuild": "^6.1.1",
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
-        "typescript": "^5.4.5",
+        "typescript": "^5.5.2",
         "typescript-eslint": "^7.13.1",
         "vitest": "^1.6.0"
     },
