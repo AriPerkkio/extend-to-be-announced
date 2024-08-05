@@ -13,12 +13,14 @@ interface ToBeAnnouncedMatchers<T = any> {
 }
 
 declare module '@vitest/expect' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface Assertion<T> extends ToBeAnnouncedMatchers<T> {}
 }
 
 // For Vitest below 0.31.x
 declare global {
     namespace Vi {
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         interface Assertion<T> extends ToBeAnnouncedMatchers<T> {}
     }
 }
