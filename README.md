@@ -24,8 +24,6 @@ test('live region is announced', () => {
 
 ## Motivation
 
-Read more about inspiration from [Building testing tools for ARIA live regions](https://loihdefactor.com/en/2022/04/29/building-testing-tools-for-aria-live-regions).
-
 Validating ARIA live regions with [`@testing-library`](https://testing-library.com/) and [`jest-dom`](https://github.com/testing-library/jest-dom) requires developers to consider implementation details.
 Current solutions are prone to false positives.
 
