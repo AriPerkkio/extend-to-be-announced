@@ -58,7 +58,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.15.0",
-        "@types/node": "^22.9.0",
+        "@types/node": "^22.9.3",
         "@vitest/expect": "^2.1.5",
         "esbuild": "^0.24.0",
         "eslint": "^9.15.0",
@@ -67,7 +67,7 @@
         "globals": "^15.12.0",
         "jsdom": "^25.0.1",
         "prettier": "^3.3.3",
-        "rollup": "^4.27.3",
+        "rollup": "^4.27.4",
         "rollup-plugin-dts": "^6.1.1",
         "rollup-plugin-esbuild": "^6.1.1",
         "rollup-plugin-local-import": "^1.2.0",
@@ -76,7 +76,7 @@
         "typescript-eslint": "^8.15.0",
         "vitest": "^2.1.5"
     },
-    "packageManager": "pnpm@9.13.2",
+    "packageManager": "pnpm@9.14.2",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
