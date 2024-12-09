@@ -59,24 +59,24 @@
     "devDependencies": {
         "@eslint/js": "^9.16.0",
         "@types/node": "^22.10.1",
-        "@vitest/expect": "^2.1.6",
+        "@vitest/expect": "^2.1.8",
         "esbuild": "^0.24.0",
         "eslint": "^9.16.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
         "globals": "^15.13.0",
         "jsdom": "^25.0.1",
-        "prettier": "^3.4.1",
-        "rollup": "^4.28.0",
+        "prettier": "^3.4.2",
+        "rollup": "^4.28.1",
         "rollup-plugin-dts": "^6.1.1",
         "rollup-plugin-esbuild": "^6.1.1",
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
         "typescript": "^5.7.2",
-        "typescript-eslint": "^8.16.0",
-        "vitest": "^2.1.6"
+        "typescript-eslint": "^8.17.0",
+        "vitest": "^2.1.8"
     },
-    "packageManager": "pnpm@9.14.4",
+    "packageManager": "pnpm@9.15.0",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
