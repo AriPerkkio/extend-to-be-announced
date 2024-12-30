@@ -73,10 +73,10 @@
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
         "typescript": "^5.7.2",
-        "typescript-eslint": "^8.18.1",
+        "typescript-eslint": "^8.18.2",
         "vitest": "^2.1.8"
     },
-    "packageManager": "pnpm@9.15.1",
+    "packageManager": "pnpm@9.15.2",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
