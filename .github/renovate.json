@@ -30,6 +30,12 @@
             "matchPaths": ["examples/**"],
             "enabled": false,
             "description": "Exclude examples"
+        },
+        {
+            "matchUpdateTypes": ["major"],
+            "groupName": "vitest",
+            "matchPackagePatterns": ["^@vitest", "^vitest"],
+            "description": "Vitest majors"
         }
     ]
 }
