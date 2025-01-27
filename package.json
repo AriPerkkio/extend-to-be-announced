@@ -57,24 +57,24 @@
         "aria-live-capture": "^2.0.0"
     },
     "devDependencies": {
-        "@eslint/js": "^9.18.0",
-        "@types/node": "^22.10.7",
-        "@vitest/expect": "^3.0.2",
+        "@eslint/js": "^9.19.0",
+        "@types/node": "^22.10.10",
+        "@vitest/expect": "^3.0.4",
         "esbuild": "^0.24.2",
-        "eslint": "^9.18.0",
+        "eslint": "^9.19.0",
         "eslint-config-prettier": "^10.0.1",
         "eslint-plugin-prettier": "^5.2.3",
         "globals": "^15.14.0",
         "jsdom": "^26.0.0",
         "prettier": "^3.4.2",
-        "rollup": "^4.31.0",
+        "rollup": "^4.32.0",
         "rollup-plugin-dts": "^6.1.1",
         "rollup-plugin-esbuild": "^6.1.1",
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
         "typescript": "^5.7.3",
-        "typescript-eslint": "^8.20.0",
-        "vitest": "^3.0.2"
+        "typescript-eslint": "^8.21.0",
+        "vitest": "^3.0.4"
     },
     "packageManager": "pnpm@9.15.4",
     "prettier": {
