@@ -58,7 +58,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.29.0",
-        "@types/node": "^22.15.31",
+        "@types/node": "^24.0.1",
         "@vitest/expect": "^3.2.3",
         "esbuild": "^0.25.5",
         "eslint": "^9.29.0",
