@@ -58,25 +58,25 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.29.0",
-        "@types/node": "^24.0.1",
-        "@vitest/expect": "^3.2.3",
+        "@types/node": "^24.0.3",
+        "@vitest/expect": "^3.2.4",
         "esbuild": "^0.25.5",
         "eslint": "^9.29.0",
         "eslint-config-prettier": "^10.1.5",
-        "eslint-plugin-prettier": "^5.4.1",
+        "eslint-plugin-prettier": "^5.5.0",
         "globals": "^16.2.0",
         "jsdom": "^26.1.0",
         "prettier": "^3.5.3",
-        "rollup": "^4.43.0",
+        "rollup": "^4.44.0",
         "rollup-plugin-dts": "^6.2.1",
         "rollup-plugin-esbuild": "^6.2.1",
         "rollup-plugin-local-import": "^1.2.0",
         "rollup-plugin-typescript": "^1.0.1",
         "typescript": "^5.8.3",
-        "typescript-eslint": "^8.34.0",
-        "vitest": "^3.2.3"
+        "typescript-eslint": "^8.34.1",
+        "vitest": "^3.2.4"
     },
-    "packageManager": "pnpm@10.12.1",
+    "packageManager": "pnpm@10.12.2",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
