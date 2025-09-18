@@ -41,7 +41,7 @@
     "scripts": {
         "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -p conventionalcommits -s -r 0",
         "prebuild": "rm -rf ./dist",
-        "build": "rollup --config rollup.config.ts --configPlugin typescript",
+        "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
         "test": "vitest run",
         "test:watch": "vitest watch",
         "lint": "eslint . --max-warnings 0",
@@ -58,6 +58,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.35.0",
+        "@rollup/plugin-typescript": "^12.1.4",
         "@types/node": "^24.5.2",
         "@vitest/expect": "^3.2.4",
         "esbuild": "^0.25.10",
@@ -71,7 +72,7 @@
         "rollup-plugin-dts": "^6.2.3",
         "rollup-plugin-esbuild": "^6.2.1",
         "rollup-plugin-local-import": "^1.2.0",
-        "rollup-plugin-typescript": "^1.0.1",
+        "tslib": "^2.8.1",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.44.0",
         "vitest": "^3.2.4"
