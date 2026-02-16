@@ -59,7 +59,7 @@
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@rollup/plugin-typescript": "^12.3.0",
-        "@types/node": "^25.2.2",
+        "@types/node": "^25.2.3",
         "@vitest/expect": "^4.0.18",
         "esbuild": "^0.27.3",
         "eslint": "^9.39.2",
@@ -74,10 +74,10 @@
         "rollup-plugin-local-import": "^1.2.0",
         "tslib": "^2.8.1",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.54.0",
+        "typescript-eslint": "^8.55.0",
         "vitest": "^4.0.18"
     },
-    "packageManager": "pnpm@10.29.2",
+    "packageManager": "pnpm@10.29.3",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
