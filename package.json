@@ -59,10 +59,10 @@
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@rollup/plugin-typescript": "^12.3.0",
-        "@types/node": "^25.3.3",
+        "@types/node": "^25.3.5",
         "@vitest/expect": "^4.0.18",
         "esbuild": "^0.27.3",
-        "eslint": "^10.0.2",
+        "eslint": "^10.0.3",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.5",
         "globals": "^17.4.0",
@@ -77,7 +77,7 @@
         "typescript-eslint": "^8.56.1",
         "vitest": "^4.0.18"
     },
-    "packageManager": "pnpm@10.30.3",
+    "packageManager": "pnpm@10.31.0",
     "prettier": {
         "singleQuote": true,
         "tabWidth": 4
