@@ -71,6 +71,7 @@ jobs:
             - name: Build and test ${{ matrix.example-name }}
               working-directory: ./examples/${{ matrix.example-name }}
               run: |
-                  pnpm install
+                  pnpm install --ignore-workspace --ignore-scripts
+                  pnpm approve-builds core-js-pure core-js
                   pnpm test
                   pnpm typecheck
