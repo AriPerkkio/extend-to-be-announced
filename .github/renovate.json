@@ -4,6 +4,7 @@
     "labels": ["dependencies"],
     "rangeStrategy": "bump",
     "ignorePaths": ["**/examples/**"],
+    "minimumReleaseAge": "1 day",
     "dependencyDashboard": true,
     "packageRules": [
         {
