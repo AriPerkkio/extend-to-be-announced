@@ -59,7 +59,7 @@
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@rollup/plugin-typescript": "^12.3.0",
-        "@types/node": "^25.9.5",
+        "@types/node": "^26.5.1",
         "@vitest/expect": "^4.1.11",
         "esbuild": "^0.28.2",
         "eslint": "^10.9.1",
