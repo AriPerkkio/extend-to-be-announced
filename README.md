@@ -11,14 +11,14 @@
 For Storybook integration see [`storybook-addon-aria-live`](https://github.com/AriPerkkio/storybook-addon-aria-live).
 
 ```js
-test('live region is announced', () => {
-    const region = document.createElement('div');
-    region.setAttribute('role', 'status');
+test("live region is announced", () => {
+  const region = document.createElement("div");
+  region.setAttribute("role", "status");
 
-    document.body.appendChild(region);
-    region.textContent = 'Loading';
+  document.body.appendChild(region);
+  region.textContent = "Loading";
 
-    expect('Loading').toBeAnnounced('polite');
+  expect("Loading").toBeAnnounced("polite");
 });
 ```
 
@@ -33,11 +33,11 @@ Assistive technologies are only expected to announce **updates** of ARIA live re
 ```js
 render(<div role="status">Loading...</div>);
 
-const liveRegion = screen.getByRole('status');
+const liveRegion = screen.getByRole("status");
 
 // Loading is not be announced by assistive technologies ❌
 // Content of live region has not updated. This is it's initial text content.
-expect(liveRegion).toHaveTextContent('Loading...');
+expect(liveRegion).toHaveTextContent("Loading...");
 ```
 
 Instead developers should check that messages are rendered into existing ARIA Live regions.
@@ -46,7 +46,7 @@ Instead developers should check that messages are rendered into existing ARIA Li
 const { rerender } = render(<div role="status"></div>);
 
 // Live region should be present
-const liveRegion = screen.getByRole('status');
+const liveRegion = screen.getByRole("status");
 
 // Live region should initially be empty
 expect(liveRegion).toBeEmptyDOMElement();
@@ -55,7 +55,7 @@ expect(liveRegion).toBeEmptyDOMElement();
 rerender(<div role="status">Loading...</div>);
 
 // Loading is announced by assistive technologies ✅
-expect(liveRegion).toHaveTextContent('Loading...');
+expect(liveRegion).toHaveTextContent("Loading...");
 ```
 
 `toBeAnnounced` can be used to hide such implementation detail from tests.
@@ -65,7 +65,7 @@ const { rerender } = render(<div role="status"></div>);
 
 rerender(<div role="status">Loading...</div>);
 
-expect('Loading...').toBeAnnounced('polite');
+expect("Loading...").toBeAnnounced("polite");
 ```
 
 ## Installation
@@ -87,17 +87,17 @@ There are out-of-the-box setups for Vitest and Jest.
 Import registration entrypoint in your [test setup](https://vitest.dev/config/#setupfiles).
 
 ```js
-import 'extend-to-be-announced/vitest';
+import "extend-to-be-announced/vitest";
 ```
 
 For setting up registration options use `register(options)` method instead.
 
 ```js
-import { register } from 'extend-to-be-announced/vitest/register';
+import { register } from "extend-to-be-announced/vitest/register";
 
 register({
-    /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
-    includeShadowDom: true,
+  /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
+  includeShadowDom: true,
 });
 ```
 
@@ -106,17 +106,17 @@ register({
 Import registration entrypoint in your [test setup](https://jestjs.io/docs/en/configuration.html#setupfilesafterenv-array).
 
 ```js
-import 'extend-to-be-announced/jest';
+import "extend-to-be-announced/jest";
 ```
 
 For setting up registration options use `register(options)` method instead.
 
 ```js
-import { register } from 'extend-to-be-announced/jest/register';
+import { register } from "extend-to-be-announced/jest/register";
 
 register({
-    /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
-    includeShadowDom: true,
+  /** Indicates whether live regions inside `ShadowRoot`s should be tracked. Defaults to false. */
+  includeShadowDom: true,
 });
 ```
 
@@ -132,9 +132,9 @@ This package utilizes [Typescript's `exports` support](https://www.typescriptlan
 
 ```json
 {
-    "compilerOptions": {
-        "moduleResolution": "node16" // Or nodenext
-    }
+  "compilerOptions": {
+    "moduleResolution": "node16" // Or nodenext
+  }
 }
 ```
 
@@ -146,17 +146,17 @@ Assert whether given message was announced by assistive technologies.
 Accepts string or regexp as matcher value.
 
 ```js
-expect('Loading...').toBeAnnounced();
+expect("Loading...").toBeAnnounced();
 expect(/loading/i).toBeAnnounced();
-expect('Error occured...').toBeAnnounced();
+expect("Error occured...").toBeAnnounced();
 expect(/error occured/i).toBeAnnounced();
 ```
 
 Politeness setting of announcement can be optionally asserted.
 
 ```js
-expect('Loading...').toBeAnnounced('polite');
-expect('Error occured...').toBeAnnounced('assertive');
+expect("Loading...").toBeAnnounced("polite");
+expect("Error occured...").toBeAnnounced("assertive");
 ```
 
 ##### Examples
@@ -232,7 +232,7 @@ getAnnouncements();
 Clear all captured announcements.
 
 ```js
-import { clearAnnouncements } from 'extend-to-be-announced';
+import { clearAnnouncements } from "extend-to-be-announced";
 clearAnnouncements();
 ```
 

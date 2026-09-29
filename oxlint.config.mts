@@ -1,6 +1,5 @@
-import { defineConfig } from 'oxlint';
+import { defineConfig } from "oxlint";
 
 export default defineConfig({
-    plugins: ['typescript', 'unicorn'],
-    ignorePatterns: ['dist/**', 'node_modules/**'],
+  ignorePatterns: ["dist/**", "node_modules/**"],
 });

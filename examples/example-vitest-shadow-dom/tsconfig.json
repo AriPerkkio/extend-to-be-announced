@@ -1,9 +1,9 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "target": "ESNext",
-        "moduleResolution": "Node16",
-        "noEmit": true,
-        "skipLibCheck": true
-    }
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node16",
+    "noEmit": true,
+    "skipLibCheck": true
+  }
 }

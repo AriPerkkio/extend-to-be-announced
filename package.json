@@ -1,77 +1,77 @@
 {
-    "name": "extend-to-be-announced",
-    "version": "2.0.0",
-    "description": "Utility for asserting ARIA Live Regions",
-    "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
-    "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
-    "license": "MIT",
-    "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/AriPerkkio/extend-to-be-announced"
+  "name": "extend-to-be-announced",
+  "version": "2.0.0",
+  "description": "Utility for asserting ARIA Live Regions",
+  "homepage": "https://github.com/AriPerkkio/extend-to-be-announced",
+  "bugs": "https://github.com/AriPerkkio/extend-to-be-announced",
+  "license": "MIT",
+  "author": "Ari Perkkio <ari.perkkio@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AriPerkkio/extend-to-be-announced"
+  },
+  "files": [
+    "dist",
+    "jest.@(d.ts|js)"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
     },
-    "files": [
-        "dist",
-        "jest.@(d.ts|js)"
-    ],
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "require": "./dist/index.js",
-            "import": "./dist/index.mjs"
-        },
-        "./jest": {
-            "types": "./dist/jest/index.d.ts",
-            "require": "./dist/jest/index.js",
-            "import": "./dist/jest/index.mjs"
-        },
-        "./jest/register": {
-            "types": "./dist/jest/register.d.ts",
-            "require": "./dist/jest/register.js",
-            "import": "./dist/jest/register.mjs"
-        },
-        "./vitest": {
-            "types": "./dist/vitest/index.d.ts",
-            "require": "./dist/vitest/index.js",
-            "import": "./dist/vitest/index.mjs"
-        },
-        "./vitest/register": {
-            "types": "./dist/vitest/register.d.ts",
-            "require": "./dist/vitest/register.js",
-            "import": "./dist/vitest/register.mjs"
-        }
+    "./jest": {
+      "types": "./dist/jest/index.d.ts",
+      "require": "./dist/jest/index.js",
+      "import": "./dist/jest/index.mjs"
     },
-    "scripts": {
-        "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -p conventionalcommits -s -r 0",
-        "prebuild": "rm -rf ./dist",
-        "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
-        "test": "vitest run",
-        "test:watch": "vitest watch",
-        "lint": "oxlint --deny-warnings && oxfmt --check",
-        "fmt": "oxfmt",
-        "validate": "pnpm build && pnpm lint && pnpm test"
+    "./jest/register": {
+      "types": "./dist/jest/register.d.ts",
+      "require": "./dist/jest/register.js",
+      "import": "./dist/jest/register.mjs"
     },
-    "dependencies": {
-        "aria-live-capture": "^2.0.0"
+    "./vitest": {
+      "types": "./dist/vitest/index.d.ts",
+      "require": "./dist/vitest/index.js",
+      "import": "./dist/vitest/index.mjs"
     },
-    "devDependencies": {
-        "@rollup/plugin-typescript": "^12.3.0",
-        "@types/node": "^25.9.8",
-        "@vitest/expect": "^5.0.2",
-        "esbuild": "^0.28.2",
-        "jsdom": "^30.1.1",
-        "oxfmt": "^0.70.0",
-        "oxlint": "^1.85.0",
-        "rollup": "^4.63.5",
-        "rollup-plugin-dts": "^6.5.1",
-        "rollup-plugin-esbuild": "^6.2.1",
-        "rollup-plugin-local-import": "^1.2.0",
-        "tslib": "^2.8.1",
-        "typescript": "^6.0.3",
-        "vitest": "^5.0.2"
-    },
-    "packageManager": "pnpm@11.28.0"
+    "./vitest/register": {
+      "types": "./dist/vitest/register.d.ts",
+      "require": "./dist/vitest/register.js",
+      "import": "./dist/vitest/register.mjs"
+    }
+  },
+  "scripts": {
+    "changelog": "npx conventional-changelog-cli -i CHANGELOG.md -p conventionalcommits -s -r 0",
+    "prebuild": "rm -rf ./dist",
+    "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "lint": "oxlint --deny-warnings && oxfmt --check",
+    "fmt": "oxfmt",
+    "validate": "pnpm build && pnpm lint && pnpm test"
+  },
+  "dependencies": {
+    "aria-live-capture": "^2.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/node": "^25.9.8",
+    "@vitest/expect": "^5.0.2",
+    "esbuild": "^0.28.2",
+    "jsdom": "^30.1.1",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "rollup": "^4.63.5",
+    "rollup-plugin-dts": "^6.5.1",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "rollup-plugin-local-import": "^1.2.0",
+    "tslib": "^2.8.1",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.2"
+  },
+  "packageManager": "pnpm@11.28.0"
 }

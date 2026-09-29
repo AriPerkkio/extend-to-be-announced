@@ -1,1 +1,1 @@
-import 'extend-to-be-announced/jest';
+import "extend-to-be-announced/jest";

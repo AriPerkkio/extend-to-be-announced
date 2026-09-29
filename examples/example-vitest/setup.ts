@@ -1,1 +1,1 @@
-import 'extend-to-be-announced/vitest';
+import "extend-to-be-announced/vitest";

@@ -1,42 +1,42 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["schedule:weekly"],
-    "labels": ["dependencies"],
-    "rangeStrategy": "bump",
-    "ignorePaths": ["**/examples/**"],
-    "minimumReleaseAge": "1 day",
-    "dependencyDashboard": true,
-    "packageRules": [
-        {
-            "matchUpdateTypes": ["minor", "patch"],
-            "groupName": "all non-major dependencies",
-            "groupSlug": "all-minor-patch"
-        },
-        {
-            "matchUpdateTypes": ["major", "minor"],
-            "groupName": "typescript breaking changes",
-            "matchPackageNames": ["typescript"],
-            "description": "Typescript does not follow semver. Minor versions can introduce breaking changes."
-        },
-        {
-            "depTypeList": ["peerDependencies", "engines"],
-            "enabled": false
-        },
-        {
-            "matchPackageNames": ["extend-to-be-announced"],
-            "enabled": false,
-            "description": "Local file links in examples"
-        },
-        {
-            "matchPaths": ["examples/**"],
-            "enabled": false,
-            "description": "Exclude examples"
-        },
-        {
-            "matchUpdateTypes": ["major"],
-            "groupName": "vitest",
-            "matchPackagePatterns": ["^@vitest", "^vitest"],
-            "description": "Vitest majors"
-        }
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["schedule:weekly"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "ignorePaths": ["**/examples/**"],
+  "minimumReleaseAge": "1 day",
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "matchUpdateTypes": ["major", "minor"],
+      "groupName": "typescript breaking changes",
+      "matchPackageNames": ["typescript"],
+      "description": "Typescript does not follow semver. Minor versions can introduce breaking changes."
+    },
+    {
+      "depTypeList": ["peerDependencies", "engines"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["extend-to-be-announced"],
+      "enabled": false,
+      "description": "Local file links in examples"
+    },
+    {
+      "matchPaths": ["examples/**"],
+      "enabled": false,
+      "description": "Exclude examples"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "groupName": "vitest",
+      "matchPackagePatterns": ["^@vitest", "^vitest"],
+      "description": "Vitest majors"
+    }
+  ]
 }

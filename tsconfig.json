@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "module": "ESNext",
-        "target": "ESNext",
-        "declaration": true,
-        "moduleResolution": "node",
-        "baseUrl": ".",
-        "declarationDir": "dist",
+  "compilerOptions": {
+    "strict": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "declaration": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "declarationDir": "dist",
 
-        // Disables Jest's automatic types
-        "types": ["node"]
-    },
-    "include": ["src", "test", "rollup.config.ts"]
+    // Disables Jest's automatic types
+    "types": ["node"]
+  },
+  "include": ["src", "test", "rollup.config.ts"]
 }

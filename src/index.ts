@@ -1,1 +1,1 @@
-export { clearAnnouncements, getAnnouncements } from './to-be-announced';
+export { clearAnnouncements, getAnnouncements } from "./to-be-announced";
