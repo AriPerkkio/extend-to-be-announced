@@ -1,152 +1,143 @@
-import CaptureAnnouncements, { PolitenessSetting } from 'aria-live-capture';
+import CaptureAnnouncements, { PolitenessSetting } from "aria-live-capture";
 
 interface Options {
-    /** Indicates whether live regions inside `ShadowRoot`s should be tracked */
-    includeShadowDom?: boolean;
+  /** Indicates whether live regions inside `ShadowRoot`s should be tracked */
+  includeShadowDom?: boolean;
 }
 
 // Map of announcements to their politeness settings
-const announcements = new Map<string, Exclude<PolitenessSetting, 'off'>>();
+const announcements = new Map<string, Exclude<PolitenessSetting, "off">>();
 
 export function toBeAnnounced(
-    this: { isNot?: boolean },
-    text: string | RegExp,
-    politenessSetting?: Exclude<PolitenessSetting, 'off'>,
+  this: { isNot?: boolean },
+  text: string | RegExp,
+  politenessSetting?: Exclude<PolitenessSetting, "off">,
 ): { pass: boolean; message: () => string } {
-    if (text == null || text === '') {
-        return {
-            pass: false,
-            message: () =>
-                `toBeAnnounced was given falsy or empty string: (${text})`,
-        };
-    }
+  if (text == null || text === "") {
+    return {
+      pass: false,
+      message: () => `toBeAnnounced was given falsy or empty string: (${text})`,
+    };
+  }
 
-    function matches(announcement: string) {
-        if (text instanceof RegExp) return text.test(announcement);
-        return text === announcement;
-    }
+  function matches(announcement: string) {
+    if (text instanceof RegExp) return text.test(announcement);
+    return text === announcement;
+  }
 
-    const isPattern = text instanceof RegExp;
-    const allAnnouncements = getAllAnnouncements();
-    const matchingAnnouncement = allAnnouncements.find(matches);
+  const isPattern = text instanceof RegExp;
+  const allAnnouncements = getAllAnnouncements();
+  const matchingAnnouncement = allAnnouncements.find(matches);
 
-    const politenessSettingMatch =
-        politenessSetting == null ||
-        (isAnnounced(matchingAnnouncement) &&
-            announcements.get(matchingAnnouncement) === politenessSetting);
+  const politenessSettingMatch =
+    politenessSetting == null ||
+    (isAnnounced(matchingAnnouncement) &&
+      announcements.get(matchingAnnouncement) === politenessSetting);
 
-    // Optionally asserted by politeness setting
-    if (isAnnounced(matchingAnnouncement) && !politenessSettingMatch) {
-        const actual = announcements.get(matchingAnnouncement);
-
-        return {
-            pass: false,
-            message: () =>
-                [
-                    text,
-                    isPattern ? 'matched an announcement' : 'was announced',
-                    `with politeness setting "${actual}" when "${politenessSetting}" was expected`,
-                ].join(' '),
-        };
-    }
+  // Optionally asserted by politeness setting
+  if (isAnnounced(matchingAnnouncement) && !politenessSettingMatch) {
+    const actual = announcements.get(matchingAnnouncement);
 
     return {
-        pass: isAnnounced(matchingAnnouncement),
-        message: () => {
-            const message = [text];
-
-            // "Hello was", "/hello/i did"
-            message.push(isPattern ? 'did' : 'was');
-
-            // "Hello was not", "/hello/i did not"
-            if (!this.isNot) message.push('not');
-
-            if (isPattern) {
-                // "/hello/i did not match any announcements.", "/hello/i did match an announcement."
-                message.push(
-                    this.isNot
-                        ? 'match an announcement'
-                        : 'match any announcements',
-                );
-            } else {
-                // "Hello was (not) announced."
-                message.push('announced');
-            }
-
-            if (politenessSetting) {
-                message.push(`with politeness setting "${politenessSetting}"`);
-            }
-
-            message[message.length - 1] += '.';
-
-            return [
-                ...message,
-                `Captured announcements (${allAnnouncements.length}):`,
-                `[${allAnnouncements
-                    .map((announcement) => `"${announcement}"`)
-                    .join(', ')}]`,
-            ]
-                .filter(Boolean)
-                .join(' ');
-        },
+      pass: false,
+      message: () =>
+        [
+          text,
+          isPattern ? "matched an announcement" : "was announced",
+          `with politeness setting "${actual}" when "${politenessSetting}" was expected`,
+        ].join(" "),
     };
+  }
+
+  return {
+    pass: isAnnounced(matchingAnnouncement),
+    message: () => {
+      const message = [text];
+
+      // "Hello was", "/hello/i did"
+      message.push(isPattern ? "did" : "was");
+
+      // "Hello was not", "/hello/i did not"
+      if (!this.isNot) message.push("not");
+
+      if (isPattern) {
+        // "/hello/i did not match any announcements.", "/hello/i did match an announcement."
+        message.push(this.isNot ? "match an announcement" : "match any announcements");
+      } else {
+        // "Hello was (not) announced."
+        message.push("announced");
+      }
+
+      if (politenessSetting) {
+        message.push(`with politeness setting "${politenessSetting}"`);
+      }
+
+      message[message.length - 1] += ".";
+
+      return [
+        ...message,
+        `Captured announcements (${allAnnouncements.length}):`,
+        `[${allAnnouncements.map((announcement) => `"${announcement}"`).join(", ")}]`,
+      ]
+        .filter(Boolean)
+        .join(" ");
+    },
+  };
 }
 
 /**
  * Register `extend-to-be-expected` to track DOM nodes
  */
-export function register<
-    TestHook extends (hook: () => any, ...rest: any[]) => any,
->(
-    options: Options = {},
-    hooks: { beforeEach: TestHook; afterEach: TestHook },
+export function register<TestHook extends (hook: () => any, ...rest: any[]) => any>(
+  options: Options = {},
+  hooks: { beforeEach: TestHook; afterEach: TestHook },
 ): void {
-    let cleanup: undefined | (() => void);
+  let cleanup: undefined | (() => void);
 
-    hooks.beforeEach(() => {
-        cleanup = CaptureAnnouncements({
-            ...options,
-            onCapture: (textContent, politenessSetting) => {
-                announcements.set(textContent, politenessSetting);
-            },
-        });
+  hooks.beforeEach(() => {
+    cleanup = CaptureAnnouncements({
+      ...options,
+      onCapture: (textContent, politenessSetting) => {
+        announcements.set(textContent, politenessSetting);
+      },
     });
+  });
 
-    hooks.afterEach(() => {
-        if (cleanup) {
-            cleanup();
-            cleanup = undefined;
-        }
+  hooks.afterEach(() => {
+    if (cleanup) {
+      cleanup();
+      cleanup = undefined;
+    }
 
-        clearAnnouncements();
-    });
+    clearAnnouncements();
+  });
 }
 
 /**
  * Clear all captured announcements.
  */
 export function clearAnnouncements(): void {
-    announcements.clear();
+  announcements.clear();
 }
 
 /**
  * Get all captured announcements.
  */
 export function getAnnouncements(): Map<string, PolitenessSetting> {
-    return announcements;
+  return announcements;
 }
 
 // Convert Map<string, x> to string[]. Required due to iteration of Map.
 function getAllAnnouncements() {
-    const allAnnouncements: string[] = [];
+  const allAnnouncements: string[] = [];
 
-    for (const [announcement] of announcements.entries()) {
-        allAnnouncements.push(announcement);
-    }
+  for (const [announcement] of announcements.entries()) {
+    allAnnouncements.push(announcement);
+  }
 
-    return allAnnouncements;
+  return allAnnouncements;
 }
 
 function isAnnounced(announcement: string | undefined): announcement is string {
-    return Boolean(announcement);
+  return Boolean(announcement);
 }

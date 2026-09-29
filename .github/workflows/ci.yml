@@ -1,77 +1,77 @@
 name: CI
 
 on:
-    push:
-        branches:
-            - master
-    pull_request:
-    workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [22, 24]
+    strategy:
+      matrix:
+        node-version: [22, 24]
 
-        steps:
-            - uses: actions/checkout@v7
+    steps:
+      - uses: actions/checkout@v7
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
 
-            - uses: actions/setup-node@v7
-              with:
-                  node-version: ${{ matrix.node-version }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: Install & Build
-              run: |
-                  pnpm install
-                  pnpm build
+      - name: Install & Build
+        run: |
+          pnpm install
+          pnpm build
 
-            - name: Lint
-              run: pnpm lint
+      - name: Lint
+        run: pnpm lint
 
-            - name: Test
-              run: pnpm test
+      - name: Test
+        run: pnpm test
 
-    examples:
-        needs: build
-        runs-on: ubuntu-latest
+  examples:
+    needs: build
+    runs-on: ubuntu-latest
 
-        strategy:
-            fail-fast: false
-            matrix:
-                node-version: [22, 24]
-                example-name:
-                    [
-                        example-jest,
-                        example-jest-shadow-dom,
-                        example-vitest,
-                        example-vitest-shadow-dom,
-                        example-create-react-app,
-                    ]
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24]
+        example-name:
+          [
+            example-jest,
+            example-jest-shadow-dom,
+            example-vitest,
+            example-vitest-shadow-dom,
+            example-create-react-app,
+          ]
 
-        steps:
-            - uses: actions/checkout@v7
+    steps:
+      - uses: actions/checkout@v7
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
 
-            - uses: actions/setup-node@v7
-              with:
-                  node-version: ${{ matrix.node-version }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: Install & Build
-              run: |
-                  pnpm install
-                  pnpm build
+      - name: Install & Build
+        run: |
+          pnpm install
+          pnpm build
 
-            - name: Build and test ${{ matrix.example-name }}
-              working-directory: ./examples/${{ matrix.example-name }}
-              run: |
-                  pnpm install --ignore-workspace --ignore-scripts
-                  pnpm approve-builds core-js-pure core-js
-                  pnpm test
-                  pnpm typecheck
+      - name: Build and test ${{ matrix.example-name }}
+        working-directory: ./examples/${{ matrix.example-name }}
+        run: |
+          pnpm install --ignore-workspace --ignore-scripts
+          pnpm approve-builds core-js-pure core-js
+          pnpm test
+          pnpm typecheck

@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-        "module": "CommonJS",
-        "target": "ESNext",
-        "moduleResolution": "Node16",
-        "allowJs": true,
-        "noEmit": true,
-        "skipLibCheck": true
-    }
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ESNext",
+    "moduleResolution": "Node16",
+    "allowJs": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  }
 }
