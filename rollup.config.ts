@@ -30,10 +30,7 @@ export default entries
                     exports: 'auto',
                     interop: 'compat',
                 },
-                plugins: [
-                    esbuild(),
-                    localImport((filename) => `${filename}.js`),
-                ],
+                plugins: [esbuild(), localImport((filename) => `${filename}.js`)],
                 external,
             },
             {
@@ -42,10 +39,7 @@ export default entries
                     file: `dist/${entry}.mjs`,
                     format: 'esm',
                 },
-                plugins: [
-                    esbuild(),
-                    localImport((filename) => `${filename}.mjs`),
-                ],
+                plugins: [esbuild(), localImport((filename) => `${filename}.mjs`)],
                 external,
             },
             {

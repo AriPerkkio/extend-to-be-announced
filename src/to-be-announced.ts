@@ -16,8 +16,7 @@ export function toBeAnnounced(
     if (text == null || text === '') {
         return {
             pass: false,
-            message: () =>
-                `toBeAnnounced was given falsy or empty string: (${text})`,
+            message: () => `toBeAnnounced was given falsy or empty string: (${text})`,
         };
     }
 
@@ -63,11 +62,7 @@ export function toBeAnnounced(
 
             if (isPattern) {
                 // "/hello/i did not match any announcements.", "/hello/i did match an announcement."
-                message.push(
-                    this.isNot
-                        ? 'match an announcement'
-                        : 'match any announcements',
-                );
+                message.push(this.isNot ? 'match an announcement' : 'match any announcements');
             } else {
                 // "Hello was (not) announced."
                 message.push('announced');
@@ -82,9 +77,7 @@ export function toBeAnnounced(
             return [
                 ...message,
                 `Captured announcements (${allAnnouncements.length}):`,
-                `[${allAnnouncements
-                    .map((announcement) => `"${announcement}"`)
-                    .join(', ')}]`,
+                `[${allAnnouncements.map((announcement) => `"${announcement}"`).join(', ')}]`,
             ]
                 .filter(Boolean)
                 .join(' ');
@@ -95,9 +88,7 @@ export function toBeAnnounced(
 /**
  * Register `extend-to-be-expected` to track DOM nodes
  */
-export function register<
-    TestHook extends (hook: () => any, ...rest: any[]) => any,
->(
+export function register<TestHook extends (hook: () => any, ...rest: any[]) => any>(
     options: Options = {},
     hooks: { beforeEach: TestHook; afterEach: TestHook },
 ): void {

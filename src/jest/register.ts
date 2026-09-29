@@ -10,9 +10,7 @@ declare global {
              *
              * @param politenessSetting `POLITENESS_SETTING` of the announcement
              */
-            toBeAnnounced(
-                politenessSetting?: Exclude<PolitenessSetting, 'off'>,
-            ): R;
+            toBeAnnounced(politenessSetting?: Exclude<PolitenessSetting, 'off'>): R;
         }
     }
 }
