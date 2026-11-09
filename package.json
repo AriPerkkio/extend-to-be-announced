@@ -62,7 +62,7 @@
     "@types/node": "^25.9.9",
     "@vitest/expect": "^5.1.0",
     "esbuild": "^0.28.2",
-    "jsdom": "^30.1.3",
+    "jsdom": "^31.0.0",
     "oxfmt": "^0.77.0",
     "oxlint": "^1.92.0",
     "rollup": "^4.68.0",
